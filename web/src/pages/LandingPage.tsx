@@ -23,13 +23,13 @@ const formatDateRange = (startsAt: string, endsAt: string) => {
   return `${start.toLocaleString('ko-KR')} ~ ${end.toLocaleString('ko-KR')}`
 }
 
-type FilterOption = 'ACTIVE' | 'UPCOMING' | 'CLOSED' | 'ALL'
+type FilterOption = 'ALL' | 'ACTIVE' | 'UPCOMING' | 'CLOSED'
 
 const FILTER_OPTIONS: { label: string; value: FilterOption }[] = [
+  { label: '모든 이벤트', value: 'ALL' },
   { label: '진행 중', value: 'ACTIVE' },
   { label: '오픈 예정', value: 'UPCOMING' },
   { label: '종료됨', value: 'CLOSED' },
-  { label: '모든 이벤트', value: 'ALL' },
 ]
 
 const sortEvents = (events: EventSummary[]) => {
@@ -52,7 +52,7 @@ export const LandingPage = () => {
   const userId = useAuthStore((state) => state.userId) ?? ''
   const userUuid = useAuthStore((state) => state.userUuid)
   const [selectedEvent, setSelectedEvent] = useState<EventSummary | null>(null)
-  const [filter, setFilter] = useState<FilterOption>('ACTIVE')
+  const [filter, setFilter] = useState<FilterOption>('ALL')
   const { joinQueue, ticketId } = useQueueStore()
 
   const eventsQuery = useQuery({
