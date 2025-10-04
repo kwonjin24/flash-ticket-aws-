@@ -1,5 +1,14 @@
 import { Expose, Type } from 'class-transformer';
-import { IsDate, IsInt, IsPositive, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
+import {
+  IsDate,
+  IsInt,
+  IsPositive,
+  IsString,
+  Max,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
 
 export class CreateEventDto {
   @IsString()

@@ -19,6 +19,7 @@ import {
   PurchasePage,
   PaymentPage,
   ResultPage,
+  MyOrdersPage,
 } from './pages'
 import './App.css'
 
@@ -126,6 +127,15 @@ function App() {
           element={
             <RequireAuth>
               <PurchasePage />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/orders"
+          element={
+            <RequireAuth>
+              <MyOrdersPage />
             </RequireAuth>
           }
         />

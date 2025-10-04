@@ -6,12 +6,14 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Event } from '../../events/entities/event.entity';
 import { User } from '../../auth/entities/user.entity';
 import { OrderStatus } from '../enums/order-status.enum';
+import { Payment } from '../../payments/entities/payment.entity';
 
 @Index('idx_orders_event_status', ['eventId', 'status'])
 @Index('idx_orders_user_event', ['userId', 'eventId'])
@@ -56,4 +58,7 @@ export class Order {
   @ManyToOne(() => Event, (event) => event.orders, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'event_id', referencedColumnName: 'id' })
   event?: Event;
+
+  @OneToMany(() => Payment, (payment) => payment.order)
+  payments?: Payment[];
 }

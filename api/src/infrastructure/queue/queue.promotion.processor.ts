@@ -1,4 +1,10 @@
-import { Inject, Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
 import { Queue, Worker } from 'bullmq';
 import { Redis } from 'ioredis';
 import { QueueTicketService } from '../../application/queue/services/queue-ticket.service';
@@ -42,12 +48,16 @@ export class QueuePromotionProcessor implements OnModuleInit, OnModuleDestroy {
     const repeatEvery = this.queueTicketService.getPromotionIntervalMs();
     const existingJob = await this.queue.getJob(PROMOTION_JOB_ID);
     if (!existingJob) {
-      await this.queue.add('promote', {}, {
-        jobId: PROMOTION_JOB_ID,
-        repeat: {
-          every: repeatEvery,
+      await this.queue.add(
+        'promote',
+        {},
+        {
+          jobId: PROMOTION_JOB_ID,
+          repeat: {
+            every: repeatEvery,
+          },
         },
-      });
+      );
     }
   }
 

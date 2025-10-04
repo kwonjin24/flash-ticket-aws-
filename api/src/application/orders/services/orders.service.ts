@@ -1,10 +1,17 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { DataSource, In, Repository } from 'typeorm';
 import { Event } from '../../../domain/events/entities/event.entity';
 import { EventStatus } from '../../../domain/events/enums/event-status.enum';
 import { Order } from '../../../domain/orders/entities/order.entity';
 import { OrderStatus } from '../../../domain/orders/enums/order-status.enum';
+import { User } from '../../../domain/auth/entities/user.entity';
+import { UserRole } from '../../../domain/auth/enums/user-role.enum';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { GateTokenService } from './gate-token.service';
 
@@ -27,11 +34,17 @@ export class OrdersService {
       return existingOrder;
     }
 
-    const { ticketId } = await this.gateTokenService.lockForOrder(dto.gateToken, dto.userId, dto.eventId);
+    const { ticketId } = await this.gateTokenService.lockForOrder(
+      dto.gateToken,
+      dto.userId,
+      dto.eventId,
+    );
 
     try {
       const order = await this.dataSource.transaction(async (manager) => {
-        const event = await manager.getRepository(Event).findOne({ where: { id: dto.eventId } });
+        const event = await manager
+          .getRepository(Event)
+          .findOne({ where: { id: dto.eventId } });
         if (!event) {
           throw new NotFoundException('Event not found');
         }
@@ -52,7 +65,9 @@ export class OrdersService {
 
         const totalForUser = (userActiveQty ?? 0) + dto.qty;
         if (totalForUser > event.maxPerUser) {
-          throw new BadRequestException('Requested quantity exceeds per-user limit');
+          throw new BadRequestException(
+            'Requested quantity exceeds per-user limit',
+          );
         }
 
         const orderEntity = manager.getRepository(Order).create({
@@ -75,11 +90,40 @@ export class OrdersService {
         return orderWithEvent;
       });
 
-      await this.gateTokenService.markOrderSuccess(ticketId, dto.gateToken, order.id);
+      await this.gateTokenService.markOrderSuccess(
+        ticketId,
+        dto.gateToken,
+        order.id,
+      );
       return order;
     } catch (error) {
       await this.gateTokenService.releaseLock(ticketId);
       throw error;
     }
+  }
+
+  async getOrderForUser(orderId: string, user: User): Promise<Order> {
+    const order = await this.ordersRepository.findOne({
+      where: { id: orderId },
+      relations: ['event'],
+    });
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    if (user.role !== UserRole.ADMIN && order.userId !== user.id) {
+      throw new UnauthorizedException('Order does not belong to this user');
+    }
+
+    return order;
+  }
+
+  async listOrdersForUser(user: User): Promise<Order[]> {
+    const where = user.role === UserRole.ADMIN ? {} : { userId: user.id };
+    return this.ordersRepository.find({
+      where,
+      relations: ['event'],
+      order: { createdAt: 'DESC' },
+    });
   }
 }

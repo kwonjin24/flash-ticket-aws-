@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Event } from '../../../domain/events/entities/event.entity';
@@ -64,7 +68,9 @@ export class EventsService {
     }
 
     if (dto.totalQty && dto.totalQty < event.soldQty) {
-      throw new BadRequestException('totalQty cannot be less than sold quantity');
+      throw new BadRequestException(
+        'totalQty cannot be less than sold quantity',
+      );
     }
 
     if (dto.status) {
@@ -84,7 +90,10 @@ export class EventsService {
     return this.eventsRepository.save(next);
   }
 
-  private assertStatusTransition(current: EventStatus, next: EventStatus): void {
+  private assertStatusTransition(
+    current: EventStatus,
+    next: EventStatus,
+  ): void {
     if (current === next) {
       return;
     }
@@ -96,7 +105,9 @@ export class EventsService {
     };
 
     if (!transitions[current].includes(next)) {
-      throw new BadRequestException(`Invalid status transition from ${current} to ${next}`);
+      throw new BadRequestException(
+        `Invalid status transition from ${current} to ${next}`,
+      );
     }
   }
 }

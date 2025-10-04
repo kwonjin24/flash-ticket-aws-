@@ -16,16 +16,21 @@ export const Navigation = ({ userId, role, onLogout }: NavigationProps) => {
         </Link>
       </div>
       <div className="nav-right">
-        {role === 'ADMIN' && (
-          <div className="nav-actions">
-            <Link to="/admin/events" className="btn btn-ghost">
-              이벤트 관리
-            </Link>
-            <Link to="/admin/events/new" className="btn btn-primary">
-              이벤트 등록
-            </Link>
-          </div>
-        )}
+        <div className="nav-actions">
+          <Link to="/orders" className="btn btn-ghost">
+            내 주문
+          </Link>
+          {role === 'ADMIN' && (
+            <>
+              <Link to="/admin/events" className="btn btn-ghost">
+                이벤트 관리
+              </Link>
+              <Link to="/admin/events/new" className="btn btn-primary">
+                이벤트 등록
+              </Link>
+            </>
+          )}
+        </div>
         <span className="username">@{userId}</span>
         <button type="button" className="btn btn-ghost" onClick={onLogout}>
           로그아웃

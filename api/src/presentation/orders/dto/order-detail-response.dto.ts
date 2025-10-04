@@ -1,7 +1,7 @@
 import { Order } from '../../../domain/orders/entities/order.entity';
 
-export class OrderResponseDto {
-  orderId: string;
+export class OrderDetailResponseDto {
+  id: string;
   status: string;
   amount: number;
   qty: number;
@@ -21,16 +21,16 @@ export class OrderResponseDto {
     return Number.isNaN(parsed.getTime()) ? `${value}` : parsed.toISOString();
   }
 
-  static fromEntity(order: Order): OrderResponseDto {
+  static fromEntity(order: Order): OrderDetailResponseDto {
     return {
-      orderId: order.id,
+      id: order.id,
       status: order.status,
       amount: order.amount,
       qty: order.qty,
       eventId: order.eventId,
       eventName: order.event?.name,
-      createdAt: OrderResponseDto.formatDate(order.createdAt),
-      updatedAt: OrderResponseDto.formatDate(order.updatedAt),
+      createdAt: OrderDetailResponseDto.formatDate(order.createdAt),
+      updatedAt: OrderDetailResponseDto.formatDate(order.updatedAt),
     };
   }
 }

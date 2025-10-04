@@ -1,5 +1,15 @@
 import { Expose, Type } from 'class-transformer';
-import { IsDate, IsEnum, IsInt, IsOptional, IsPositive, IsString, Max, MaxLength, Min } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsPositive,
+  IsString,
+  Max,
+  MaxLength,
+  Min,
+} from 'class-validator';
 import { EventStatus } from '../../../domain/events/enums/event-status.enum';
 
 export class UpdateEventDto {

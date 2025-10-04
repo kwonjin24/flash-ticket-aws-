@@ -3,7 +3,14 @@ import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
 import { CenteredPage } from '../components/CenteredPage'
-import { useOrderStore } from '../store/order'
+import { useOrderStore, type PaymentStatus } from '../store/order'
+
+type PaymentResponse = {
+  paymentId: string
+  status: PaymentStatus
+  orderId: string
+  method: string
+}
 
 export const PaymentPage = () => {
   const navigate = useNavigate()
@@ -25,10 +32,11 @@ export const PaymentPage = () => {
   const createPaymentMutation = useMutation({
     mutationFn: async () => {
       if (!orderId) throw new Error('orderId is missing')
-      const response = await http.post('payments', {
-        json: { orderId, method: 'MOCK' },
-      })
-      return (await response.json()) as { paymentId: string; status: 'REQ' }
+      return http
+        .post('payments', {
+          json: { orderId, method: 'MOCK' },
+        })
+        .json<PaymentResponse>()
     },
     onSuccess: (data) => {
       setPayment({ paymentId: data.paymentId, status: data.status })
@@ -38,14 +46,15 @@ export const PaymentPage = () => {
   const finalizePaymentMutation = useMutation({
     mutationFn: async (status: 'OK' | 'FAIL') => {
       if (!orderId || !paymentId) throw new Error('payment is not initialized')
-      await http.post('payments/callback', {
-        json: { orderId, paymentId, status },
-      })
-      return status
+      return http
+        .post('payments/callback', {
+          json: { orderId, paymentId, status },
+        })
+        .json<PaymentResponse>()
     },
-    onSuccess: (status) => {
-      setPayment({ paymentId: paymentId ?? '', status })
-      if (status === 'OK') {
+    onSuccess: (payment) => {
+      setPayment({ paymentId: payment.paymentId, status: payment.status })
+      if (payment.status === 'OK') {
         setOrderStatus('PAID')
       }
       navigate(`/result/${orderId}`, { replace: true })

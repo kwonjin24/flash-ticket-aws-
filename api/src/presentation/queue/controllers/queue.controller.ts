@@ -1,4 +1,12 @@
-import { BadRequestException, Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { QueueFacade } from '../../../application/queue/services/queue.facade';
 import { CurrentUser } from '../../../common/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard';
@@ -13,13 +21,20 @@ export class QueueController {
 
   @Post('enqueue')
   @UseGuards(JwtAuthGuard)
-  async enqueue(@CurrentUser() user: User, @Body() dto: EnqueueRequestDto): Promise<{ ticketId: string }> {
-    console.log(`Enqueue request received: userId=${user.id}, eventId=${dto.eventId}`);
+  async enqueue(
+    @CurrentUser() user: User,
+    @Body() dto: EnqueueRequestDto,
+  ): Promise<{ ticketId: string }> {
+    console.log(
+      `Enqueue request received: userId=${user.id}, eventId=${dto.eventId}`,
+    );
     return this.queueFacade.enqueue(user.id, dto.eventId);
   }
 
   @Get('status')
-  async status(@Query('ticketId') ticketId?: string): Promise<QueueStatusResponseDto> {
+  async status(
+    @Query('ticketId') ticketId?: string,
+  ): Promise<QueueStatusResponseDto> {
     if (!ticketId) {
       throw new BadRequestException('ticketId query parameter is required');
     }
@@ -36,7 +51,9 @@ export class QueueController {
     @CurrentUser() user: User,
     @Body() dto: EnterQueueRequestDto,
   ): Promise<{ status: 'entered' }> {
-    console.log(`Enter request received: userId=${user.id}, ticketId=${dto.ticketId}, gateToken=${dto.gateToken}`);
+    console.log(
+      `Enter request received: userId=${user.id}, ticketId=${dto.ticketId}, gateToken=${dto.gateToken}`,
+    );
     await this.queueFacade.enter(user.id, dto.ticketId, dto.gateToken);
     return { status: 'entered' };
   }

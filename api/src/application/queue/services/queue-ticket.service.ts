@@ -36,9 +36,15 @@ export class QueueTicketService {
     @Inject(REDIS_QUEUE_CLIENT) private readonly redis: Redis,
     private readonly configService: ConfigService,
   ) {
-    this.readyCapacity = Number(this.configService.get('QUEUE_READY_CAPACITY') ?? 50);
-    this.gateTokenTtlMs = Number(this.configService.get('QUEUE_GATE_TOKEN_TTL_MS') ?? 120_000);
-    this.promotionIntervalMs = Number(this.configService.get('QUEUE_PROMOTION_INTERVAL_MS') ?? 5_000);
+    this.readyCapacity = Number(
+      this.configService.get('QUEUE_READY_CAPACITY') ?? 50,
+    );
+    this.gateTokenTtlMs = Number(
+      this.configService.get('QUEUE_GATE_TOKEN_TTL_MS') ?? 120_000,
+    );
+    this.promotionIntervalMs = Number(
+      this.configService.get('QUEUE_PROMOTION_INTERVAL_MS') ?? 5_000,
+    );
   }
 
   getPromotionIntervalMs(): number {
@@ -53,7 +59,10 @@ export class QueueTicketService {
     return this.redis.zcard(QUEUE_KEY(eventId));
   }
 
-  async enqueue(userId: string, eventId: string): Promise<{ ticketId: string }> {
+  async enqueue(
+    userId: string,
+    eventId: string,
+  ): Promise<{ ticketId: string }> {
     const ticketId = randomUUID();
     const now = Date.now();
     const multi = this.redis.multi();
@@ -69,7 +78,11 @@ export class QueueTicketService {
     return { ticketId };
   }
 
-  async getStatus(ticketId: string): Promise<{ state: QueueTicketState; position?: number; gateToken?: string }> {
+  async getStatus(ticketId: string): Promise<{
+    state: QueueTicketState;
+    position?: number;
+    gateToken?: string;
+  }> {
     const ticket = await this.redis.hgetall(TICKET_KEY(ticketId));
     if (!ticket || Object.keys(ticket).length === 0) {
       throw new NotFoundException('Queue ticket not found');
@@ -79,7 +92,10 @@ export class QueueTicketService {
 
     const state = (ticket[TICKET_STATE_FIELD] as QueueTicketState) ?? 'QUEUED';
     if (state === 'QUEUED') {
-      const rank = await this.redis.zrank(QUEUE_KEY(ticket[TICKET_EVENT_FIELD]), ticketId);
+      const rank = await this.redis.zrank(
+        QUEUE_KEY(ticket[TICKET_EVENT_FIELD]),
+        ticketId,
+      );
       const position = typeof rank === 'number' ? rank + 1 : undefined;
       return { state, position };
     }
@@ -94,7 +110,11 @@ export class QueueTicketService {
     return { state };
   }
 
-  async enter(userId: string, ticketId: string, gateToken: string): Promise<void> {
+  async enter(
+    userId: string,
+    ticketId: string,
+    gateToken: string,
+  ): Promise<void> {
     const ticketKey = TICKET_KEY(ticketId);
     const ticket = await this.redis.hgetall(ticketKey);
     if (!ticket || Object.keys(ticket).length === 0) {
@@ -127,7 +147,11 @@ export class QueueTicketService {
     await multi.exec();
   }
 
-  async lockGateTokenForOrder(gateToken: string, userId: string, eventId: string): Promise<{ ticketId: string }> {
+  async lockGateTokenForOrder(
+    gateToken: string,
+    userId: string,
+    eventId: string,
+  ): Promise<{ ticketId: string }> {
     console.log(`redis query : ${GATE_TOKEN_KEY(gateToken)}`);
     const ticketId = await this.redis.get(GATE_TOKEN_KEY(gateToken));
     console.log(`redis result : ${ticketId}`);
@@ -146,9 +170,13 @@ export class QueueTicketService {
         throw new NotFoundException('Queue ticket not found');
       }
 
-      console.log(`Comparing userId ${ticket[TICKET_USER_FIELD]} with ${userId}`);
+      console.log(
+        `Comparing userId ${ticket[TICKET_USER_FIELD]} with ${userId}`,
+      );
       if (ticket[TICKET_USER_FIELD] !== userId) {
-        throw new UnauthorizedException('Gate token does not belong to this user');
+        throw new UnauthorizedException(
+          'Gate token does not belong to this user',
+        );
       }
 
       if (ticket[TICKET_EVENT_FIELD] !== eventId) {
@@ -179,7 +207,11 @@ export class QueueTicketService {
     }
   }
 
-  async markOrderSuccess(ticketId: string, gateToken: string, orderId: string): Promise<void> {
+  async markOrderSuccess(
+    ticketId: string,
+    gateToken: string,
+    orderId: string,
+  ): Promise<void> {
     const ticketKey = TICKET_KEY(ticketId);
     const ticket = await this.redis.hgetall(ticketKey);
     if (!ticket || Object.keys(ticket).length === 0) {
@@ -232,7 +264,11 @@ export class QueueTicketService {
         continue;
       }
 
-      const candidates = await this.redis.zrange(QUEUE_KEY(eventId), 0, availableSlots - 1);
+      const candidates = await this.redis.zrange(
+        QUEUE_KEY(eventId),
+        0,
+        availableSlots - 1,
+      );
       if (!candidates.length) {
         continue;
       }
@@ -248,7 +284,12 @@ export class QueueTicketService {
           [TICKET_EXPIRES_AT_FIELD]: expiresAt.toString(),
         });
         multi.sadd(READY_SET_KEY(eventId), ticketId);
-        multi.set(GATE_TOKEN_KEY(gateToken), ticketId, 'PX', this.gateTokenTtlMs);
+        multi.set(
+          GATE_TOKEN_KEY(gateToken),
+          ticketId,
+          'PX',
+          this.gateTokenTtlMs,
+        );
         availableSlots -= 1;
         if (availableSlots <= 0) {
           break;
@@ -258,7 +299,10 @@ export class QueueTicketService {
     }
   }
 
-  private async calculateAvailableSlots(eventId: string, now: number): Promise<number> {
+  private async calculateAvailableSlots(
+    eventId: string,
+    now: number,
+  ): Promise<number> {
     const readyKey = READY_SET_KEY(eventId);
     const readyTickets = await this.redis.smembers(readyKey);
 
@@ -288,7 +332,10 @@ export class QueueTicketService {
     return available > 0 ? available : 0;
   }
 
-  private async refreshExpiration(ticketId: string, ticket: Record<string, string>): Promise<void> {
+  private async refreshExpiration(
+    ticketId: string,
+    ticket: Record<string, string>,
+  ): Promise<void> {
     const state = ticket[TICKET_STATE_FIELD] as QueueTicketState | undefined;
 
     if (state === 'READY') {
@@ -311,7 +358,10 @@ export class QueueTicketService {
     }
   }
 
-  private async expireTicket(ticketId: string, ticket: Record<string, string>): Promise<void> {
+  private async expireTicket(
+    ticketId: string,
+    ticket: Record<string, string>,
+  ): Promise<void> {
     const ticketKey = TICKET_KEY(ticketId);
     const multi = this.redis.multi();
     multi.hset(ticketKey, {

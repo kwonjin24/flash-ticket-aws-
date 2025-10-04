@@ -28,7 +28,9 @@ export class AuthController {
   }
 
   @Post('refresh')
-  async refresh(@Body() dto: RefreshTokenRequestDto): Promise<TokenResponseDto> {
+  async refresh(
+    @Body() dto: RefreshTokenRequestDto,
+  ): Promise<TokenResponseDto> {
     return this.authFacade.refresh(dto);
   }
 

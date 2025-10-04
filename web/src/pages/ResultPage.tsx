@@ -12,6 +12,9 @@ type OrderDetail = {
   qty: number
   amount: number
   eventId: string
+  eventName?: string
+  createdAt: string
+  updatedAt: string
 }
 
 export const ResultPage = () => {
@@ -62,10 +65,12 @@ export const ResultPage = () => {
 
             {order && (
               <section className="result-page__summary">
+                {order.eventName && <p>이벤트: {order.eventName}</p>}
                 <p>주문 번호: {order.id}</p>
                 <p>상태: {order.status}</p>
                 <p>구매 수량: {order.qty} 매</p>
                 <p>결제 금액: {order.amount.toLocaleString()} 원</p>
+                <p>주문 일시: {new Date(order.createdAt).toLocaleString('ko-KR')}</p>
                 <p>결제 상태: {paymentStatus ?? '확인 중'}</p>
               </section>
             )}

@@ -30,7 +30,10 @@ type LeaveQueuePayload = {
   clearTicket?: boolean;
 };
 
-@WebSocketGateway({ namespace: 'queue', cors: { origin: '*', credentials: true } })
+@WebSocketGateway({
+  namespace: 'queue',
+  cors: { origin: '*', credentials: true },
+})
 export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   private server!: Server;
@@ -46,7 +49,8 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly configService: ConfigService,
   ) {
     this.refreshIntervalMs = Number(
-      this.configService.get('QUEUE_WS_REFRESH_MS') ?? DEFAULT_REFRESH_INTERVAL_MS,
+      this.configService.get('QUEUE_WS_REFRESH_MS') ??
+        DEFAULT_REFRESH_INTERVAL_MS,
     );
     this.readyCapacity = this.queueTicketService.getReadyCapacity();
   }
@@ -64,14 +68,22 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('queue/join')
-  async joinQueue(@ConnectedSocket() client: Socket, @MessageBody() payload: JoinQueuePayload): Promise<void> {
+  async joinQueue(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() payload: JoinQueuePayload,
+  ): Promise<void> {
     if (!payload?.eventId || !payload?.userId) {
-      client.emit('queue:error', { message: 'eventId and userId are required to join the queue.' });
+      client.emit('queue:error', {
+        message: 'eventId and userId are required to join the queue.',
+      });
       return;
     }
 
     try {
-      const { ticketId } = await this.queueFacade.enqueue(payload.userId, payload.eventId);
+      const { ticketId } = await this.queueFacade.enqueue(
+        payload.userId,
+        payload.eventId,
+      );
       const context = this.upsertContext(client.id);
       context.eventId = payload.eventId;
       context.ticketId = ticketId;
@@ -84,12 +96,17 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       });
     } catch (error) {
       this.logger.error('Failed to join queue', error as Error);
-      client.emit('queue:error', { message: '대기열에 참여하지 못했습니다. 잠시 후 다시 시도해주세요.' });
+      client.emit('queue:error', {
+        message: '대기열에 참여하지 못했습니다. 잠시 후 다시 시도해주세요.',
+      });
     }
   }
 
   @SubscribeMessage('queue/leave')
-  leaveQueue(@ConnectedSocket() client: Socket, @MessageBody() payload?: LeaveQueuePayload): void {
+  leaveQueue(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() payload?: LeaveQueuePayload,
+  ): void {
     const context = this.contexts.get(client.id);
     if (context?.eventId) {
       client.leave(context.eventId);
@@ -133,7 +150,10 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  private async emitStatus(client: Socket, context: ClientContext): Promise<void> {
+  private async emitStatus(
+    client: Socket,
+    context: ClientContext,
+  ): Promise<void> {
     if (!context.ticketId || !context.eventId) {
       return;
     }
@@ -166,7 +186,9 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
       }
     } catch (error) {
       this.logger.error('Failed to fetch queue status', error as Error);
-      client.emit('queue:error', { message: '대기열 상태를 조회하지 못했습니다.' });
+      client.emit('queue:error', {
+        message: '대기열 상태를 조회하지 못했습니다.',
+      });
       this.stopTracking(client.id);
     }
   }

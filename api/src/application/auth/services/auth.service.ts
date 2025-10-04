@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -22,7 +26,9 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterUserDto): Promise<void> {
-    const existing = await this.usersRepository.findOne({ where: { userId: dto.userId } });
+    const existing = await this.usersRepository.findOne({
+      where: { userId: dto.userId },
+    });
     if (existing) {
       throw new ConflictException('User ID already registered');
     }
@@ -39,12 +45,16 @@ export class AuthService {
   }
 
   async registerAdmin(dto: RegisterAdminDto): Promise<void> {
-    const adminSecret = this.configService.getOrThrow<string>('ADMIN_REGISTER_SECRET');
+    const adminSecret = this.configService.getOrThrow<string>(
+      'ADMIN_REGISTER_SECRET',
+    );
     if (dto.adminSecret !== adminSecret) {
       throw new UnauthorizedException('Invalid admin secret');
     }
 
-    const existing = await this.usersRepository.findOne({ where: { userId: dto.userId } });
+    const existing = await this.usersRepository.findOne({
+      where: { userId: dto.userId },
+    });
     if (existing) {
       throw new ConflictException('User ID already registered');
     }
@@ -61,7 +71,9 @@ export class AuthService {
   }
 
   async login(dto: LoginUserDto): Promise<TokenDto> {
-    const user = await this.usersRepository.findOne({ where: { userId: dto.userId } });
+    const user = await this.usersRepository.findOne({
+      where: { userId: dto.userId },
+    });
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -77,11 +89,16 @@ export class AuthService {
 
   async refreshAccessToken(dto: RefreshTokenDto): Promise<TokenDto> {
     try {
-      const payload = await this.jwtService.verifyAsync<JwtPayload>(dto.refreshToken, {
-        secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'),
-      });
+      const payload = await this.jwtService.verifyAsync<JwtPayload>(
+        dto.refreshToken,
+        {
+          secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'),
+        },
+      );
 
-      const user = await this.usersRepository.findOne({ where: { id: payload.sub } });
+      const user = await this.usersRepository.findOne({
+        where: { id: payload.sub },
+      });
       if (!user) {
         throw new UnauthorizedException('User not found');
       }

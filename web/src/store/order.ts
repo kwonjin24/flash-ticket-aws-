@@ -43,7 +43,7 @@ export const useOrderStore = create<OrderState>()(
     (set) => ({
       ...initialState,
       setOrder: ({ orderId, amount, status, qty, eventId, eventName }) =>
-        set({ orderId, amount, status, qty, eventId, eventName }),
+        set({ orderId, amount, status, qty, eventId, eventName, paymentId: null, paymentStatus: null }),
       setStatus: (status) => set({ status }),
       setPayment: ({ paymentId, status }) => set({ paymentId, paymentStatus: status }),
       reset: () => set(initialState),

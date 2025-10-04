@@ -11,7 +11,13 @@ import { QueuePromotionProcessor } from '../../infrastructure/queue/queue.promot
 @Module({
   imports: [AuthModule, ConfigModule],
   controllers: [QueueController],
-  providers: [redisQueueProvider, QueueTicketService, QueueFacade, QueuePromotionProcessor, QueueGateway],
+  providers: [
+    redisQueueProvider,
+    QueueTicketService,
+    QueueFacade,
+    QueuePromotionProcessor,
+    QueueGateway,
+  ],
   exports: [QueueTicketService],
 })
 export class QueueModule {}

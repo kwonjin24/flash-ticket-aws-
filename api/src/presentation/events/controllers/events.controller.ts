@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateEventDto } from '../../../application/events/dto/create-event.dto';
 import { UpdateEventDto } from '../../../application/events/dto/update-event.dto';
 import { EventsFacade } from '../../../application/events/facades/events.facade';
@@ -43,7 +52,10 @@ export class EventsController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
-  async update(@Param('id') id: string, @Body() dto: UpdateEventDto): Promise<EventResponseDto> {
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateEventDto,
+  ): Promise<EventResponseDto> {
     const event = await this.eventsFacade.update(id, dto);
     return EventResponseDto.fromEntity(event);
   }
