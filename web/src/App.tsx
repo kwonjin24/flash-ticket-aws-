@@ -3,7 +3,6 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { http } from './api/http'
 import { useAuthStore } from './store/auth'
 import { useQueueStore } from './store/queue'
-import { useOrderStore } from './store/order'
 import type { LoginCredentials, RegisterCredentials, TokenDto } from './types'
 import { decodeToken } from './utils'
 import {
@@ -56,9 +55,7 @@ const RequireAuth = ({ children, allowRoles }: RequireAuthProps) => {
 }
 
 function App() {
-  const { accessToken, userId, role, setSession, clear: clearSession } = useAuthStore()
-  const resetQueue = useQueueStore((state) => state.reset)
-  const resetOrder = useOrderStore((state) => state.reset)
+  const { accessToken, userId, setSession } = useAuthStore()
 
   const login = async (credentials: LoginCredentials) => {
     const response = await http.post('auth/login', { json: credentials }).json<TokenDto>()
@@ -87,12 +84,6 @@ function App() {
     await login({ userId: credentials.userId, password: credentials.password })
   }
 
-  const logout = () => {
-    clearSession()
-    resetQueue()
-    resetOrder()
-  }
-
   const isAuthenticated = Boolean(accessToken && userId)
 
   return (
@@ -104,7 +95,7 @@ function App() {
         path="/"
         element={
           isAuthenticated && userId ? (
-            <LandingPage userId={userId} role={role} onLogout={logout} />
+            <LandingPage />
           ) : (
             <Navigate to="/login" replace />
           )
@@ -125,7 +116,7 @@ function App() {
         element={
           <RequireAuth>
             <RequireGate>
-              <TicketPage onLogout={logout} />
+              <TicketPage />
             </RequireGate>
           </RequireAuth>
         }
@@ -135,7 +126,7 @@ function App() {
         path="/purchase"
         element={
           <RequireAuth>
-            <PurchasePage onLogout={logout} />
+            <PurchasePage />
           </RequireAuth>
         }
       />
@@ -144,7 +135,7 @@ function App() {
         path="/payment"
         element={
           <RequireAuth>
-            <PaymentPage onLogout={logout} />
+            <PaymentPage />
           </RequireAuth>
         }
       />
@@ -153,7 +144,7 @@ function App() {
         path="/result/:orderId"
         element={
           <RequireAuth>
-            <ResultPage onLogout={logout} />
+            <ResultPage />
           </RequireAuth>
         }
       />

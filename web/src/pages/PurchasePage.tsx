@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
+import { AppLayout } from '../components/AppLayout'
 import { CenteredPage } from '../components/CenteredPage'
 import { useQueueStore } from '../store/queue'
 import { useOrderStore } from '../store/order'
@@ -37,7 +38,7 @@ const generateIdempotencyKey = () => {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`
 }
 
-export const PurchasePage = ({ onLogout }: { onLogout: () => void }) => {
+export const PurchasePage = () => {
   const navigate = useNavigate()
   const eventId = useQueueStore((state) => state.eventId)
   const gateToken = useQueueStore((state) => state.gateToken)
@@ -131,50 +132,49 @@ export const PurchasePage = ({ onLogout }: { onLogout: () => void }) => {
   }
 
   return (
-    <CenteredPage>
-      <main className="purchase-page">
-        <div className="purchase-page__card">
-          <header className="purchase-page__header">
-            <h1>티켓 주문</h1>
-            <button className="purchase-page__logout" type="button" onClick={onLogout}>
-              로그아웃
-            </button>
-          </header>
+    <AppLayout>
+      <CenteredPage>
+        <section className="purchase-page">
+          <div className="purchase-page__card">
+            <header className="purchase-page__header">
+              <h1>티켓 주문</h1>
+            </header>
 
-          {event && (
-            <section className="purchase-page__event">
-              <h2>{event.name}</h2>
-              <p>
-                판매 기간: {new Date(event.startsAt).toLocaleString()} ~ {new Date(event.endsAt).toLocaleString()}
-              </p>
-              <p>
-                남은 수량: {remaining} / {event.totalQty} (1인당 최대 {event.maxPerUser}매)
-              </p>
-              <p>티켓 가격: {event.price.toLocaleString()} 원</p>
-            </section>
-          )}
+            {event && (
+              <section className="purchase-page__event">
+                <h2>{event.name}</h2>
+                <p>
+                  판매 기간: {new Date(event.startsAt).toLocaleString()} ~ {new Date(event.endsAt).toLocaleString()}
+                </p>
+                <p>
+                  남은 수량: {remaining} / {event.totalQty} (1인당 최대 {event.maxPerUser}매)
+                </p>
+                <p>티켓 가격: {event.price.toLocaleString()} 원</p>
+              </section>
+            )}
 
-          <form className="purchase-page__form" onSubmit={handleSubmit}>
-            <label className="purchase-page__label">
-              구매 수량
-              <input
-                className="purchase-page__input"
-                type="number"
-                min={1}
-                max={maxSelectable}
-                value={qty}
-                onChange={(eventInstance) => setQty(Number(eventInstance.target.value))}
-              />
-            </label>
+            <form className="purchase-page__form" onSubmit={handleSubmit}>
+              <label className="purchase-page__label">
+                구매 수량
+                <input
+                  className="purchase-page__input"
+                  type="number"
+                  min={1}
+                  max={maxSelectable}
+                  value={qty}
+                  onChange={(eventInstance) => setQty(Number(eventInstance.target.value))}
+                />
+              </label>
 
-            {error && <p className="purchase-page__error">{error}</p>}
+              {error && <p className="purchase-page__error">{error}</p>}
 
-            <button className="purchase-page__submit" type="submit" disabled={orderMutation.isPending}>
-              {orderMutation.isPending ? '주문 생성 중...' : '주문하기'}
-            </button>
-          </form>
-        </div>
-      </main>
-    </CenteredPage>
+              <button className="purchase-page__submit" type="submit" disabled={orderMutation.isPending}>
+                {orderMutation.isPending ? '주문 생성 중...' : '주문하기'}
+              </button>
+            </form>
+          </div>
+        </section>
+      </CenteredPage>
+    </AppLayout>
   )
 }

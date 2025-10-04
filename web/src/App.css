@@ -164,82 +164,64 @@ a {
   text-decoration: underline;
 }
 
-/* Landing Page - Full Width */
-.landing-page {
-  width: 100vw;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(to bottom, #0f172a, #1e293b);
-}
-
-.landing-page__header {
+/* Centered layout */
+.center-layout {
   width: 100%;
-  padding: 1.5rem 2rem;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+}
+
+.center-layout__inner {
+  width: min(960px, 100%);
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
 }
 
-.landing-page__brand {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: white;
-}
-
-.landing-page__nav {
+/* Landing Page */
+.landing-page {
+  width: min(1200px, 100%);
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.landing-page__user {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.875rem;
-}
-
-.landing-page__admin-btns {
+.landing-page__admin-actions {
   display: flex;
-  gap: 0.5rem;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-self: flex-end;
 }
 
 .landing-page__admin-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 0.75rem;
   border: none;
-  background: rgba(99, 102, 241, 0.2);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(14, 165, 233, 0.9));
   color: white;
   font-size: 0.875rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .landing-page__admin-btn:hover {
-  background: rgba(99, 102, 241, 0.3);
-}
-
-.landing-page__logout {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: transparent;
-  color: white;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.landing-page__logout:hover {
-  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -16px rgba(56, 189, 248, 0.8);
 }
 
 .landing-page__content {
   width: 100%;
-  padding: 2rem;
+  padding: 2.5rem;
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 1.75rem;
+  box-shadow: 0 30px 80px -50px rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .landing-page__welcome {
@@ -482,60 +464,11 @@ a {
   color: #1f2937;
 }
 
-.queue-page__event-text {
-  margin: 0;
-  font-size: 0.75rem;
-  color: #6b7280;
-}
-
-.queue-page__event-stock,
-.queue-page__event-limit {
-  margin: 0;
-  font-size: 0.875rem;
-  color: #475569;
-}
-
 .queue-page__event-price {
   margin: 0;
   font-size: 1.125rem;
   font-weight: 700;
   color: #6366f1;
-}
-
-.queue-page__status {
-  border-radius: 0.75rem;
-  background: #f8fafc;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.queue-page__status-title {
-  margin: 0;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.queue-page__status-text {
-  margin: 0;
-  font-size: 0.875rem;
-  color: #475569;
-}
-
-.queue-page__status-position {
-  margin: 0;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #6366f1;
-}
-
-.queue-page__status-token {
-  margin: 0;
-  font-size: 0.75rem;
-  color: #64748b;
-  word-break: break-all;
 }
 
 .queue-page__message {
@@ -695,27 +628,17 @@ a {
     padding: 2.5rem 2rem;
   }
 
-  .landing__container {
-    padding: 2.5rem 1.5rem;
+  .app-shell__content {
+    padding: 2rem 1rem 2.5rem;
+    gap: 2rem;
   }
 
-  .landing__nav {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
+  .landing-page__content {
+    padding: 2rem;
   }
 
-  .landing__links {
-    justify-content: center;
-  }
-
-  .landing__profile {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .landing__card {
-    padding: 2.5rem 1.8rem;
+  .landing-page__welcome h2 {
+    font-size: 1.5rem;
   }
 
   .admin-event__card {
@@ -728,19 +651,21 @@ a {
     padding: 2.25rem 1.5rem;
   }
 
-  .landing__card,
+  .landing-page__content,
   .admin-event__card {
-    padding: 2.2rem 1.5rem;
+    padding: 2rem 1.5rem;
   }
 
-  .landing__actions,
   .admin-event__actions {
     flex-direction: column;
   }
 }
 
 .queue-page {
-  width: min(560px, 100%);
+  width: min(600px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .queue-page__card {
@@ -754,7 +679,13 @@ a {
   gap: 1.8rem;
 }
 
-.queue-page__header h1 {
+.queue-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.queue-page__header h2 {
   margin: 0;
   font-size: 2rem;
   font-weight: 700;
@@ -846,10 +777,16 @@ a {
   gap: 0.5rem;
 }
 
-.queue-page__event h2 {
+.queue-page__event h3 {
   margin: 0;
   font-size: 1.2rem;
   font-weight: 600;
+}
+
+.queue-page__event p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #475569;
 }
 
 .queue-page__status {
@@ -861,10 +798,27 @@ a {
   gap: 0.75rem;
 }
 
-.queue-page__status h2 {
+.queue-page__status h3 {
   margin: 0;
   font-size: 1.2rem;
   font-weight: 600;
+}
+
+.queue-page__status p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.queue-page__status-position {
+  font-weight: 600;
+  color: #4f46e5;
+}
+
+.queue-page__status-token {
+  font-size: 0.8rem;
+  color: #64748b;
+  word-break: break-all;
 }
 
 .queue-page__ready {
@@ -1373,6 +1327,24 @@ a {
   }
 }
 
+/* Application Shell */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom, #0f172a, #1e293b);
+}
+
+.app-shell__content {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1.5rem 3.5rem;
+  gap: 2.5rem;
+}
+
 /* Shared Navigation */
 .app-nav {
   width: 100%;
@@ -1390,15 +1362,21 @@ a {
 }
 
 .app-nav__brand {
+  margin: 0;
+}
+
+.app-nav__brand-link {
   font-size: 1.5rem;
   font-weight: 700;
   color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
   cursor: pointer;
-  margin: 0;
   transition: opacity 0.2s;
 }
 
-.app-nav__brand:hover {
+.app-nav__brand-link:hover {
   opacity: 0.8;
 }
 
@@ -1419,14 +1397,17 @@ a {
 }
 
 .app-nav__admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-  border: none;
   background: rgba(99, 102, 241, 0.2);
   color: white;
   font-size: 0.875rem;
   cursor: pointer;
   transition: background 0.2s;
+  text-decoration: none;
 }
 
 .app-nav__admin-btn:hover {

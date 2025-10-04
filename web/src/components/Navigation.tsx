@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import type { UserRole } from '../store/auth'
 
 type NavigationProps = {
@@ -8,22 +8,22 @@ type NavigationProps = {
 }
 
 export const Navigation = ({ userId, role, onLogout }: NavigationProps) => {
-  const navigate = useNavigate()
-
   return (
     <header className="app-nav">
-      <h1 className="app-nav__brand" onClick={() => navigate('/')}>
-        Flash Tickets
+      <h1 className="app-nav__brand">
+        <Link to="/" className="app-nav__brand-link">
+          Flash Tickets
+        </Link>
       </h1>
       <nav className="app-nav__menu">
         {role === 'ADMIN' && (
           <div className="app-nav__admin-btns">
-            <button type="button" className="app-nav__admin-btn" onClick={() => navigate('/admin/events')}>
+            <Link to="/admin/events" className="app-nav__admin-btn">
               이벤트 관리
-            </button>
-            <button type="button" className="app-nav__admin-btn" onClick={() => navigate('/admin/events/new')}>
+            </Link>
+            <Link to="/admin/events/new" className="app-nav__admin-btn">
               이벤트 등록
-            </button>
+            </Link>
           </div>
         )}
         <span className="app-nav__user">@{userId}</span>

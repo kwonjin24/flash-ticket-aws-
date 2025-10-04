@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
+import { AppLayout } from '../components/AppLayout'
 import { CenteredPage } from '../components/CenteredPage'
 import { useQueueStore } from '../store/queue'
 import { useOrderStore } from '../store/order'
@@ -29,7 +30,7 @@ const mapEvent = (payload: {
   status: payload.status,
 })
 
-export const TicketPage = ({ onLogout }: { onLogout: () => void }) => {
+export const TicketPage = () => {
   const navigate = useNavigate()
   const eventId = useQueueStore((state) => state.eventId)
   const ticketId = useQueueStore((state) => state.ticketId)
@@ -96,65 +97,64 @@ export const TicketPage = ({ onLogout }: { onLogout: () => void }) => {
   const event = eventQuery.data
 
   return (
-    <CenteredPage>
-      <main className="ticket-page">
-        <div className="ticket-page__card">
-          <header className="ticket-page__header">
-            <h1>티켓 정보 확인</h1>
-            <p>이벤트 정보를 확인하고 구매를 진행하세요.</p>
-            <button className="ticket-page__logout" type="button" onClick={onLogout}>
-              로그아웃
-            </button>
-          </header>
+    <AppLayout>
+      <CenteredPage>
+        <section className="ticket-page">
+          <div className="ticket-page__card">
+            <header className="ticket-page__header">
+              <h1>티켓 정보 확인</h1>
+              <p>이벤트 정보를 확인하고 구매를 진행하세요.</p>
+            </header>
 
-          {enterMutation.isPending && <p className="ticket-page__status">대기열 입장 처리 중입니다...</p>}
-          {enterMutation.isError && <p className="ticket-page__status">게이트 토큰 검증에 실패했습니다. 처음부터 다시 시도해주세요.</p>}
-          {eventQuery.isLoading && <p className="ticket-page__status">이벤트 정보를 불러오는 중입니다...</p>}
-          {eventQuery.isError && <p className="ticket-page__status">이벤트 정보를 불러오지 못했습니다. 잠시 후 다시 시도하세요.</p>}
+            {enterMutation.isPending && <p className="ticket-page__status">대기열 입장 처리 중입니다...</p>}
+            {enterMutation.isError && <p className="ticket-page__status">게이트 토큰 검증에 실패했습니다. 처음부터 다시 시도해주세요.</p>}
+            {eventQuery.isLoading && <p className="ticket-page__status">이벤트 정보를 불러오는 중입니다...</p>}
+            {eventQuery.isError && <p className="ticket-page__status">이벤트 정보를 불러오지 못했습니다. 잠시 후 다시 시도하세요.</p>}
 
-          {event && (
-            <section className="ticket-page__details">
-              <dl>
-                <div>
-                  <dt>이벤트 이름</dt>
-                  <dd>{event.name}</dd>
-                </div>
-                <div>
-                  <dt>판매 기간</dt>
-                  <dd>
-                    {new Date(event.startsAt).toLocaleString()} ~ {new Date(event.endsAt).toLocaleString()}
-                  </dd>
-                </div>
-                <div>
-                  <dt>남은 수량</dt>
-                  <dd>
-                    {Math.max(event.totalQty - event.soldQty, 0)} / {event.totalQty}
-                  </dd>
-                </div>
-                <div>
-                  <dt>1인당 구매 제한</dt>
-                  <dd>{event.maxPerUser} 매</dd>
-                </div>
-                <div>
-                  <dt>티켓 가격</dt>
-                  <dd>{event.price.toLocaleString()} 원</dd>
-                </div>
-              </dl>
-            </section>
-          )}
+            {event && (
+              <section className="ticket-page__details">
+                <dl>
+                  <div>
+                    <dt>이벤트 이름</dt>
+                    <dd>{event.name}</dd>
+                  </div>
+                  <div>
+                    <dt>판매 기간</dt>
+                    <dd>
+                      {new Date(event.startsAt).toLocaleString()} ~ {new Date(event.endsAt).toLocaleString()}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>남은 수량</dt>
+                    <dd>
+                      {Math.max(event.totalQty - event.soldQty, 0)} / {event.totalQty}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>1인당 구매 제한</dt>
+                    <dd>{event.maxPerUser} 매</dd>
+                  </div>
+                  <div>
+                    <dt>티켓 가격</dt>
+                    <dd>{event.price.toLocaleString()} 원</dd>
+                  </div>
+                </dl>
+              </section>
+            )}
 
-          <footer className="ticket-page__footer">
-            <button
-              className="ticket-page__next"
-              type="button"
-              onClick={() => navigate('/purchase')}
-              disabled={enterMutation.isPending || eventQuery.isLoading || eventQuery.isError || !event}
-            >
-              구매 단계로 이동
-            </button>
-          </footer>
-        </div>
-      </main>
-    </CenteredPage>
+            <footer className="ticket-page__footer">
+              <button
+                className="ticket-page__next"
+                type="button"
+                onClick={() => navigate('/purchase')}
+                disabled={enterMutation.isPending || eventQuery.isLoading || eventQuery.isError || !event}
+              >
+                구매 단계로 이동
+              </button>
+            </footer>
+          </div>
+        </section>
+      </CenteredPage>
+    </AppLayout>
   )
 }
