@@ -67,17 +67,23 @@ export const ResultPage = () => {
     }
   }
 
-  const renderPaymentStatus = (status: PaymentStatus | null) => {
-    switch (status) {
-      case 'OK':
-        return '결제 완료'
-      case 'FAIL':
-        return '결제 실패'
-      case 'REQ':
-        return '결제 대기'
-      default:
-        return '확인 중'
+  const renderPaymentStatus = (status: PaymentStatus | null, orderState: OrderDetail['status']) => {
+    if (status === 'OK') {
+      return '결제 완료'
     }
+    if (status === 'FAIL') {
+      return '결제 실패'
+    }
+    if (orderState === 'PAID') {
+      return '결제 완료'
+    }
+    if (orderState === 'CANCELLED' || orderState === 'EXPIRED') {
+      return '결제 실패'
+    }
+    if (status === 'REQ') {
+      return '결제 대기'
+    }
+    return '확인 중'
   }
 
   return (
@@ -124,7 +130,7 @@ export const ResultPage = () => {
 
               <section className="result-screen__payment">
                 <h2>결제 상태</h2>
-                <p className="result-screen__payment-status">{renderPaymentStatus(paymentStatus)}</p>
+                <p className="result-screen__payment-status">{renderPaymentStatus(paymentStatus, order.status)}</p>
               </section>
             </section>
           )}

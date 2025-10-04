@@ -1724,6 +1724,17 @@ a {
   gap: 0.75rem;
 }
 
+.payment-screen__actions-row--support {
+  align-items: center;
+}
+
+.payment-screen__hint {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
 .payment-screen__button {
   border: none;
   border-radius: 0.9rem;
