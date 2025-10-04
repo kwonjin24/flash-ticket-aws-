@@ -2,15 +2,15 @@ import { config } from 'dotenv';
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { Event } from '../events/event.entity';
-import { Order } from '../orders/order.entity';
-import { User } from '../auth/user.entity';
+import { Event } from '../../domain/events/entities/event.entity';
+import { Order } from '../../domain/orders/entities/order.entity';
+import { User } from '../../domain/auth/entities/user.entity';
 
 const envCandidates = [
+  resolve(__dirname, '../../../../.env'),
   resolve(__dirname, '../../../.env'),
   resolve(__dirname, '../../.env'),
   resolve(__dirname, '../.env'),
-  resolve(__dirname, '.env'),
 ];
 
 for (const filePath of envCandidates) {

@@ -6,13 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Order } from '../orders/order.entity';
-
-export enum EventStatus {
-  DRAFT = 'DRAFT',
-  ONSALE = 'ONSALE',
-  CLOSED = 'CLOSED',
-}
+import { Order } from '../../orders/entities/order.entity';
+import { EventStatus } from '../enums/event-status.enum';
 
 @Entity({ name: 'events' })
 export class Event {

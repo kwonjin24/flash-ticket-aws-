@@ -3,12 +3,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './jwt-auth.guard';
-import { JwtRefreshStrategy } from './jwt-refresh.strategy';
-import { JwtStrategy } from './jwt.strategy';
-import { User } from './user.entity';
+import { AuthFacade } from '../../application/auth/facades/auth.facade';
+import { AuthService } from '../../application/auth/services/auth.service';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { User } from '../../domain/auth/entities/user.entity';
+import { JwtRefreshStrategy } from '../../infrastructure/auth/strategies/jwt-refresh.strategy';
+import { JwtStrategy } from '../../infrastructure/auth/strategies/jwt.strategy';
+import { AuthController } from './controllers/auth.controller';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { User } from './user.entity';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, JwtRefreshStrategy, JwtAuthGuard],
-  exports: [AuthService, JwtAuthGuard],
+  providers: [AuthService, AuthFacade, JwtStrategy, JwtRefreshStrategy, JwtAuthGuard],
+  exports: [AuthFacade, JwtAuthGuard],
 })
 export class AuthModule {}

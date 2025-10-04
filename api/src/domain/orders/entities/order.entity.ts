@@ -9,15 +9,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Event } from '../events/event.entity';
-import { User } from '../auth/user.entity';
-
-export enum OrderStatus {
-  HOLD = 'HOLD',
-  PAID = 'PAID',
-  CANCELLED = 'CANCELLED',
-  EXPIRED = 'EXPIRED',
-}
+import { Event } from '../../events/entities/event.entity';
+import { User } from '../../auth/entities/user.entity';
+import { OrderStatus } from '../enums/order-status.enum';
 
 @Index('idx_orders_event_status', ['eventId', 'status'])
 @Index('idx_orders_user_event', ['userId', 'eventId'])

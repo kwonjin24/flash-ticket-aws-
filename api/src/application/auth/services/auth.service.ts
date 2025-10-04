@@ -4,11 +4,11 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Repository } from 'typeorm';
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
-import { RefreshTokenRequestDto, TokenDto } from './dto/token.dto';
-import { JwtPayload } from './jwt-payload.interface';
-import { User } from './user.entity';
+import { LoginUserDto } from '../dto/login-user.dto';
+import { RegisterUserDto } from '../dto/register-user.dto';
+import { RefreshTokenDto, TokenDto } from '../dto/token.dto';
+import { JwtPayload } from '../../../infrastructure/auth/strategies/jwt-payload.interface';
+import { User } from '../../../domain/auth/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +19,7 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async register(dto: RegisterDto): Promise<void> {
+  async register(dto: RegisterUserDto): Promise<void> {
     const existing = await this.usersRepository.findOne({ where: { userId: dto.userId } });
     if (existing) {
       throw new ConflictException('User ID already registered');
@@ -35,7 +35,7 @@ export class AuthService {
     await this.usersRepository.save(user);
   }
 
-  async login(dto: LoginDto): Promise<TokenDto> {
+  async login(dto: LoginUserDto): Promise<TokenDto> {
     const user = await this.usersRepository.findOne({ where: { userId: dto.userId } });
 
     if (!user) {
@@ -50,7 +50,7 @@ export class AuthService {
     return this.issueTokenPair(user);
   }
 
-  async refreshAccessToken(dto: RefreshTokenRequestDto): Promise<TokenDto> {
+  async refreshAccessToken(dto: RefreshTokenDto): Promise<TokenDto> {
     try {
       const payload = await this.jwtService.verifyAsync<JwtPayload>(dto.refreshToken, {
         secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'),
@@ -68,7 +68,7 @@ export class AuthService {
     }
   }
 
-  async logout(dto: RefreshTokenRequestDto): Promise<void> {
+  async logout(dto: RefreshTokenDto): Promise<void> {
     try {
       await this.jwtService.verifyAsync<JwtPayload>(dto.refreshToken, {
         secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'),
