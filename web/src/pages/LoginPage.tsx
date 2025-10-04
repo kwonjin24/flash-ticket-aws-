@@ -77,7 +77,7 @@ export const LoginPage = ({ onLogin }: { onLogin: (credentials: LoginCredentials
         </form>
 
         <p className="auth-page__hint">
-          아직 계정이 없으신가요? <Link to="/register">회원가입하기</Link>
+          아직 계정이 없으신가요? <Link to="/auth/register">회원가입하기</Link>
         </p>
       </div>
     </main>

@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { AppLayout } from '../components/AppLayout'
 import { http } from '../api/http'
 import { useQueueStore } from '../store/queue'
 import { useAuthStore } from '../store/auth'
@@ -104,13 +103,12 @@ export const QueuePage = () => {
   const waitingAhead = typeof position === 'number' ? Math.max(position - 1, 0) : null
 
   return (
-    <AppLayout>
-      <section className="queue-page">
-        <div className="queue-page__card">
-          <header className="queue-page__header">
-            <h2>대기열 참여</h2>
-            <p>이벤트를 선택하고 실시간 현황을 확인하세요.</p>
-          </header>
+    <section className="queue-page">
+      <div className="queue-page__card">
+        <header className="queue-page__header">
+          <h2>대기열 참여</h2>
+          <p>이벤트를 선택하고 실시간 현황을 확인하세요.</p>
+        </header>
 
           {eventsQuery.isError && (
             <p className="queue-page__error">이벤트 목록을 불러올 수 없습니다. 잠시 후 다시 시도해주세요.</p>
@@ -185,8 +183,7 @@ export const QueuePage = () => {
               초기화
             </button>
           </footer>
-        </div>
-      </section>
-    </AppLayout>
+      </div>
+    </section>
   )
 }

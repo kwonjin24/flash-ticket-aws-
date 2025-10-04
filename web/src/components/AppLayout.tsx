@@ -1,16 +1,11 @@
-import type { ReactNode } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { Footer } from './Footer'
 import { Navigation } from './Navigation'
 import { useAuthStore } from '../store/auth'
 import { useOrderStore } from '../store/order'
 import { useQueueStore } from '../store/queue'
 
-interface AppLayoutProps {
-  children: ReactNode
-}
-
-export const AppLayout = ({ children }: AppLayoutProps) => {
+export const AppLayout = () => {
   const navigate = useNavigate()
   const userId = useAuthStore((state) => state.userId) ?? ''
   const role = useAuthStore((state) => state.role) ?? 'USER'
@@ -22,16 +17,22 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
     clearSession()
     resetQueue()
     resetOrder()
-    navigate('/login', { replace: true })
+    navigate('/auth/login', { replace: true })
   }
 
   return (
     <div className="app-shell">
-      <Navigation userId={userId} role={role} onLogout={handleLogout} />
-      <main className="site-main">
-        <div className="site-main__inner">{children}</div>
+      <header className="site-header fixed-header">
+        <Navigation userId={userId} role={role} onLogout={handleLogout} />
+      </header>
+      <main className="site-main site-main--with-offset">
+        <div className="site-main__inner">
+          <Outlet />
+        </div>
       </main>
-      <Footer />
+      <footer className="site-footer fixed-footer">
+        <Footer />
+      </footer>
     </div>
   )
 }

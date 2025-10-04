@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
-import { AppLayout } from '../components/AppLayout'
 import { CenteredPage } from '../components/CenteredPage'
 import { useQueueStore } from '../store/queue'
 import { useOrderStore } from '../store/order'
@@ -97,14 +96,13 @@ export const TicketPage = () => {
   const event = eventQuery.data
 
   return (
-    <AppLayout>
-      <CenteredPage>
-        <section className="ticket-page">
-          <div className="ticket-page__card">
-            <header className="ticket-page__header">
-              <h1>티켓 정보 확인</h1>
-              <p>이벤트 정보를 확인하고 구매를 진행하세요.</p>
-            </header>
+    <CenteredPage>
+      <section className="ticket-page">
+        <div className="ticket-page__card">
+          <header className="ticket-page__header">
+            <h1>티켓 정보 확인</h1>
+            <p>이벤트 정보를 확인하고 구매를 진행하세요.</p>
+          </header>
 
             {enterMutation.isPending && <p className="ticket-page__status">대기열 입장 처리 중입니다...</p>}
             {enterMutation.isError && <p className="ticket-page__status">게이트 토큰 검증에 실패했습니다. 처음부터 다시 시도해주세요.</p>}
@@ -152,9 +150,8 @@ export const TicketPage = () => {
                 구매 단계로 이동
               </button>
             </footer>
-          </div>
-        </section>
-      </CenteredPage>
-    </AppLayout>
+        </div>
+      </section>
+    </CenteredPage>
   )
 }

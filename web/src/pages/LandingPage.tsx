@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { AppLayout } from '../components/AppLayout'
 import { QueuePopup } from '../components/QueuePopup'
 import { http } from '../api/http'
 import { useAuthStore } from '../store/auth'
@@ -50,7 +49,7 @@ export const LandingPage = () => {
   }
 
   return (
-    <AppLayout>
+    <>
       <section className="landing-page">
         <div className="landing-page__content">
           <div className="landing-page__welcome">
@@ -104,6 +103,6 @@ export const LandingPage = () => {
       </section>
 
       {ticketId && selectedEvent && <QueuePopup event={selectedEvent} onClose={handleClosePopup} />}
-    </AppLayout>
+    </>
   )
 }

@@ -133,7 +133,7 @@ export const RegisterPage = ({ onRegister }: { onRegister: (credentials: Registe
         </form>
 
         <p className="auth-page__hint">
-          이미 계정이 있으신가요? <Link to="/login">로그인하기</Link>
+          이미 계정이 있으신가요? <Link to="/auth/login">로그인하기</Link>
         </p>
       </div>
     </main>

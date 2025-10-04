@@ -630,7 +630,8 @@ a {
   }
 
   .site-main {
-    padding-block: clamp(24px, 12vw, 40px);
+    --site-main-pad-top: clamp(24px, 12vw, 40px);
+    --site-main-pad-bottom: clamp(24px, 12vw, 40px);
   }
 
   .site-main__inner {

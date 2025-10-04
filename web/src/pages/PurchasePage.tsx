@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
-import { AppLayout } from '../components/AppLayout'
 import { CenteredPage } from '../components/CenteredPage'
 import { useQueueStore } from '../store/queue'
 import { useOrderStore } from '../store/order'
@@ -132,13 +131,12 @@ export const PurchasePage = () => {
   }
 
   return (
-    <AppLayout>
-      <CenteredPage>
-        <section className="purchase-page">
-          <div className="purchase-page__card">
-            <header className="purchase-page__header">
-              <h1>티켓 주문</h1>
-            </header>
+    <CenteredPage>
+      <section className="purchase-page">
+        <div className="purchase-page__card">
+          <header className="purchase-page__header">
+            <h1>티켓 주문</h1>
+          </header>
 
             {event && (
               <section className="purchase-page__event">
@@ -172,9 +170,8 @@ export const PurchasePage = () => {
                 {orderMutation.isPending ? '주문 생성 중...' : '주문하기'}
               </button>
             </form>
-          </div>
-        </section>
-      </CenteredPage>
-    </AppLayout>
+        </div>
+      </section>
+    </CenteredPage>
   )
 }

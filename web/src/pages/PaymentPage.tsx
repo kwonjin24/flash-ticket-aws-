@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
-import { AppLayout } from '../components/AppLayout'
 import { CenteredPage } from '../components/CenteredPage'
 import { useOrderStore } from '../store/order'
 
@@ -58,13 +57,12 @@ export const PaymentPage = () => {
   }
 
   return (
-    <AppLayout>
-      <CenteredPage>
-        <section className="payment-page">
-          <div className="payment-page__card">
-            <header className="payment-page__header">
-              <h1>결제 진행</h1>
-            </header>
+    <CenteredPage>
+      <section className="payment-page">
+        <div className="payment-page__card">
+          <header className="payment-page__header">
+            <h1>결제 진행</h1>
+          </header>
 
             <section className="payment-page__summary">
               {eventName && <p className="payment-page__event-name">{eventName}</p>}
@@ -107,9 +105,8 @@ export const PaymentPage = () => {
                 결제 실패 처리
               </button>
             </div>
-          </div>
-        </section>
-      </CenteredPage>
-    </AppLayout>
+        </div>
+      </section>
+    </CenteredPage>
   )
 }

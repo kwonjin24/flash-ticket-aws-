@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
-import { AppLayout } from '../components/AppLayout'
 import type { EventSummary } from './LandingPage'
 
 const formatDate = (date: string) => {
@@ -62,23 +61,22 @@ export const AdminEventsPage = () => {
   }
 
   return (
-    <AppLayout>
-      <section className="admin-events">
-        <div className="admin-events__container">
-          <header className="admin-events__header">
-            <div>
-              <h1>이벤트 관리</h1>
-              <p>모든 이벤트를 조회하고 수정/삭제할 수 있습니다.</p>
-            </div>
-            <div className="admin-events__actions">
-              <button type="button" className="admin-events__create" onClick={() => navigate('/admin/events/new')}>
-                새 이벤트 만들기
-              </button>
-              <button type="button" className="admin-events__back" onClick={() => navigate('/')}>
-                홈으로
-              </button>
-            </div>
-          </header>
+    <section className="admin-events">
+      <div className="admin-events__container">
+        <header className="admin-events__header">
+          <div>
+            <h1>이벤트 관리</h1>
+            <p>모든 이벤트를 조회하고 수정/삭제할 수 있습니다.</p>
+          </div>
+          <div className="admin-events__actions">
+            <button type="button" className="admin-events__create" onClick={() => navigate('/admin/events/new')}>
+              새 이벤트 만들기
+            </button>
+            <button type="button" className="admin-events__back" onClick={() => navigate('/')}> 
+              홈으로
+            </button>
+          </div>
+        </header>
 
           {eventsQuery.isLoading && <p className="admin-events__loading">이벤트를 불러오는 중...</p>}
           {eventsQuery.isError && <p className="admin-events__error">이벤트 목록을 불러올 수 없습니다.</p>}
@@ -140,8 +138,7 @@ export const AdminEventsPage = () => {
           ) : (
             !eventsQuery.isLoading && <p className="admin-events__empty">등록된 이벤트가 없습니다.</p>
           )}
-        </div>
-      </section>
-    </AppLayout>
+      </div>
+    </section>
   )
 }

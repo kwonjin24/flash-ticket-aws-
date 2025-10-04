@@ -3,7 +3,6 @@ import { useMemo, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/auth'
 import { http } from '../api/http'
-import { AppLayout } from '../components/AppLayout'
 import { CenteredPage } from '../components/CenteredPage'
 
 export const AdminEventPage = () => {
@@ -73,14 +72,13 @@ export const AdminEventPage = () => {
   }
 
   return (
-    <AppLayout>
-      <CenteredPage>
-        <section className="admin-event">
-          <div className="admin-event__card">
-            <header className="admin-event__header">
-              <h1>이벤트 생성</h1>
-              <p>판매 기간, 수량, 1인당 구매 한도를 설정해 이벤트를 등록하세요.</p>
-            </header>
+    <CenteredPage>
+      <section className="admin-event">
+        <div className="admin-event__card">
+          <header className="admin-event__header">
+            <h1>이벤트 생성</h1>
+            <p>판매 기간, 수량, 1인당 구매 한도를 설정해 이벤트를 등록하세요.</p>
+          </header>
 
             <form className="admin-event__form" onSubmit={handleSubmit}>
               <label className="admin-event__label">
@@ -162,9 +160,8 @@ export const AdminEventPage = () => {
                 </button>
               </div>
             </form>
-          </div>
-        </section>
-      </CenteredPage>
-    </AppLayout>
+        </div>
+      </section>
+    </CenteredPage>
   )
 }
