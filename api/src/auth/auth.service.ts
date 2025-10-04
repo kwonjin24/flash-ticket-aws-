@@ -1,0 +1,115 @@
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcryptjs';
+import { Repository } from 'typeorm';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
+import { RefreshTokenRequestDto, TokenDto } from './dto/token.dto';
+import { JwtPayload } from './jwt-payload.interface';
+import { User } from './user.entity';
+
+@Injectable()
+export class AuthService {
+  constructor(
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+  ) {}
+
+  async register(dto: RegisterDto): Promise<void> {
+    const existing = await this.usersRepository.findOne({ where: { userId: dto.userId } });
+    if (existing) {
+      throw new ConflictException('User ID already registered');
+    }
+
+    const passwordHash = await bcrypt.hash(dto.password, 10);
+
+    const user = this.usersRepository.create({
+      userId: dto.userId,
+      passwordHash,
+    });
+
+    await this.usersRepository.save(user);
+  }
+
+  async login(dto: LoginDto): Promise<TokenDto> {
+    const user = await this.usersRepository.findOne({ where: { userId: dto.userId } });
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const passwordValid = await bcrypt.compare(dto.password, user.passwordHash);
+    if (!passwordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    return this.issueTokenPair(user);
+  }
+
+  async refreshAccessToken(dto: RefreshTokenRequestDto): Promise<TokenDto> {
+    try {
+      const payload = await this.jwtService.verifyAsync<JwtPayload>(dto.refreshToken, {
+        secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'),
+      });
+
+      const user = await this.usersRepository.findOne({ where: { id: payload.sub } });
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      const accessToken = await this.signAccessToken(user);
+      return { accessToken };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+
+  async logout(dto: RefreshTokenRequestDto): Promise<void> {
+    try {
+      await this.jwtService.verifyAsync<JwtPayload>(dto.refreshToken, {
+        secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'),
+      });
+    } catch (error) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+
+  private async issueTokenPair(user: User): Promise<TokenDto> {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.signAccessToken(user),
+      this.signRefreshToken(user),
+    ]);
+
+    return { accessToken, refreshToken };
+  }
+
+  private async signAccessToken(user: User): Promise<string> {
+    const payload: JwtPayload = {
+      sub: user.id,
+      userId: user.userId,
+      role: user.role,
+    };
+
+    return this.jwtService.signAsync(payload, {
+      secret: this.configService.getOrThrow<string>('JWT_ACCESS_SECRET'),
+      expiresIn: this.configService.getOrThrow<string>('JWT_ACCESS_EXP'),
+    });
+  }
+
+  private async signRefreshToken(user: User): Promise<string> {
+    const payload: JwtPayload = {
+      sub: user.id,
+      userId: user.userId,
+      role: user.role,
+    };
+
+    return this.jwtService.signAsync(payload, {
+      secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'),
+      expiresIn: this.configService.getOrThrow<string>('JWT_REFRESH_EXP'),
+    });
+  }
+}
