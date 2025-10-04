@@ -11,7 +11,10 @@ import {
 } from '@nestjs/websockets';
 import type { Server, Socket } from 'socket.io';
 import { QueueFacade } from '../../../application/queue/services/queue.facade';
-import { QueueTicketService } from '../../../application/queue/services/queue-ticket.service';
+import {
+  QueueTicketService,
+  GLOBAL_QUEUE_EVENT_ID,
+} from '../../../application/queue/services/queue-ticket.service';
 
 const DEFAULT_REFRESH_INTERVAL_MS = 3000;
 
@@ -22,7 +25,7 @@ type ClientContext = {
 };
 
 type JoinQueuePayload = {
-  eventId: string;
+  eventId?: string;
   userId: string;
 };
 
@@ -72,9 +75,11 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() client: Socket,
     @MessageBody() payload: JoinQueuePayload,
   ): Promise<void> {
-    if (!payload?.eventId || !payload?.userId) {
+    const targetEventId = payload?.eventId?.trim() || GLOBAL_QUEUE_EVENT_ID;
+
+    if (!payload?.userId) {
       client.emit('queue:error', {
-        message: 'eventId and userId are required to join the queue.',
+        message: 'userId is required to join the queue.',
       });
       return;
     }
@@ -82,12 +87,12 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
     try {
       const { ticketId } = await this.queueFacade.enqueue(
         payload.userId,
-        payload.eventId,
+        targetEventId,
       );
       const context = this.upsertContext(client.id);
-      context.eventId = payload.eventId;
+      context.eventId = targetEventId;
       context.ticketId = ticketId;
-      client.join(payload.eventId);
+      client.join(targetEventId);
       await this.emitStatus(client, context);
       this.startTracking(client, context);
       client.emit('queue:joined', {

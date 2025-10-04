@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
+import { HTTPError } from 'ky'
 import { http } from '../api/http'
 import { CenteredPage } from '../components/CenteredPage'
 import { useOrderStore, type PaymentStatus } from '../store/order'
@@ -58,6 +59,29 @@ export const PaymentPage = () => {
       queryClient.invalidateQueries({ queryKey: ['payment-order-status', orderId] }).catch(() => {
         /* ignore */
       })
+    },
+    onError: async (error) => {
+      if (error instanceof HTTPError) {
+        const { status } = error.response
+        if (status === 400) {
+          try {
+            const data = await error.response.clone().json()
+            const messageText = Array.isArray(data?.message)
+              ? data.message.join(', ')
+              : typeof data?.message === 'string'
+                ? data.message
+                : ''
+            if (messageText.toLowerCase().includes('per-user limit')) {
+              redirectedRef.current = true
+              window.alert('개인 한도 초과로 주문이 제한되었습니다. 내 주문 페이지에서 주문 상태를 확인해주세요.')
+              navigate('/orders', { replace: true })
+              return
+            }
+          } catch {
+            // ignore JSON parse errors
+          }
+        }
+      }
     },
   })
 

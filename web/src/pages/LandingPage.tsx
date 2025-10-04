@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
 import { useAuthStore } from '../store/auth'
 import { useQueueStore } from '../store/queue'
+import { useOrderStore } from '../store/order'
 
 export type EventSummary = {
   id: string
@@ -51,12 +52,17 @@ const sortEvents = (events: EventSummary[]) => {
 export const LandingPage = () => {
   const navigate = useNavigate()
   const userId = useAuthStore((state) => state.userId) ?? ''
+  const clearSession = useAuthStore((state) => state.clear)
   const [filter, setFilter] = useState<FilterOption>('ALL')
   const queueState = useQueueStore((state) => state.state)
   const queuedEventId = useQueueStore((state) => state.eventId)
   const gateToken = useQueueStore((state) => state.gateToken)
+  const ticketId = useQueueStore((state) => state.ticketId)
   const queueStatusMessage = useQueueStore((state) => state.statusMessage)
   const queueError = useQueueStore((state) => state.error)
+  const setEventId = useQueueStore((state) => state.setEventId)
+  const resetQueue = useQueueStore((state) => state.reset)
+  const resetOrder = useOrderStore((state) => state.reset)
 
   const eventsQuery = useQuery({
     queryKey: ['events', 'public'],
@@ -86,23 +92,24 @@ export const LandingPage = () => {
     if (event.status !== 'ONSALE') {
       return
     }
-    if (!queuedEventId) {
-      window.alert('로그인 후 대기열을 먼저 통과해야 합니다.')
+    setEventId(event.id)
+    if (queueState === 'USED') {
+      clearSession()
+      resetQueue()
+      resetOrder()
+      window.alert('대기열 정보가 만료되었습니다. 다시 로그인해주세요.')
+      navigate('/auth/login', { replace: true })
       return
     }
-    if (queuedEventId !== event.id) {
-      window.alert('선택한 이벤트와 대기열 이벤트가 일치하지 않습니다. 다시 로그인하여 대기열을 초기화해주세요.')
+    if (queueState === 'READY' && gateToken && ticketId) {
+      navigate('/purchase', { replace: true })
       return
     }
-    if (!gateToken) {
-      window.alert('대기열 준비가 완료될 때까지 잠시만 기다려주세요.')
+    if (queueState === 'ORDER_PENDING' || queueState === 'ORDERED') {
+      navigate('/purchase', { replace: true })
       return
     }
-    if (queueState === 'READY' || queueState === 'ORDER_PENDING' || queueState === 'ORDERED') {
-      navigate('/ticket')
-    } else {
-      window.alert('대기열 준비가 완료될 때까지 잠시만 기다려주세요.')
-    }
+    window.alert('대기열 준비가 완료될 때까지 잠시만 기다려주세요.')
   }
 
   return (
@@ -148,24 +155,19 @@ export const LandingPage = () => {
           {filteredEvents.length > 0 ? (
             <div className="landing-page__events-grid">
               {filteredEvents.map((event) => {
-                const isSelectedEvent = queuedEventId === event.id
-                const canPurchase =
-                  isSelectedEvent &&
-                  gateToken &&
-                  (queueState === 'READY' || queueState === 'ORDER_PENDING' || queueState === 'ORDERED')
-                const buttonLabel = (() => {
-                  if (event.status !== 'ONSALE') {
-                    return '진행 예정'
-                  }
-                  if (canPurchase) {
-                    return '티켓 구매하기'
-                  }
-                  if (isSelectedEvent) {
-                    return '대기 중...'
-                  }
-                  return '다른 이벤트'
-                })()
-                const disabled = !canPurchase
+                const canContinue =
+                  (queueState === 'ORDER_PENDING' || queueState === 'ORDERED') &&
+                  queuedEventId === event.id
+                const canEnterNow =
+                  queueState === 'READY' && Boolean(gateToken && ticketId && queuedEventId === event.id)
+    const disabled = event.status !== 'ONSALE'
+
+                let buttonLabel = '티켓 구매하기'
+                if (event.status !== 'ONSALE') {
+                  buttonLabel = '진행 예정'
+                } else if (!canContinue && !canEnterNow && queueState !== 'READY') {
+                  buttonLabel = '티켓 구매하기'
+                }
 
                 return (
                   <article

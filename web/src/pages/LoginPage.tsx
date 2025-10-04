@@ -1,19 +1,22 @@
 import type { FormEvent } from 'react'
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import type { LoginCredentials } from '../types'
 import { INITIAL_LOGIN_FORM } from '../utils'
 import { LoginQueueModal } from '../components/LoginQueueModal'
-import { useQueueStore } from '../store/queue'
+import { useQueueStore, GLOBAL_QUEUE_EVENT_ID } from '../store/queue'
 import { useAuthStore } from '../store/auth'
 
 export const LoginPage = ({ onLogin }: { onLogin: (credentials: LoginCredentials) => Promise<void> }) => {
   const [form, setForm] = useState<LoginCredentials>(INITIAL_LOGIN_FORM)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
   const resetQueue = useQueueStore((state) => state.reset)
   const setPopupMode = useQueueStore((state) => state.setPopupMode)
   const setQueuedUserId = useQueueStore((state) => state.setQueuedUserId)
+  const joinQueue = useQueueStore((state) => state.joinQueue)
+  const queueState = useQueueStore((state) => state.state)
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -31,11 +34,13 @@ export const LoginPage = ({ onLogin }: { onLogin: (credentials: LoginCredentials
       await onLogin({ userId: trimmedUserId, password: form.password })
       resetQueue()
       const authState = useAuthStore.getState()
-      if (authState.userUuid) {
-        setQueuedUserId(authState.userUuid)
-      } else if (authState.userId) {
-        setQueuedUserId(authState.userId)
+      const identifier = authState.userUuid ?? authState.userId
+      if (!identifier) {
+        setError('사용자 정보를 확인할 수 없습니다.')
+        return
       }
+      setQueuedUserId(identifier)
+      joinQueue(GLOBAL_QUEUE_EVENT_ID, identifier)
       setPopupMode(true)
     } catch (submitError) {
       console.error(submitError)
@@ -44,6 +49,12 @@ export const LoginPage = ({ onLogin }: { onLogin: (credentials: LoginCredentials
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (queueState === 'READY' || queueState === 'ORDER_PENDING' || queueState === 'ORDERED') {
+      navigate('/', { replace: true })
+    }
+  }, [queueState, navigate])
 
   return (
     <main className="auth-page">

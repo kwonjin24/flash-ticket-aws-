@@ -17,6 +17,8 @@ const QUEUE_KEY = (eventId: string) => `queue:event:${eventId}:queue`;
 const READY_SET_KEY = (eventId: string) => `queue:event:${eventId}:ready`;
 const GATE_TOKEN_KEY = (gateToken: string) => `queue:ticket:${gateToken}`;
 
+export const GLOBAL_QUEUE_EVENT_ID = '__global__';
+
 const TICKET_STATE_FIELD = 'state';
 const TICKET_EVENT_FIELD = 'eventId';
 const TICKET_USER_FIELD = 'userId';
@@ -179,7 +181,10 @@ export class QueueTicketService {
         );
       }
 
-      if (ticket[TICKET_EVENT_FIELD] !== eventId) {
+      if (
+        ticket[TICKET_EVENT_FIELD] !== eventId &&
+        ticket[TICKET_EVENT_FIELD] !== GLOBAL_QUEUE_EVENT_ID
+      ) {
         throw new UnauthorizedException('Gate token does not match event');
       }
 

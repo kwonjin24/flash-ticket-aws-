@@ -3,6 +3,8 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import type { QueueStatus } from '../types'
 import { createQueueSocket, destroyQueueSocket, getQueueSocket } from '../api/queueSocket'
 
+export const GLOBAL_QUEUE_EVENT_ID = '__global__'
+
 type QueueState = {
   eventId: string | null
   ticketId: string | null
@@ -16,11 +18,12 @@ type QueueState = {
   error: string | null
   isJoining: boolean
   isPopupMode: boolean
-  joinQueue: (eventId: string, userId: string) => void
+  joinQueue: (eventId: string | null | undefined, userId: string) => void
   leaveQueue: () => void
   setState: (nextState: QueueStatus['state'] | null) => void
   setQueuedUserId: (userId: string | null) => void
   setPopupMode: (isPopup: boolean) => void
+  setEventId: (eventId: string | null) => void
   reset: () => void
 }
 
@@ -131,21 +134,21 @@ export const useQueueStore = create<QueueState>()(
       return {
         ...initialState,
         joinQueue: (eventId, userId) => {
-          const trimmedEventId = eventId.trim()
+          const targetEventId = (eventId ?? GLOBAL_QUEUE_EVENT_ID).trim() || GLOBAL_QUEUE_EVENT_ID
           const trimmedUserId = userId.trim()
-          if (!trimmedEventId || !trimmedUserId) {
-            set({ error: '이벤트와 사용자 ID를 모두 입력해주세요.' })
+          if (!trimmedUserId) {
+            set({ error: '사용자 ID를 확인해주세요.' })
             return
           }
           const socket = ensureSocket()
           set({
-            eventId: trimmedEventId,
+            eventId: targetEventId,
             queuedUserId: trimmedUserId,
             isJoining: true,
             statusMessage: '대기열에 등록 중입니다...',
             error: null,
           })
-          socket.emit('queue/join', { eventId: trimmedEventId, userId: trimmedUserId })
+          socket.emit('queue/join', { eventId: targetEventId, userId: trimmedUserId })
         },
         leaveQueue: () => {
           const socket = getQueueSocket()
@@ -166,6 +169,9 @@ export const useQueueStore = create<QueueState>()(
         },
         setPopupMode: (isPopup) => {
           set({ isPopupMode: isPopup })
+        },
+        setEventId: (eventId) => {
+          set({ eventId })
         },
         reset: () => {
           set({ ...initialState })
