@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
 import { CenteredPage } from '../components/CenteredPage'
@@ -35,8 +35,8 @@ export const PaymentPage = () => {
   const setPayment = useOrderStore((state) => state.setPayment)
   const setOrderStatus = useOrderStore((state) => state.setStatus)
 
-  const hasRequestedRef = useRef(false)
   const redirectedRef = useRef(false)
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     if (!orderId) {
@@ -55,7 +55,9 @@ export const PaymentPage = () => {
     },
     onSuccess: (data) => {
       setPayment({ paymentId: data.paymentId, status: data.status })
-      hasRequestedRef.current = true
+      queryClient.invalidateQueries({ queryKey: ['payment-order-status', orderId] }).catch(() => {
+        /* ignore */
+      })
     },
   })
 
@@ -67,13 +69,18 @@ export const PaymentPage = () => {
       }
       return http.get(`orders/${orderId}`).json<OrderDetail>()
     },
-    enabled: Boolean(orderId && (paymentId || hasRequestedRef.current)),
-    refetchInterval: (data) => {
+    enabled: Boolean(orderId),
+    refetchInterval: (query) => {
       if (!paymentId) {
         return false
       }
-      return data?.status === 'HOLD' ? 3000 : false
+      const status = query.state.data?.status
+      if (!status) {
+        return 3000
+      }
+      return status === 'HOLD' ? 1000 : false
     },
+    refetchIntervalInBackground: true,
   })
 
   if (!orderId || amount == null) {
@@ -162,7 +169,7 @@ export const PaymentPage = () => {
               <h1>결제 진행</h1>
               <p>주문을 확정하기 위해 결제를 완료해주세요.</p>
             </div>
-            <span className="payment-screen__badge">{formatOrderStatus(orderStatus)}</span>
+            <span className="payment-screen__badge">{formatOrderStatus(latestOrderStatus)}</span>
           </header>
 
           <div className="payment-screen__content">
