@@ -119,9 +119,8 @@ export class OrdersService {
   }
 
   async listOrdersForUser(user: User): Promise<Order[]> {
-    const where = user.role === UserRole.ADMIN ? {} : { userId: user.id };
     return this.ordersRepository.find({
-      where,
+      where: { userId: user.id },
       relations: ['event'],
       order: { createdAt: 'DESC' },
     });

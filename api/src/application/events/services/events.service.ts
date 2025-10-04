@@ -44,7 +44,6 @@ export class EventsService {
 
   async listPublicEvents(): Promise<Event[]> {
     return this.eventsRepository.find({
-      where: { status: EventStatus.ONSALE },
       order: { startsAt: 'ASC' },
     });
   }
