@@ -14,6 +14,7 @@ export class QueueController {
   @Post('enqueue')
   @UseGuards(JwtAuthGuard)
   async enqueue(@CurrentUser() user: User, @Body() dto: EnqueueRequestDto): Promise<{ ticketId: string }> {
+    console.log(`Enqueue request received: userId=${user.id}, eventId=${dto.eventId}`);
     return this.queueFacade.enqueue(user.id, dto.eventId);
   }
 
@@ -35,6 +36,7 @@ export class QueueController {
     @CurrentUser() user: User,
     @Body() dto: EnterQueueRequestDto,
   ): Promise<{ status: 'entered' }> {
+    console.log(`Enter request received: userId=${user.id}, ticketId=${dto.ticketId}, gateToken=${dto.gateToken}`);
     await this.queueFacade.enter(user.id, dto.ticketId, dto.gateToken);
     return { status: 'entered' };
   }

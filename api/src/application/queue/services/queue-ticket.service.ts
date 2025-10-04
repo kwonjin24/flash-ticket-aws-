@@ -15,7 +15,7 @@ const EVENTS_SET_KEY = 'queue:events';
 const TICKET_KEY = (ticketId: string) => `queue:ticket:${ticketId}`;
 const QUEUE_KEY = (eventId: string) => `queue:event:${eventId}:queue`;
 const READY_SET_KEY = (eventId: string) => `queue:event:${eventId}:ready`;
-const GATE_TOKEN_KEY = (gateToken: string) => `queue:gate:${gateToken}`;
+const GATE_TOKEN_KEY = (gateToken: string) => `queue:ticket:${gateToken}`;
 
 const TICKET_STATE_FIELD = 'state';
 const TICKET_EVENT_FIELD = 'eventId';
@@ -128,20 +128,25 @@ export class QueueTicketService {
   }
 
   async lockGateTokenForOrder(gateToken: string, userId: string, eventId: string): Promise<{ ticketId: string }> {
+    console.log(`redis query : ${GATE_TOKEN_KEY(gateToken)}`);
     const ticketId = await this.redis.get(GATE_TOKEN_KEY(gateToken));
+    console.log(`redis result : ${ticketId}`);
     if (!ticketId) {
       throw new UnauthorizedException('Gate token is invalid or expired');
     }
 
     const ticketKey = TICKET_KEY(ticketId);
+    console.log(`redis query : ${ticketKey}`);
 
     await this.redis.watch(ticketKey);
     try {
       const ticket = await this.redis.hgetall(ticketKey);
+      console.log(`redis result : ${JSON.stringify(ticket)}`);
       if (!ticket || Object.keys(ticket).length === 0) {
         throw new NotFoundException('Queue ticket not found');
       }
 
+      console.log(`Comparing userId ${ticket[TICKET_USER_FIELD]} with ${userId}`);
       if (ticket[TICKET_USER_FIELD] !== userId) {
         throw new UnauthorizedException('Gate token does not belong to this user');
       }
@@ -150,7 +155,7 @@ export class QueueTicketService {
         throw new UnauthorizedException('Gate token does not match event');
       }
 
-      if (ticket[TICKET_STATE_FIELD] !== 'USED') {
+      if (ticket[TICKET_STATE_FIELD] !== 'READY') {
         throw new UnauthorizedException('Gate token has not been entered yet');
       }
 

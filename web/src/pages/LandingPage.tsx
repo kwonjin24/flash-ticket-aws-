@@ -25,6 +25,7 @@ const formatDateRange = (startsAt: string, endsAt: string) => {
 
 export const LandingPage = () => {
   const userId = useAuthStore((state) => state.userId) ?? ''
+  const userUuid = useAuthStore((state) => state.userUuid)
   const [selectedEvent, setSelectedEvent] = useState<EventSummary | null>(null)
   const { joinQueue, ticketId } = useQueueStore()
 
@@ -41,7 +42,10 @@ export const LandingPage = () => {
 
   const handleEventClick = (event: EventSummary) => {
     setSelectedEvent(event)
-    joinQueue(event.id, userId)
+    if (!userUuid) {
+      return
+    }
+    joinQueue(event.id, userUuid)
   }
 
   const handleClosePopup = () => {

@@ -5,7 +5,7 @@ export const decodeToken = (token: string): DecodedPayload => {
   try {
     const payloadSegment = token.split('.')[1]
     if (!payloadSegment) {
-      return { userId: null, role: null }
+      return { userId: null, userUuid: null, role: null }
     }
     const padded = payloadSegment.replace(/-/g, '+').replace(/_/g, '/')
     const json = decodeURIComponent(
@@ -15,12 +15,15 @@ export const decodeToken = (token: string): DecodedPayload => {
         .join(''),
     )
     const payload = JSON.parse(json)
+    const userUuid = typeof payload.sub === 'string' ? payload.sub : null
+    const loginId = typeof payload.userId === 'string' ? payload.userId : null
     return {
-      userId: payload.userId ?? payload.sub ?? null,
+      userId: loginId,
+      userUuid,
       role: (payload.role as UserRole) ?? null,
     }
   } catch (error) {
     console.error('Failed to decode access token', error)
-    return { userId: null, role: null }
+    return { userId: null, userUuid: null, role: null }
   }
 }

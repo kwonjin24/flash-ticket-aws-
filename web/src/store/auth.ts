@@ -7,8 +7,15 @@ export type AuthState = {
   accessToken: string | null
   refreshToken: string | null
   userId: string | null
+  userUuid: string | null
   role: UserRole
-  setSession: (payload: { accessToken: string; refreshToken: string | null; userId: string; role: UserRole }) => void
+  setSession: (payload: {
+    accessToken: string
+    refreshToken: string | null
+    userId: string | null
+    userUuid: string
+    role: UserRole
+  }) => void
   clear: () => void
 }
 
@@ -18,10 +25,11 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       refreshToken: null,
       userId: null,
+      userUuid: null,
       role: null,
-      setSession: ({ accessToken, refreshToken, userId, role }) =>
-        set({ accessToken, refreshToken, userId, role }),
-      clear: () => set({ accessToken: null, refreshToken: null, userId: null, role: null }),
+      setSession: ({ accessToken, refreshToken, userId, userUuid, role }) =>
+        set({ accessToken, refreshToken, userId, userUuid, role }),
+      clear: () => set({ accessToken: null, refreshToken: null, userId: null, userUuid: null, role: null }),
     }),
     {
       name: 'flash-tickets-auth',
@@ -29,6 +37,7 @@ export const useAuthStore = create<AuthState>()(
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
         userId: state.userId,
+        userUuid: state.userUuid,
         role: state.role,
       }),
     },

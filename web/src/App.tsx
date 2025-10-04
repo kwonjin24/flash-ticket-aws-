@@ -34,7 +34,7 @@ type RequireGateProps = {
 const RequireGate = ({ children }: RequireGateProps) => {
   const gateToken = useQueueStore((state) => state.gateToken)
   const queueState = useQueueStore((state) => state.state)
-  if (!gateToken || queueState !== 'READY') {
+  if (!gateToken || (queueState !== 'READY' && queueState !== 'ORDER_PENDING')) {
     return <Navigate to="/" replace />
   }
   return <>{children}</>
@@ -42,10 +42,10 @@ const RequireGate = ({ children }: RequireGateProps) => {
 
 const RequireAuth = ({ children, allowRoles }: RequireAuthProps) => {
   const accessToken = useAuthStore((state) => state.accessToken)
-  const userId = useAuthStore((state) => state.userId)
+  const userUuid = useAuthStore((state) => state.userUuid)
   const role = useAuthStore((state) => state.role)
 
-  if (!accessToken || !userId) {
+  if (!accessToken || !userUuid) {
     return <Navigate to="/auth/login" replace />
   }
 
@@ -57,18 +57,19 @@ const RequireAuth = ({ children, allowRoles }: RequireAuthProps) => {
 }
 
 function App() {
-  const { accessToken, userId, setSession } = useAuthStore()
+  const { accessToken, userUuid, setSession } = useAuthStore()
 
   const login = async (credentials: LoginCredentials) => {
     const response = await http.post('auth/login', { json: credentials }).json<TokenDto>()
-    const { userId, role } = decodeToken(response.accessToken)
-    if (!userId) {
+    const { userId, userUuid, role } = decodeToken(response.accessToken)
+    if (!userUuid) {
       throw new Error('토큰에서 사용자 정보를 추출할 수 없습니다.')
     }
     setSession({
       accessToken: response.accessToken,
       refreshToken: response.refreshToken ?? null,
       userId,
+      userUuid,
       role,
     })
   }
@@ -86,7 +87,7 @@ function App() {
     await login({ userId: credentials.userId, password: credentials.password })
   }
 
-  const isAuthenticated = Boolean(accessToken && userId)
+  const isAuthenticated = Boolean(accessToken && userUuid)
 
   return (
     <Routes>

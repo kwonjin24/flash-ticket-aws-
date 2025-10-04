@@ -20,5 +20,6 @@ export type RegisterCredentials = {
 
 export type DecodedPayload = {
   userId: string | null
+  userUuid: string | null
   role: UserRole
 }

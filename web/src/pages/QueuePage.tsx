@@ -26,7 +26,7 @@ const formatDateRange = (startsAt: string, endsAt: string) => {
 export const QueuePage = () => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const userId = useAuthStore((state) => state.userId)
+  const userUuid = useAuthStore((state) => state.userUuid)
   const {
     eventId,
     ticketId,
@@ -84,10 +84,10 @@ export const QueuePage = () => {
   )
 
   const handleJoin = () => {
-    if (!selectedEventId || !userId) {
+    if (!selectedEventId || !userUuid) {
       return
     }
-    joinQueue(selectedEventId, userId)
+    joinQueue(selectedEventId, userUuid)
   }
 
   const handleLeave = () => {
@@ -136,7 +136,7 @@ export const QueuePage = () => {
                 className="queue-page__submit"
                 type="button"
                 onClick={handleJoin}
-                disabled={isJoining || !selectedEventId || !userId || Boolean(ticketId)}
+                disabled={isJoining || !selectedEventId || !userUuid || Boolean(ticketId)}
               >
                 {isJoining ? '등록 중...' : '대기열 등록'}
               </button>
