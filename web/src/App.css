@@ -183,7 +183,7 @@ a {
 /* Landing Page */
 .landing-page {
   width: 100%;
-  max-width: clamp(320px, 92vw, 1120px);
+  max-width: none;
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -208,7 +208,9 @@ a {
 
 .landing-page__content {
   width: 100%;
-  padding: 2.5rem;
+  max-width: none;
+  margin: 0;
+  padding: 2.5rem 0;
   background: rgba(15, 23, 42, 0.6);
   border-radius: 1.75rem;
   box-shadow: 0 30px 80px -50px rgba(15, 23, 42, 0.9);
@@ -217,6 +219,7 @@ a {
   flex-direction: column;
   gap: 2rem;
   color: rgba(255, 255, 255, 0.9);
+  box-sizing: border-box;
 }
 
 .landing-page__welcome {
@@ -254,7 +257,7 @@ a {
   color: #fca5a5;
 }
 
-.landing-page__events-title {
+.landing-page__section-title {
   margin: 0 0 1.5rem;
   font-size: 1.5rem;
   font-weight: 700;
@@ -264,10 +267,12 @@ a {
 
 .landing-page__events-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  width: 100%;
+  margin: 0;
+  justify-items: stretch;
+  justify-content: start;
 }
 
 .landing-page__event-card {
@@ -279,6 +284,7 @@ a {
   flex-direction: column;
   gap: 0.75rem;
   transition: transform 0.2s, box-shadow 0.2s;
+  min-width: min(320px, 100%);
 }
 
 .landing-page__event-card:hover {
@@ -632,7 +638,7 @@ a {
   }
 
   .landing-page__content {
-    padding: 2rem;
+    padding: 2rem 0;
   }
 
   .landing-page__welcome h2 {
@@ -649,7 +655,10 @@ a {
     padding: 2.25rem 1.5rem;
   }
 
-  .landing-page__content,
+  .landing-page__content {
+    padding: 2rem 0;
+  }
+
   .admin-event__card {
     padding: 2rem 1.5rem;
   }

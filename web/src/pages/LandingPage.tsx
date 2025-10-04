@@ -72,7 +72,7 @@ export const LandingPage = () => {
 
           {activeEvents.length > 0 ? (
             <div>
-              <h3 className="landing-page__events-title">진행 중인 이벤트</h3>
+              <h3 className="landing-page__section-title">진행 중인 이벤트</h3>
               <div className="landing-page__events-grid">
                 {activeEvents.map((event) => (
                   <article key={event.id} className="landing-page__event-card">
