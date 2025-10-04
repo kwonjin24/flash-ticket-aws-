@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
 import { AppLayout } from '../components/AppLayout'
 import { QueuePopup } from '../components/QueuePopup'
 import { http } from '../api/http'
@@ -26,9 +25,7 @@ const formatDateRange = (startsAt: string, endsAt: string) => {
 }
 
 export const LandingPage = () => {
-  const navigate = useNavigate()
   const userId = useAuthStore((state) => state.userId) ?? ''
-  const role = useAuthStore((state) => state.role) ?? 'USER'
   const [selectedEvent, setSelectedEvent] = useState<EventSummary | null>(null)
   const { joinQueue, ticketId } = useQueueStore()
 
@@ -55,17 +52,6 @@ export const LandingPage = () => {
   return (
     <AppLayout>
       <section className="landing-page">
-        {role === 'ADMIN' && (
-          <div className="landing-page__admin-actions">
-            <button type="button" className="landing-page__admin-btn" onClick={() => navigate('/admin/events')}>
-              이벤트 관리
-            </button>
-            <button type="button" className="landing-page__admin-btn" onClick={() => navigate('/admin/events/new')}>
-              이벤트 등록
-            </button>
-          </div>
-        )}
-
         <div className="landing-page__content">
           <div className="landing-page__welcome">
             <h2>환영합니다, {userId}님!</h2>

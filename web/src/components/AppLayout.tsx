@@ -28,8 +28,8 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <div className="app-shell">
       <Navigation userId={userId} role={role} onLogout={handleLogout} />
-      <main className="app-shell__content">
-        <div className="app-shell__inner">{children}</div>
+      <main className="site-main">
+        <div className="site-main__inner">{children}</div>
       </main>
       <Footer />
     </div>
