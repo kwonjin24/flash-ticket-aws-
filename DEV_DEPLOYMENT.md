@@ -46,17 +46,17 @@ mkdir -p /data/docker/deploy
 cd /data/docker/deploy
 
 # 파일 무결성 확인 (선택사항)
-file flash-tickets-dev-images.tar.gz
-ls -lh flash-tickets-dev-images.tar.gz
+file /data/docker/deploy/flash-tickets-dev-images.tar.gz
+ls -lh /data/docker/deploy/flash-tickets-dev-images.tar.gz
 
 # flash-tickets-dev-images.tar.gz를 gunzip으로 압축 해제
 # FTP 전송 시 바이너리 모드를 사용했는지 확인 필요
-gunzip -c flash-tickets-dev-images.tar.gz > flash-tickets-dev-images.tar
+gunzip -c /data/docker/deploy/flash-tickets-dev-images.tar.gz > /data/docker/deploy/flash-tickets-dev-images.tar
 
 # 압축 해제된 파일 확인
-file flash-tickets-dev-images.tar
+file /data/docker/deploy/flash-tickets-dev-images.tar
 
-mkdir -p /data/docker/deploy/web-dist && tar -xzf web-dist.tar.gz -C /data/docker/deploy/web-dist
+mkdir -p /data/docker/deploy/web-dist && tar -xzf /data/docker/deploy/web-dist.tar.gz -C /data/docker/deploy/web-dist
 
 # 2) Docker 이미지 로드
 # gunzip으로 압축 해제한 tar 파일을 직접 로드
