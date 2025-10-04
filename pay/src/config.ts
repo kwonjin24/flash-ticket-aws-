@@ -1,4 +1,25 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import path from 'node:path';
+
+const loadEnvironment = () => {
+  const env = process.env.NODE_ENV ?? 'local';
+  const candidates = [
+    `.env.${env}.local`,
+    `.env.${env}`,
+    '.env.local',
+    '.env',
+  ];
+  const cwd = process.cwd();
+  const root = path.resolve(cwd, '..');
+  for (const base of candidates) {
+    const paths = [path.resolve(root, base), path.resolve(cwd, base)];
+    for (const filePath of paths) {
+      dotenv.config({ path: filePath, override: false });
+    }
+  }
+};
+
+loadEnvironment();
 
 export type PaymentMockConfig = {
   amqpUrl: string;

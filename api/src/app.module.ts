@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'node:path';
 import { User } from './domain/auth/entities/user.entity';
 import { Event } from './domain/events/entities/event.entity';
 import { Order } from './domain/orders/entities/order.entity';
@@ -15,7 +16,23 @@ import { PaymentsModule } from './presentation/payments/payments.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['../.env', '.env'],
+      envFilePath: (() => {
+        const env = process.env.NODE_ENV ?? 'local';
+        const candidates = [
+          `.env.${env}.local`,
+          `.env.${env}`,
+          '.env.local',
+          '.env',
+        ];
+        const apiDir = __dirname;
+        const rootDir = join(__dirname, '..');
+        const resolved = new Set<string>();
+        for (const base of candidates) {
+          resolved.add(join(rootDir, base));
+          resolved.add(join(apiDir, base));
+        }
+        return Array.from(resolved);
+      })(),
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

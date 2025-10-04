@@ -76,14 +76,22 @@ docker run -d \
 
 ## 6. 환경 변수 설정
 
-루트 `.env.example`과 `pay/.env.example`을 복사해 적용합니다.
+운영 단계에 따라 `.env.<environment>` 파일을 사용합니다. 기본 분류는 아래와 같습니다.
+
+| 환경 | 설명 | 기본파일 |
+| --- | --- | --- |
+| local | 로컬 개발용 | `.env.local` |
+| dev | 사내/스테이징 환경 | `.env.dev` |
+| prod | 실제 운영 | `.env.prod` |
+
+`NODE_ENV` 값을 `local`, `dev`, `prod` 중 하나로 지정하면 해당 파일이 우선 로드됩니다. 예를 들어 로컬 개발 시에는 다음처럼 실행합니다.
 
 ```bash
-cp .env.example .env
-cp pay/.env.example pay/.env
+export NODE_ENV=local
+pnpm dev
 ```
 
-필요 시 RabbitMQ/Redis/PostgreSQL 주소를 수정합니다.
+새 환경을 추가하거나 값이 다른 경우, 각 `.env.<environment>` 파일을 복사해 맞춤 설정을 입력하세요. 프런트(웹)와 모의 결제 서버(pay)도 동일한 규칙을 따릅니다.
 
 ## 7. 애플리케이션 실행
 
