@@ -4,10 +4,13 @@ import { http } from './api/http'
 import { useAuthStore } from './store/auth'
 import { useQueueStore } from './store/queue'
 import { useOrderStore } from './store/order'
-import type { LoginCredentials, RegisterCredentials, TokenDto, UserRole } from './types'
+import type { LoginCredentials, RegisterCredentials, TokenDto } from './types'
 import { decodeToken } from './utils'
 import {
   AdminEventPage,
+  AdminEventsPage,
+  AdminEventEditPage,
+  LandingPage,
   LoginPage,
   QueuePage,
   RegisterPage,
@@ -20,7 +23,7 @@ import './App.css'
 
 type RequireAuthProps = {
   children: ReactNode
-  allowRoles?: UserRole[]
+  allowRoles?: ('ADMIN' | 'USER')[]
 }
 
 type RequireGateProps = {
@@ -40,18 +43,20 @@ const RequireAuth = ({ children, allowRoles }: RequireAuthProps) => {
   const accessToken = useAuthStore((state) => state.accessToken)
   const userId = useAuthStore((state) => state.userId)
   const role = useAuthStore((state) => state.role)
+
   if (!accessToken || !userId) {
     return <Navigate to="/login" replace />
   }
+
   if (allowRoles && (!role || !allowRoles.includes(role))) {
-    return <Navigate to="/purchase" replace />
+    return <Navigate to="/" replace />
   }
+
   return <>{children}</>
 }
 
 function App() {
-  const setSession = useAuthStore((state) => state.setSession)
-  const clearSession = useAuthStore((state) => state.clear)
+  const { accessToken, userId, role, setSession, clear: clearSession } = useAuthStore()
   const resetQueue = useQueueStore((state) => state.reset)
   const resetOrder = useOrderStore((state) => state.reset)
 
@@ -88,33 +93,44 @@ function App() {
     resetOrder()
   }
 
+  const isAuthenticated = Boolean(accessToken && userId)
+
   return (
     <Routes>
-      <Route path="/" element={<QueuePage />} />
+      <Route path="/login" element={<LoginPage onLogin={login} />} />
+      <Route path="/register" element={<RegisterPage onRegister={register} />} />
+
       <Route
-        path="/login"
+        path="/"
         element={
-          <RequireGate>
-            <LoginPage onLogin={login} />
-          </RequireGate>
+          isAuthenticated && userId ? (
+            <LandingPage userId={userId} role={role} onLogout={logout} />
+          ) : (
+            <Navigate to="/login" replace />
+          )
         }
       />
+
       <Route
-        path="/register"
+        path="/queue"
         element={
-          <RequireGate>
-            <RegisterPage onRegister={register} />
-          </RequireGate>
+          <RequireAuth>
+            <QueuePage />
+          </RequireAuth>
         }
       />
+
       <Route
         path="/ticket"
         element={
           <RequireAuth>
-            <TicketPage onLogout={logout} />
+            <RequireGate>
+              <TicketPage onLogout={logout} />
+            </RequireGate>
           </RequireAuth>
         }
       />
+
       <Route
         path="/purchase"
         element={
@@ -123,6 +139,7 @@ function App() {
           </RequireAuth>
         }
       />
+
       <Route
         path="/payment"
         element={
@@ -131,6 +148,7 @@ function App() {
           </RequireAuth>
         }
       />
+
       <Route
         path="/result/:orderId"
         element={
@@ -139,6 +157,16 @@ function App() {
           </RequireAuth>
         }
       />
+
+      <Route
+        path="/admin/events"
+        element={
+          <RequireAuth allowRoles={['ADMIN']}>
+            <AdminEventsPage />
+          </RequireAuth>
+        }
+      />
+
       <Route
         path="/admin/events/new"
         element={
@@ -147,7 +175,17 @@ function App() {
           </RequireAuth>
         }
       />
-      <Route path="*" element={<Navigate to="/" replace />} />
+
+      <Route
+        path="/admin/events/:eventId/edit"
+        element={
+          <RequireAuth allowRoles={['ADMIN']}>
+            <AdminEventEditPage />
+          </RequireAuth>
+        }
+      />
+
+      <Route path="*" element={<Navigate to={isAuthenticated ? '/' : '/login'} replace />} />
     </Routes>
   )
 }

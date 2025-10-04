@@ -1,4 +1,7 @@
 export * from './AdminEventPage'
+export * from './AdminEventsPage'
+export * from './AdminEventEditPage'
+export * from './LandingPage'
 export * from './LoginPage'
 export * from './QueuePage'
 export * from './RegisterPage'

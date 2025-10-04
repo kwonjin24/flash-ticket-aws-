@@ -15,14 +15,16 @@ type QueueState = {
   statusMessage: string | null
   error: string | null
   isJoining: boolean
+  isPopupMode: boolean
   joinQueue: (eventId: string, userId: string) => void
   leaveQueue: () => void
   setState: (nextState: QueueStatus['state'] | null) => void
   setQueuedUserId: (userId: string | null) => void
+  setPopupMode: (isPopup: boolean) => void
   reset: () => void
 }
 
-const initialState: Omit<QueueState, 'joinQueue' | 'leaveQueue' | 'setState' | 'setQueuedUserId' | 'reset'> = {
+const initialState: Omit<QueueState, 'joinQueue' | 'leaveQueue' | 'setState' | 'setQueuedUserId' | 'setPopupMode' | 'reset'> = {
   eventId: null,
   ticketId: null,
   gateToken: null,
@@ -34,6 +36,7 @@ const initialState: Omit<QueueState, 'joinQueue' | 'leaveQueue' | 'setState' | '
   statusMessage: null,
   error: null,
   isJoining: false,
+  isPopupMode: false,
 }
 
 const buildStatusMessage = (state: QueueStatus['state'] | null, position?: number | null) => {
@@ -160,6 +163,9 @@ export const useQueueStore = create<QueueState>()(
         },
         setQueuedUserId: (userId) => {
           set({ queuedUserId: userId })
+        },
+        setPopupMode: (isPopup) => {
+          set({ isPopupMode: isPopup })
         },
         reset: () => {
           set({ ...initialState })

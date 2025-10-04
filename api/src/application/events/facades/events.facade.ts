@@ -20,7 +20,15 @@ export class EventsFacade {
     return this.eventsService.listPublicEvents();
   }
 
+  findAll(): Promise<Event[]> {
+    return this.eventsService.listAllEvents();
+  }
+
   update(id: string, dto: UpdateEventDto): Promise<Event> {
     return this.eventsService.patchEvent(id, dto);
+  }
+
+  delete(id: string): Promise<void> {
+    return this.eventsService.deleteEvent(id);
   }
 }

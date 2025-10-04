@@ -19,7 +19,10 @@ export class OrdersService {
   ) {}
 
   async createOrder(dto: CreateOrderDto): Promise<Order> {
-    const existingOrder = await this.ordersRepository.findOne({ where: { idemKey: dto.idempotencyKey } });
+    const existingOrder = await this.ordersRepository.findOne({
+      where: { idemKey: dto.idempotencyKey },
+      relations: ['event'],
+    });
     if (existingOrder) {
       return existingOrder;
     }
@@ -61,7 +64,15 @@ export class OrdersService {
           idemKey: dto.idempotencyKey,
         });
 
-        return manager.getRepository(Order).save(orderEntity);
+        const savedOrder = await manager.getRepository(Order).save(orderEntity);
+        const orderWithEvent = await manager.getRepository(Order).findOne({
+          where: { id: savedOrder.id },
+          relations: ['event'],
+        });
+        if (!orderWithEvent) {
+          throw new Error('Order not found after creation');
+        }
+        return orderWithEvent;
       });
 
       await this.gateTokenService.markOrderSuccess(ticketId, dto.gateToken, order.id);

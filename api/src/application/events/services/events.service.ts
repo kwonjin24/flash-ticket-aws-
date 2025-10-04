@@ -45,6 +45,17 @@ export class EventsService {
     });
   }
 
+  async listAllEvents(): Promise<Event[]> {
+    return this.eventsRepository.find({
+      order: { createdAt: 'DESC' },
+    });
+  }
+
+  async deleteEvent(id: string): Promise<void> {
+    const event = await this.getEventById(id);
+    await this.eventsRepository.remove(event);
+  }
+
   async patchEvent(id: string, dto: UpdateEventDto): Promise<Event> {
     const event = await this.getEventById(id);
 

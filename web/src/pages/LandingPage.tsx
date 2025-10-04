@@ -1,51 +1,127 @@
-import { Link } from 'react-router-dom'
+import { useMemo, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
+import { http } from '../api/http'
 import type { UserRole } from '../store/auth'
+import { useQueueStore } from '../store/queue'
+import { QueuePopup } from '../components/QueuePopup'
 
-export const LandingPage = ({ userId, role, onLogout }: { userId: string; role: UserRole; onLogout: () => void }) => (
-  <div className="landing">
-    <div className="landing__container">
-      <header className="landing__nav">
-        <div className="landing__brand">Flash Tickets</div>
-        <nav className="landing__links" aria-label="메뉴">
-          <Link className="landing__nav-btn link" to="/queue">
-            대기열
-          </Link>
-          <button type="button" className="landing__nav-btn" disabled>
-            주문내역
-          </button>
-        </nav>
-        <div className="landing__profile">
+export type EventSummary = {
+  id: string
+  name: string
+  startsAt: string
+  endsAt: string
+  totalQty: number
+  soldQty: number
+  maxPerUser: number
+  price: number
+  status: string
+}
+
+const formatDateRange = (startsAt: string, endsAt: string) => {
+  const start = new Date(startsAt)
+  const end = new Date(endsAt)
+  return `${start.toLocaleString('ko-KR')} ~ ${end.toLocaleString('ko-KR')}`
+}
+
+export const LandingPage = ({ userId, role, onLogout }: { userId: string; role: UserRole; onLogout: () => void }) => {
+  const navigate = useNavigate()
+  const [selectedEvent, setSelectedEvent] = useState<EventSummary | null>(null)
+  const { joinQueue, ticketId } = useQueueStore()
+
+  const eventsQuery = useQuery({
+    queryKey: ['events', 'public'],
+    queryFn: async (): Promise<EventSummary[]> => {
+      const response = await http.get('events')
+      return (await response.json()) as EventSummary[]
+    },
+  })
+
+  const events = eventsQuery.data ?? []
+  const activeEvents = useMemo(() => events.filter((e) => e.status === 'ONSALE'), [events])
+
+  const handleEventClick = (event: EventSummary) => {
+    setSelectedEvent(event)
+    joinQueue(event.id, userId)
+  }
+
+  const handleClosePopup = () => {
+    setSelectedEvent(null)
+  }
+
+  return (
+    <main className="landing-page">
+      <header className="landing-page__header">
+        <h1 className="landing-page__brand">Flash Tickets</h1>
+        <nav className="landing-page__nav">
           {role === 'ADMIN' && (
-            <Link className="landing__admin-link" to="/admin/events/new">
-              이벤트 등록하기
-            </Link>
+            <div className="landing-page__admin-btns">
+              <button type="button" className="landing-page__admin-btn" onClick={() => navigate('/admin/events')}>
+                이벤트 관리
+              </button>
+              <button type="button" className="landing-page__admin-btn" onClick={() => navigate('/admin/events/new')}>
+                이벤트 등록
+              </button>
+            </div>
           )}
-          <span className="landing__user">@{userId}</span>
-          <button type="button" className="landing__logout" onClick={onLogout}>
+          <span className="landing-page__user">@{userId}</span>
+          <button type="button" className="landing-page__logout" onClick={onLogout}>
             로그아웃
           </button>
-        </div>
+        </nav>
       </header>
 
-      <main className="landing__main">
-        <section className="landing__card">
+      <div className="landing-page__content">
+        <div className="landing-page__welcome">
           <h2>환영합니다, {userId}님!</h2>
-          <p>
-            Flash Tickets 대기열에 합류하고, 원하는 이벤트를 누구보다 빠르게 예약하세요. 실시간 게이트 토큰, 안전한
-            주문 처리, 결제 플로우가 곧 준비될 예정입니다.
-          </p>
-          <div className="landing__actions">
-            <Link className="landing__primary link" to="/queue">
-              대기열 참여하기
-            </Link>
-            <button type="button" className="landing__secondary" disabled>
-              내 주문 확인 (준비 중)
-            </button>
-          </div>
-        </section>
-      </main>
+          <p>원하는 이벤트를 선택하고 대기열에 참여하세요.</p>
+        </div>
 
-      <footer className="landing__footer">© {new Date().getFullYear()} Flash Tickets. All rights reserved.</footer>
-    </div>
-  </div>
-)
+        {eventsQuery.isLoading && (
+          <div className="landing-page__loading">
+            <p>이벤트를 불러오는 중...</p>
+          </div>
+        )}
+
+        {eventsQuery.isError && (
+          <div className="landing-page__error">
+            <p>이벤트 목록을 불러올 수 없습니다.</p>
+          </div>
+        )}
+
+        {activeEvents.length > 0 ? (
+          <div>
+            <h3 className="landing-page__events-title">진행 중인 이벤트</h3>
+            <div className="landing-page__events-grid">
+              {activeEvents.map((event) => (
+                <article key={event.id} className="landing-page__event-card">
+                  <h4 className="landing-page__event-title">{event.name}</h4>
+                  <p className="landing-page__event-date">{formatDateRange(event.startsAt, event.endsAt)}</p>
+                  <p className="landing-page__event-stock">
+                    재고: {Math.max(event.totalQty - event.soldQty, 0)} / {event.totalQty}
+                  </p>
+                  <p className="landing-page__event-price">{event.price.toLocaleString()} 원</p>
+                  <button
+                    type="button"
+                    className="landing-page__event-btn"
+                    onClick={() => handleEventClick(event)}
+                  >
+                    대기열 참여하기
+                  </button>
+                </article>
+              ))}
+            </div>
+          </div>
+        ) : (
+          !eventsQuery.isLoading && (
+            <div className="landing-page__no-events">
+              <p>현재 진행 중인 이벤트가 없습니다.</p>
+            </div>
+          )
+        )}
+      </div>
+
+      {ticketId && selectedEvent && <QueuePopup event={selectedEvent} onClose={handleClosePopup} />}
+    </main>
+  )
+}

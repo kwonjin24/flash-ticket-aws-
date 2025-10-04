@@ -11,7 +11,17 @@ type OrderState = {
   status: OrderStatus | null
   paymentId: string | null
   paymentStatus: PaymentStatus | null
-  setOrder: (payload: { orderId: string; amount: number; status: OrderStatus }) => void
+  qty: number | null
+  eventId: string | null
+  eventName: string | null
+  setOrder: (payload: {
+    orderId: string
+    amount: number
+    status: OrderStatus
+    qty?: number
+    eventId?: string
+    eventName?: string
+  }) => void
   setStatus: (status: OrderStatus) => void
   setPayment: (payload: { paymentId: string; status: PaymentStatus }) => void
   reset: () => void
@@ -23,13 +33,17 @@ const initialState = {
   status: null,
   paymentId: null,
   paymentStatus: null,
+  qty: null,
+  eventId: null,
+  eventName: null,
 }
 
 export const useOrderStore = create<OrderState>()(
   persist(
     (set) => ({
       ...initialState,
-      setOrder: ({ orderId, amount, status }) => set({ orderId, amount, status }),
+      setOrder: ({ orderId, amount, status, qty, eventId, eventName }) =>
+        set({ orderId, amount, status, qty, eventId, eventName }),
       setStatus: (status) => set({ status }),
       setPayment: ({ paymentId, status }) => set({ paymentId, paymentStatus: status }),
       reset: () => set(initialState),
@@ -43,6 +57,9 @@ export const useOrderStore = create<OrderState>()(
         status: state.status,
         paymentId: state.paymentId,
         paymentStatus: state.paymentStatus,
+        qty: state.qty,
+        eventId: state.eventId,
+        eventName: state.eventName,
       }),
     },
   ),

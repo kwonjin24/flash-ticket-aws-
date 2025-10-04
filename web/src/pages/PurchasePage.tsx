@@ -11,21 +11,21 @@ import type { Event } from '../types'
 const mapEvent = (payload: {
   id: string
   name: string
-  starts_at: string
-  ends_at: string
-  total_qty: number
-  sold_qty: number
-  max_per_user: number
+  startsAt: string
+  endsAt: string
+  totalQty: number
+  soldQty: number
+  maxPerUser: number
   price: number
   status: Event['status']
 }): Event => ({
   id: payload.id,
   name: payload.name,
-  startsAt: payload.starts_at,
-  endsAt: payload.ends_at,
-  totalQty: payload.total_qty,
-  soldQty: payload.sold_qty,
-  maxPerUser: payload.max_per_user,
+  startsAt: payload.startsAt,
+  endsAt: payload.endsAt,
+  totalQty: payload.totalQty,
+  soldQty: payload.soldQty,
+  maxPerUser: payload.maxPerUser,
   price: payload.price,
   status: payload.status,
 })
@@ -58,11 +58,11 @@ export const PurchasePage = ({ onLogout }: { onLogout: () => void }) => {
       const result = await http.get(`events/${eventId}`).json<{
         id: string
         name: string
-        starts_at: string
-        ends_at: string
-        total_qty: number
-        sold_qty: number
-        max_per_user: number
+        startsAt: string
+        endsAt: string
+        totalQty: number
+        soldQty: number
+        maxPerUser: number
         price: number
         status: Event['status']
       }>()
@@ -75,16 +75,30 @@ export const PurchasePage = ({ onLogout }: { onLogout: () => void }) => {
     mutationFn: async (payload: { eventId: string; qty: number }) => {
       const idemKey = generateIdempotencyKey()
       const response = await http.post('orders', {
-        json: payload,
+        json: { event_id: payload.eventId, qty: payload.qty },
         headers: {
           'Idempotency-Key': idemKey,
           'X-Gate-Token': gateToken ?? '',
         },
       })
-      return (await response.json()) as { orderId: string; status: 'HOLD'; amount: number }
+      return (await response.json()) as {
+        orderId: string
+        status: 'HOLD'
+        amount: number
+        qty: number
+        eventId: string
+        eventName?: string
+      }
     },
     onSuccess: (data) => {
-      setOrder({ orderId: data.orderId, amount: data.amount, status: data.status })
+      setOrder({
+        orderId: data.orderId,
+        amount: data.amount,
+        status: data.status,
+        qty: data.qty,
+        eventId: data.eventId,
+        eventName: data.eventName,
+      })
       setQueueState('ORDERED')
       navigate('/payment', { replace: true })
     },

@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Read(//Users/highgarden/clouddx/최종프로젝트/flash-tickets/web/src/**)",
-      "Read(//Users/highgarden/clouddx/최종프로젝트/flash-tickets/**)"
+      "Read(//Users/highgarden/clouddx/최종프로젝트/flash-tickets/**)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []

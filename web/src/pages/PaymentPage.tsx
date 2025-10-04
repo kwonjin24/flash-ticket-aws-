@@ -9,6 +9,8 @@ export const PaymentPage = ({ onLogout }: { onLogout: () => void }) => {
   const navigate = useNavigate()
   const orderId = useOrderStore((state) => state.orderId)
   const amount = useOrderStore((state) => state.amount)
+  const qty = useOrderStore((state) => state.qty)
+  const eventName = useOrderStore((state) => state.eventName)
   const paymentId = useOrderStore((state) => state.paymentId)
   const paymentStatus = useOrderStore((state) => state.paymentStatus)
   const setPayment = useOrderStore((state) => state.setPayment)
@@ -66,10 +68,18 @@ export const PaymentPage = ({ onLogout }: { onLogout: () => void }) => {
           </header>
 
           <section className="payment-page__summary">
-            <p>주문 번호: {orderId}</p>
-            <p>결제 금액: {amount.toLocaleString()} 원</p>
-            {paymentId && <p>결제 ID: {paymentId}</p>}
-            {paymentStatus && <p>결제 상태: {paymentStatus}</p>}
+            {eventName && <p className="payment-page__event-name">{eventName}</p>}
+            <div className="payment-page__info">
+              <p>주문 번호: {orderId}</p>
+              {qty && <p>수량: {qty}매</p>}
+              <p className="payment-page__amount">결제 금액: {amount.toLocaleString()} 원</p>
+            </div>
+            {paymentId && (
+              <div className="payment-page__payment-info">
+                <p>결제 ID: {paymentId}</p>
+                {paymentStatus && <p>결제 상태: {paymentStatus}</p>}
+              </div>
+            )}
           </section>
 
           <div className="payment-page__actions">
