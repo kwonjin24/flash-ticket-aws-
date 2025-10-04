@@ -3,7 +3,10 @@
     "allow": [
       "Read(//Users/highgarden/clouddx/최종프로젝트/flash-tickets/web/src/**)",
       "Read(//Users/highgarden/clouddx/최종프로젝트/flash-tickets/**)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(gunzip:*)",
+      "Bash(bash:*)",
+      "Bash(docker load:*)"
     ],
     "deny": [],
     "ask": []

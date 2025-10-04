@@ -36,6 +36,90 @@ sudo mkdir -p /data/docker/nginx/html
 sudo chown -R $USER:$USER /data/docker
 ```
 
+### 1.3 FTP로 전달된 패키지 배포 절차
+
+로컬 또는 CI에서 생성한 아카이브 (`output/flash-tickets-dev-images.tar.gz`, `output/web-dist.tar.gz`)를 FTP로 업로드 받은 경우 다음 순서를 따르면 됩니다.
+
+```bash
+# 1) 아카이브 준비 & 압축 해제
+mkdir -p /data/docker/deploy
+cd /data/docker/deploy
+
+# 파일 무결성 확인 (선택사항)
+file flash-tickets-dev-images.tar.gz
+ls -lh flash-tickets-dev-images.tar.gz
+
+# flash-tickets-dev-images.tar.gz를 gunzip으로 압축 해제
+# FTP 전송 시 바이너리 모드를 사용했는지 확인 필요
+gunzip -c flash-tickets-dev-images.tar.gz > flash-tickets-dev-images.tar
+
+# 압축 해제된 파일 확인
+file flash-tickets-dev-images.tar
+
+mkdir -p /data/docker/deploy/web-dist && tar -xzf web-dist.tar.gz -C /data/docker/deploy/web-dist
+
+# 2) Docker 이미지 로드
+# gunzip으로 압축 해제한 tar 파일을 직접 로드
+docker load -i /data/docker/deploy/flash-tickets-dev-images.tar
+
+# 3) 프런트 정적 파일 배치
+rm -rf /data/docker/nginx/html/*
+cp -r /data/docker/deploy/web-dist/dist/* /data/docker/nginx/html/
+
+# 4) 네트워크 및 컨테이너 재기동
+docker network create backend || true
+
+source /data/docker/.env.dev
+
+docker rm -f flash-tickets-nginx flash-tickets-api flash-tickets-pay flash-tickets-rabbitmq flash-tickets-redis 2>/dev/null || true
+
+docker run -d --name flash-tickets-redis \
+  --network backend \
+  -p 6379:6379 \
+  -v /data/docker/redis/data:/data \
+  redis:7-alpine \
+  redis-server --save 60 1 --loglevel warning
+
+docker run -d --name flash-tickets-rabbitmq \
+  --hostname flash-rabbitmq \
+  --network backend \
+  -p 5672:5672 \
+  -p 15672:15672 \
+  -e RABBITMQ_DEFAULT_USER="$RABBITMQ_USER" \
+  -e RABBITMQ_DEFAULT_PASS="$RABBITMQ_PASSWORD" \
+  -e RABBITMQ_DEFAULT_VHOST="$RABBITMQ_VHOST" \
+  -v /data/docker/rabbitmq/data:/var/lib/rabbitmq \
+  rabbitmq:3.13-management
+
+docker run -d --name flash-tickets-api \
+  --network backend \
+  --env-file /data/docker/.env.dev \
+  -v /data/docker/api/logs:/app/logs \
+  flash-tickets-api:dev
+
+docker run -d --name flash-tickets-pay \
+  --network backend \
+  --env-file /data/docker/.env.dev \
+  -v /data/docker/pay/logs:/app/logs \
+  flash-tickets-pay:dev
+
+docker run -d --name flash-tickets-nginx \
+  --network backend \
+  -p 80:80 \
+  -v /data/docker/nginx/html:/usr/share/nginx/html:ro \
+  flash-tickets-nginx:dev
+
+# 5) 상태 확인
+docker ps
+docker logs -f flash-tickets-api
+```
+
+> **중요**: FTP 전송 시 반드시 **바이너리 모드(binary mode)**를 사용해야 합니다. 텍스트 모드로 전송하면 파일이 손상됩니다.
+>
+> `scripts/package-dev.sh`에서 `docker save ... | gzip`으로 생성한 아카이브는 먼저 `gunzip`으로 압축 해제 후 `docker load -i`로 이미지를 로드합니다.
+>
+> **파일 무결성 확인**: 서버에서 `file` 명령으로 파일 타입을 확인하세요. `gzip compressed data`가 출력되어야 정상입니다.
+
 ## 2. 환경 변수 파일 구성
 
 환경별 설정은 루트에 있는 `.env.<environment>` 파일을 사용합니다.
@@ -199,69 +283,6 @@ HTTPS(ACM) 적용 시 ALB 또는 CloudFront에서 SSL 종료 후 Nginx로 트래
 5. Route53에서 도메인 → Nginx 인스턴스 를 매핑하고, ACM 인증서를 적용한 ALB/CloudFront로 HTTPS 구성
 6. 배포 후 `http://<dev-domain>`에 접속하여 API/프런트 연결 확인
 
-## 9. FTP로 전달된 패키지 배포 절차
-
-로컬 또는 CI에서 생성한 아카이브 (`output/flash-tickets-dev-images.tar.gz`, `output/web-dist.tar.gz`)를 FTP로 업로드 받은 경우 다음 순서를 따르면 됩니다.
-
-```bash
-# 1) 아카이브 다운로드 & 압축 해제
-mkdir -p /opt/flash-tickets/deploy
-cd /opt/flash-tickets/deploy
-tar -xzf flash-tickets-dev-images.tar.gz
-mkdir -p web-dist && tar -xzf web-dist.tar.gz -C web-dist
-
-# 2) Docker 이미지 로드
-docker load < flash-tickets-dev-images.tar.gz
-
-# 3) 프런트 정적 파일 배치
-rm -rf /data/docker/nginx/html/*
-cp -r web-dist/dist/* /data/docker/nginx/html/
-
-# 4) 네트워크 및 컨테이너 재기동
-docker network create backend || true
-
-source /opt/flash-tickets/.env.dev
-
-docker rm -f flash-tickets-nginx flash-tickets-api flash-tickets-pay flash-tickets-rabbitmq flash-tickets-redis 2>/dev/null || true
-
-docker run -d --name flash-tickets-redis \
-  --network backend \
-  -p 6379:6379 \
-  -v /data/docker/redis/data:/data \
-  redis:7-alpine \
-  redis-server --save 60 1 --loglevel warning
-docker run -d --name flash-tickets-rabbitmq \
-  --hostname flash-rabbitmq \
-  --network backend \
-  -p 5672:5672 \
-  -p 15672:15672 \
-  -e RABBITMQ_DEFAULT_USER="$RABBITMQ_USER" \
-  -e RABBITMQ_DEFAULT_PASS="$RABBITMQ_PASSWORD" \
-  -e RABBITMQ_DEFAULT_VHOST="$RABBITMQ_VHOST" \
-  -v /data/docker/rabbitmq/data:/var/lib/rabbitmq \
-  rabbitmq:3.13-management
-docker run -d --name flash-tickets-api \
-  --network backend \
-  --env-file /opt/flash-tickets/.env.dev \
-  -v /data/docker/api/logs:/app/logs \
-  flash-tickets-api:dev
-docker run -d --name flash-tickets-pay \
-  --network backend \
-  --env-file /opt/flash-tickets/.env.dev \
-  -v /data/docker/pay/logs:/app/logs \
-  flash-tickets-pay:dev
-docker run -d --name flash-tickets-nginx \
-  --network backend \
-  -p 80:80 \
-  -v /data/docker/nginx/html:/usr/share/nginx/html:ro \
-  flash-tickets-nginx:dev
-
-# 5) 상태 확인
-docker ps
-docker logs -f flash-tickets-api
-```
-
-> `docker load < flash-tickets-dev-images.tar.gz`는 아카이브를 직접 읽어 이미지들을 등록합니다.
 
 ## 8. 운영/추가 고려 사항
 

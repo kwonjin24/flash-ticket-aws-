@@ -28,7 +28,8 @@ OUTPUT_DIR="$ROOT_DIR/output"
 rm -rf "$OUTPUT_DIR"
 mkdir -p "$OUTPUT_DIR"
 
-run docker save flash-tickets-api:dev flash-tickets-pay:dev flash-tickets-nginx:dev | gzip > "$OUTPUT_DIR/flash-tickets-dev-images.tar.gz"
+run docker save -o "$OUTPUT_DIR/flash-tickets-dev-images.tar" flash-tickets-api:dev flash-tickets-pay:dev flash-tickets-nginx:dev
+run gzip -f "$OUTPUT_DIR/flash-tickets-dev-images.tar"
 
 run tar -czf "$OUTPUT_DIR/web-dist.tar.gz" -C web dist
 
