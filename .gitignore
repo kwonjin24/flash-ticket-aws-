@@ -34,3 +34,6 @@ Thumbs.db
 tmp/
 .vscode/
 .idea/
+
+# output
+output/

@@ -20,20 +20,20 @@ run pnpm --dir api install
 run pnpm --dir pay install
 run pnpm --dir pay build
 
-run sudo docker build -t flash-tickets-api:dev -f Dockerfile.api .
-run sudo docker build -t flash-tickets-pay:dev -f Dockerfile.pay .
-run sudo docker build -t flash-tickets-nginx:dev ./nginx
+run docker build -t flash-tickets-api:dev -f Dockerfile.api .
+run docker build -t flash-tickets-pay:dev -f Dockerfile.pay .
+run docker build -t flash-tickets-nginx:dev ./nginx
 
 OUTPUT_DIR="$ROOT_DIR/output"
 rm -rf "$OUTPUT_DIR"
 mkdir -p "$OUTPUT_DIR"
 
-run sudo docker save flash-tickets-api:dev flash-tickets-pay:dev flash-tickets-nginx:dev | gzip > "$OUTPUT_DIR/flash-tickets-dev-images.tar.gz"
+run docker save flash-tickets-api:dev flash-tickets-pay:dev flash-tickets-nginx:dev | gzip > "$OUTPUT_DIR/flash-tickets-dev-images.tar.gz"
 
 run tar -czf "$OUTPUT_DIR/web-dist.tar.gz" -C web dist
 
 cat <<INFO
 Build artifacts ready:
-- Docker images archive: $OUTPUT_DIR/flash-tickets-dev-images.tar.gz
+- Docker images archive: $OUTPUT_DIR/flash-tickets-dev-images.tar.gz (includes api, mock pay, nginx)
 - Frontend bundle archive: $OUTPUT_DIR/web-dist.tar.gz
 INFO

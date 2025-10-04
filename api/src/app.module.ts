@@ -24,12 +24,17 @@ import { PaymentsModule } from './presentation/payments/payments.module';
           '.env.local',
           '.env',
         ];
-        const apiDir = __dirname;
-        const rootDir = join(__dirname, '..');
+        const directories = new Set<string>([
+          process.cwd(),
+          __dirname,
+          join(__dirname, '..'),
+          join(__dirname, '..', '..'),
+        ]);
         const resolved = new Set<string>();
-        for (const base of candidates) {
-          resolved.add(join(rootDir, base));
-          resolved.add(join(apiDir, base));
+        for (const dir of directories) {
+          for (const base of candidates) {
+            resolved.add(join(dir, base));
+          }
         }
         return Array.from(resolved);
       })(),

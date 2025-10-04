@@ -8,7 +8,33 @@
 - Docker Engine 설치
 - 도메인(Route53)과 HTTPS 인증서(ACM)는 별도 구성
 - 리포지토리를 `/opt/flash-tickets` 등에 클론
-overall steps: `/opt/flash-tickets`
+
+### 1.1 Docker 설치 (Ubuntu)
+
+```bash
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo usermod -aG docker $USER
+newgrp docker
+docker --version
+```
+
+> `newgrp docker` 명령을 실행하면 현재 세션에서 sudo 없이 docker 명령을 사용할 수 있습니다.
+
+### 1.2 디렉터리 구조 준비
+
+컨테이너별 데이터/로그를 `/data/docker` 아래에 저장합니다.
+
+```bash
+sudo mkdir -p /data/docker/{redis,rabbitmq,api,pay,nginx}/data
+sudo mkdir -p /data/docker/nginx/html
+sudo chown -R $USER:$USER /data/docker
+```
 
 ## 2. 환경 변수 파일 구성
 
@@ -53,96 +79,100 @@ pnpm --dir web build
 
 ```bash
 # API 이미지 빌드
-sudo docker build -t flash-tickets-api:dev -f Dockerfile.api .
+docker build -t flash-tickets-api:dev -f Dockerfile.api .
 
 # Mock 결제 서버 이미지 빌드
-sudo docker build -t flash-tickets-pay:dev -f Dockerfile.pay .
+docker build -t flash-tickets-pay:dev -f Dockerfile.pay .
 
 # Nginx 이미지 빌드 (정적 파일 포함)
-sudo docker build -t flash-tickets-nginx:dev ./nginx
+docker build -t flash-tickets-nginx:dev ./nginx
 ```
 
 ### 4.3 Docker 컨테이너 실행 (docker run)
 
 1. **공용 네트워크 생성**
 
-   ```bash
-   sudo docker network create backend
-   ```
+```bash
+docker network create backend
+```
 
 2. **Redis**
 
-   ```bash
-   sudo docker run -d \
-     --name flash-tickets-redis \
-     --network backend \
-     -p 6379:6379 \
-     redis:7-alpine \
-     redis-server --save 60 1 --loglevel warning
-   ```
+```bash
+docker run -d \
+  --name flash-tickets-redis \
+  --network backend \
+  -p 6379:6379 \
+  -v /data/docker/redis/data:/data \
+  redis:7-alpine \
+  redis-server --save 60 1 --loglevel warning
+```
 
 3. **RabbitMQ**
 
-   ```bash
-   source .env.dev
-   sudo docker run -d \
-     --name flash-tickets-rabbitmq \
-     --hostname flash-rabbitmq \
-     --network backend \
-     -p 5672:5672 \
-     -p 15672:15672 \
-     -e RABBITMQ_DEFAULT_USER="$RABBITMQ_USER" \
-     -e RABBITMQ_DEFAULT_PASS="$RABBITMQ_PASSWORD" \
-     -e RABBITMQ_DEFAULT_VHOST="$RABBITMQ_VHOST" \
-     rabbitmq:3.13-management
-   ```
+```bash
+source .env.dev
+docker run -d \
+  --name flash-tickets-rabbitmq \
+  --hostname flash-rabbitmq \
+  --network backend \
+  -p 5672:5672 \
+  -p 15672:15672 \
+  -e RABBITMQ_DEFAULT_USER="$RABBITMQ_USER" \
+  -e RABBITMQ_DEFAULT_PASS="$RABBITMQ_PASSWORD" \
+  -e RABBITMQ_DEFAULT_VHOST="$RABBITMQ_VHOST" \
+  -v /data/docker/rabbitmq/data:/var/lib/rabbitmq \
+  rabbitmq:3.13-management
+```
 
    > 관리 콘솔은 http://<host>:15672 에서 접속 가능 (기본 guest/guest 혹은 설정한 자격증명).
 
 4. **API 서버**
 
-   ```bash
-   sudo docker run -d \
-     --name flash-tickets-api \
-     --network backend \
-     --env-file .env.dev \
-     flash-tickets-api:dev
-   ```
+```bash
+docker run -d \
+  --name flash-tickets-api \
+  --network backend \
+  --env-file .env.dev \
+  -v /data/docker/api/logs:/app/logs \
+  flash-tickets-api:dev
+```
 
 5. **Mock 결제 서버(pay)**
 
-   ```bash
-   sudo docker run -d \
-     --name flash-tickets-pay \
-     --network backend \
-     --env-file .env.dev \
-     flash-tickets-pay:dev
-   ```
+```bash
+docker run -d \
+  --name flash-tickets-pay \
+  --network backend \
+  --env-file .env.dev \
+  -v /data/docker/pay/logs:/app/logs \
+  flash-tickets-pay:dev
+```
 
 6. **Nginx (정적 프런트 + 프록시)**
 
-   ```bash
-   sudo docker run -d \
-     --name flash-tickets-nginx \
-     --network backend \
-     -p 80:80 \
-     -v $(pwd)/nginx/html:/usr/share/nginx/html:ro \
-     flash-tickets-nginx:dev
-   ```
+```bash
+docker run -d \
+  --name flash-tickets-nginx \
+  --network backend \
+  -p 80:80 \
+  -v /data/docker/nginx/html:/usr/share/nginx/html:ro \
+  flash-tickets-nginx:dev
+```
 
 ### 4.4 로그 확인
 
 ```bash
-sudo docker logs -f flash-tickets-api
-sudo docker logs -f flash-tickets-pay
+docker logs -f flash-tickets-api
+docker logs -f flash-tickets-pay
 ```
 
 ### 4.5 컨테이너 중지 및 삭제
 
 ```bash
-sudo docker stop flash-tickets-nginx flash-tickets-api flash-tickets-pay flash-tickets-rabbitmq flash-tickets-redis
-sudo docker rm flash-tickets-nginx flash-tickets-api flash-tickets-pay flash-tickets-rabbitmq flash-tickets-redis
-sudo docker network rm backend
+docker stop flash-tickets-nginx flash-tickets-api flash-tickets-pay flash-tickets-rabbitmq flash-tickets-redis
+docker rm flash-tickets-nginx flash-tickets-api flash-tickets-pay flash-tickets-rabbitmq flash-tickets-redis
+docker network rm backend
 ```
 
 ## 5. Nginx Reverse Proxy
@@ -168,6 +198,70 @@ HTTPS(ACM) 적용 시 ALB 또는 CloudFront에서 SSL 종료 후 Nginx로 트래
 4. Docker 이미지를 빌드한 뒤 `docker run` 명령(위 4.3 단계)을 차례로 실행
 5. Route53에서 도메인 → Nginx 인스턴스 를 매핑하고, ACM 인증서를 적용한 ALB/CloudFront로 HTTPS 구성
 6. 배포 후 `http://<dev-domain>`에 접속하여 API/프런트 연결 확인
+
+## 9. FTP로 전달된 패키지 배포 절차
+
+로컬 또는 CI에서 생성한 아카이브 (`output/flash-tickets-dev-images.tar.gz`, `output/web-dist.tar.gz`)를 FTP로 업로드 받은 경우 다음 순서를 따르면 됩니다.
+
+```bash
+# 1) 아카이브 다운로드 & 압축 해제
+mkdir -p /opt/flash-tickets/deploy
+cd /opt/flash-tickets/deploy
+tar -xzf flash-tickets-dev-images.tar.gz
+mkdir -p web-dist && tar -xzf web-dist.tar.gz -C web-dist
+
+# 2) Docker 이미지 로드
+docker load < flash-tickets-dev-images.tar.gz
+
+# 3) 프런트 정적 파일 배치
+rm -rf /data/docker/nginx/html/*
+cp -r web-dist/dist/* /data/docker/nginx/html/
+
+# 4) 네트워크 및 컨테이너 재기동
+docker network create backend || true
+
+source /opt/flash-tickets/.env.dev
+
+docker rm -f flash-tickets-nginx flash-tickets-api flash-tickets-pay flash-tickets-rabbitmq flash-tickets-redis 2>/dev/null || true
+
+docker run -d --name flash-tickets-redis \
+  --network backend \
+  -p 6379:6379 \
+  -v /data/docker/redis/data:/data \
+  redis:7-alpine \
+  redis-server --save 60 1 --loglevel warning
+docker run -d --name flash-tickets-rabbitmq \
+  --hostname flash-rabbitmq \
+  --network backend \
+  -p 5672:5672 \
+  -p 15672:15672 \
+  -e RABBITMQ_DEFAULT_USER="$RABBITMQ_USER" \
+  -e RABBITMQ_DEFAULT_PASS="$RABBITMQ_PASSWORD" \
+  -e RABBITMQ_DEFAULT_VHOST="$RABBITMQ_VHOST" \
+  -v /data/docker/rabbitmq/data:/var/lib/rabbitmq \
+  rabbitmq:3.13-management
+docker run -d --name flash-tickets-api \
+  --network backend \
+  --env-file /opt/flash-tickets/.env.dev \
+  -v /data/docker/api/logs:/app/logs \
+  flash-tickets-api:dev
+docker run -d --name flash-tickets-pay \
+  --network backend \
+  --env-file /opt/flash-tickets/.env.dev \
+  -v /data/docker/pay/logs:/app/logs \
+  flash-tickets-pay:dev
+docker run -d --name flash-tickets-nginx \
+  --network backend \
+  -p 80:80 \
+  -v /data/docker/nginx/html:/usr/share/nginx/html:ro \
+  flash-tickets-nginx:dev
+
+# 5) 상태 확인
+docker ps
+docker logs -f flash-tickets-api
+```
+
+> `docker load < flash-tickets-dev-images.tar.gz`는 아카이브를 직접 읽어 이미지들을 등록합니다.
 
 ## 8. 운영/추가 고려 사항
 

@@ -27,7 +27,7 @@ type QueueState = {
   reset: () => void
 }
 
-const initialState: Omit<QueueState, 'joinQueue' | 'leaveQueue' | 'setState' | 'setQueuedUserId' | 'setPopupMode' | 'reset'> = {
+const initialState: Omit<QueueState, 'joinQueue' | 'leaveQueue' | 'setState' | 'setQueuedUserId' | 'setPopupMode' | 'setEventId' | 'reset'> = {
   eventId: null,
   ticketId: null,
   gateToken: null,
