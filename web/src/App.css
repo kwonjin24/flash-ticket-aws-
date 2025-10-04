@@ -629,7 +629,7 @@ a {
   }
 
   .app-shell__content {
-    padding: 2rem 1rem 2.5rem;
+    padding: 2rem 0 2.5rem;
   }
 
   .app-shell__inner {
@@ -1342,12 +1342,13 @@ a {
   flex: 1;
   width: 100%;
   display: flex;
-  justify-content: center;
-  padding: 2.5rem 1.5rem 3.5rem;
+  align-items: stretch;
+  padding: 2.5rem 0 3.5rem;
 }
 
 .app-shell__inner {
-  width: min(1200px, 100%);
+  width: 100%;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
