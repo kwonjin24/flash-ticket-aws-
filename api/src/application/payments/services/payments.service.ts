@@ -1,11 +1,14 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
+import { randomUUID } from 'node:crypto';
 import { Event } from '../../../domain/events/entities/event.entity';
 import { Order } from '../../../domain/orders/entities/order.entity';
 import { OrderStatus } from '../../../domain/orders/enums/order-status.enum';
@@ -13,9 +16,12 @@ import { Payment } from '../../../domain/payments/entities/payment.entity';
 import { PaymentStatus } from '../../../domain/payments/enums/payment-status.enum';
 import { CreatePaymentDto } from '../dto/create-payment.dto';
 import { CompletePaymentDto } from '../dto/complete-payment.dto';
+import { PaymentQueueService } from '../../../infrastructure/payments/payment-queue.service';
 
 @Injectable()
 export class PaymentsService {
+  private readonly logger = new Logger(PaymentsService.name);
+
   constructor(
     @InjectRepository(Payment)
     private readonly paymentsRepository: Repository<Payment>,
@@ -23,6 +29,7 @@ export class PaymentsService {
     private readonly ordersRepository: Repository<Order>,
     @InjectDataSource()
     private readonly dataSource: DataSource,
+    private readonly paymentQueueService: PaymentQueueService,
   ) {}
 
   async createPayment(dto: CreatePaymentDto): Promise<Payment> {
@@ -67,7 +74,27 @@ export class PaymentsService {
       status: PaymentStatus.REQ,
     });
 
-    return this.paymentsRepository.save(payment);
+    const savedPayment = await this.paymentsRepository.save(payment);
+
+    try {
+      await this.paymentQueueService.publishPaymentRequest({
+        requestId: randomUUID(),
+        paymentId: savedPayment.id,
+        orderId: order.id,
+        userId: order.userId,
+        amount: savedPayment.amount,
+        method: savedPayment.method,
+      });
+    } catch (error) {
+      this.logger.error('Failed to publish payment request to queue', error as Error, {
+        orderId: order.id,
+        paymentId: savedPayment.id,
+      });
+      await this.paymentsRepository.remove(savedPayment);
+      throw new InternalServerErrorException('결제 요청을 처리할 수 없습니다.');
+    }
+
+    return savedPayment;
   }
 
   async completePayment(dto: CompletePaymentDto): Promise<Payment> {

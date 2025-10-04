@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 export type PaymentMockConfig = {
-  redisUrl: string;
+  amqpUrl: string;
   requestQueue: string;
   resultQueue: string;
   successRate: number;
@@ -20,13 +20,26 @@ const parseNumber = (value: string | undefined, fallback: number): number => {
 const clamp = (value: number, min: number, max: number): number =>
   Math.min(Math.max(value, min), max);
 
+const buildAmqpUrl = (): string => {
+  if (process.env.RABBITMQ_URL) {
+    return process.env.RABBITMQ_URL;
+  }
+
+  const host = process.env.RABBITMQ_HOST ?? '127.0.0.1';
+  const port = parseNumber(process.env.RABBITMQ_PORT, 5672);
+  const user = process.env.RABBITMQ_USER ?? 'guest';
+  const password = process.env.RABBITMQ_PASSWORD ?? 'guest';
+  const vhost = process.env.RABBITMQ_VHOST ?? '/';
+
+  const encodedUser = encodeURIComponent(user);
+  const encodedPass = encodeURIComponent(password);
+  const encodedVhost = encodeURIComponent(vhost);
+
+  return `amqp://${encodedUser}:${encodedPass}@${host}:${port}/${encodedVhost}`;
+};
+
 export const loadConfig = (): PaymentMockConfig => {
-  const host = process.env.REDIS_HOST ?? '127.0.0.1';
-  const port = parseNumber(process.env.REDIS_PORT, 6379);
-  const password = process.env.REDIS_PASSWORD;
-  const redisUrl = password
-    ? `redis://:${password}@${host}:${port}`
-    : `redis://${host}:${port}`;
+  const amqpUrl = buildAmqpUrl();
 
   const successRateEnv = parseNumber(process.env.PAYMENT_SUCCESS_RATE, 0.85);
   const successRate = clamp(successRateEnv, 0, 1);
@@ -38,9 +51,9 @@ export const loadConfig = (): PaymentMockConfig => {
   );
 
   return {
-    redisUrl,
-    requestQueue: process.env.PAYMENT_REQUEST_QUEUE ?? 'payments:request',
-    resultQueue: process.env.PAYMENT_RESULT_QUEUE ?? 'payments:result',
+    amqpUrl,
+    requestQueue: process.env.PAYMENT_REQUEST_QUEUE ?? 'payments_request',
+    resultQueue: process.env.PAYMENT_RESULT_QUEUE ?? 'payments_result',
     successRate,
     minProcessingMs,
     maxProcessingMs,
