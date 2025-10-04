@@ -44,7 +44,7 @@ const buildStatusMessage = (state: QueueStatus['state'] | null, position?: numbe
     case 'QUEUED':
       return typeof position === 'number' ? `대기 중입니다. 현재 순번 ${position}번` : '대기 중입니다.'
     case 'READY':
-      return '게이트 토큰이 발급되었습니다. 로그인 단계로 이동해주세요.'
+      return '게이트 토큰이 발급되었습니다. 랜딩 페이지에서 티켓 구매를 진행하세요.'
     case 'ORDER_PENDING':
       return '주문을 진행할 준비가 되었습니다.'
     case 'ORDERED':

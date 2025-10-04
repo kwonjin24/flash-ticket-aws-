@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { QueuePopup } from '../components/QueuePopup'
+import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
 import { useAuthStore } from '../store/auth'
 import { useQueueStore } from '../store/queue'
@@ -49,11 +49,14 @@ const sortEvents = (events: EventSummary[]) => {
 }
 
 export const LandingPage = () => {
+  const navigate = useNavigate()
   const userId = useAuthStore((state) => state.userId) ?? ''
-  const userUuid = useAuthStore((state) => state.userUuid)
-  const [selectedEvent, setSelectedEvent] = useState<EventSummary | null>(null)
   const [filter, setFilter] = useState<FilterOption>('ALL')
-  const { joinQueue, ticketId } = useQueueStore()
+  const queueState = useQueueStore((state) => state.state)
+  const queuedEventId = useQueueStore((state) => state.eventId)
+  const gateToken = useQueueStore((state) => state.gateToken)
+  const queueStatusMessage = useQueueStore((state) => state.statusMessage)
+  const queueError = useQueueStore((state) => state.error)
 
   const eventsQuery = useQuery({
     queryKey: ['events', 'public'],
@@ -80,18 +83,26 @@ export const LandingPage = () => {
   }, [events, filter])
 
   const handleEventClick = (event: EventSummary) => {
-    setSelectedEvent(event)
-    if (!userUuid) {
-      return
-    }
     if (event.status !== 'ONSALE') {
       return
     }
-    joinQueue(event.id, userUuid)
-  }
-
-  const handleClosePopup = () => {
-    setSelectedEvent(null)
+    if (!queuedEventId) {
+      window.alert('로그인 후 대기열을 먼저 통과해야 합니다.')
+      return
+    }
+    if (queuedEventId !== event.id) {
+      window.alert('선택한 이벤트와 대기열 이벤트가 일치하지 않습니다. 다시 로그인하여 대기열을 초기화해주세요.')
+      return
+    }
+    if (!gateToken) {
+      window.alert('대기열 준비가 완료될 때까지 잠시만 기다려주세요.')
+      return
+    }
+    if (queueState === 'READY' || queueState === 'ORDER_PENDING' || queueState === 'ORDERED') {
+      navigate('/ticket')
+    } else {
+      window.alert('대기열 준비가 완료될 때까지 잠시만 기다려주세요.')
+    }
   }
 
   return (
@@ -100,7 +111,9 @@ export const LandingPage = () => {
         <div className="landing-page__content">
           <div className="landing-page__welcome">
             <h2>환영합니다, {userId}님!</h2>
-            <p>원하는 이벤트를 선택하고 대기열에 참여하세요.</p>
+            <p>대기열을 통과한 이벤트로 티켓 구매를 계속 진행하세요.</p>
+            {queueStatusMessage && <p className="landing-page__hint">{queueStatusMessage}</p>}
+            {queueError && <p className="landing-page__error">{queueError}</p>}
           </div>
 
           {eventsQuery.isLoading && (
@@ -134,12 +147,32 @@ export const LandingPage = () => {
 
           {filteredEvents.length > 0 ? (
             <div className="landing-page__events-grid">
-              {filteredEvents.map((event) => (
-                <article
-                  key={event.id}
-                  className={`landing-page__event-card landing-page__event-card--${event.status.toLowerCase()}`}
-                >
-                  <header className="landing-page__event-header">
+              {filteredEvents.map((event) => {
+                const isSelectedEvent = queuedEventId === event.id
+                const canPurchase =
+                  isSelectedEvent &&
+                  gateToken &&
+                  (queueState === 'READY' || queueState === 'ORDER_PENDING' || queueState === 'ORDERED')
+                const buttonLabel = (() => {
+                  if (event.status !== 'ONSALE') {
+                    return '진행 예정'
+                  }
+                  if (canPurchase) {
+                    return '티켓 구매하기'
+                  }
+                  if (isSelectedEvent) {
+                    return '대기 중...'
+                  }
+                  return '다른 이벤트'
+                })()
+                const disabled = !canPurchase
+
+                return (
+                  <article
+                    key={event.id}
+                    className={`landing-page__event-card landing-page__event-card--${event.status.toLowerCase()}`}
+                  >
+                    <header className="landing-page__event-header">
                     <h4 className="landing-page__event-title">{event.name}</h4>
                     <span className="landing-page__event-badge">
                       {event.status === 'ONSALE'
@@ -158,12 +191,12 @@ export const LandingPage = () => {
                     type="button"
                     className="landing-page__event-btn"
                     onClick={() => handleEventClick(event)}
-                    disabled={event.status !== 'ONSALE'}
+                    disabled={disabled}
                   >
-                    {event.status === 'ONSALE' ? '대기열 참여하기' : '진행 예정'}
+                    {buttonLabel}
                   </button>
                 </article>
-              ))}
+              )})}
             </div>
           ) : (
             !eventsQuery.isLoading && (
@@ -175,7 +208,6 @@ export const LandingPage = () => {
         </div>
       </section>
 
-      {ticketId && selectedEvent && <QueuePopup event={selectedEvent} onClose={handleClosePopup} />}
     </>
   )
 }

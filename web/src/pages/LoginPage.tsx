@@ -1,14 +1,19 @@
 import type { FormEvent } from 'react'
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import type { LoginCredentials } from '../types'
 import { INITIAL_LOGIN_FORM } from '../utils'
+import { LoginQueueModal } from '../components/LoginQueueModal'
+import { useQueueStore } from '../store/queue'
+import { useAuthStore } from '../store/auth'
 
 export const LoginPage = ({ onLogin }: { onLogin: (credentials: LoginCredentials) => Promise<void> }) => {
   const [form, setForm] = useState<LoginCredentials>(INITIAL_LOGIN_FORM)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const resetQueue = useQueueStore((state) => state.reset)
+  const setPopupMode = useQueueStore((state) => state.setPopupMode)
+  const setQueuedUserId = useQueueStore((state) => state.setQueuedUserId)
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -24,7 +29,14 @@ export const LoginPage = ({ onLogin }: { onLogin: (credentials: LoginCredentials
 
     try {
       await onLogin({ userId: trimmedUserId, password: form.password })
-      navigate('/', { replace: true })
+      resetQueue()
+      const authState = useAuthStore.getState()
+      if (authState.userUuid) {
+        setQueuedUserId(authState.userUuid)
+      } else if (authState.userId) {
+        setQueuedUserId(authState.userId)
+      }
+      setPopupMode(true)
     } catch (submitError) {
       console.error(submitError)
       setError('로그인에 실패했습니다. 다시 시도해주세요.')
@@ -80,6 +92,7 @@ export const LoginPage = ({ onLogin }: { onLogin: (credentials: LoginCredentials
           아직 계정이 없으신가요? <Link to="/auth/register">회원가입하기</Link>
         </p>
       </div>
+      <LoginQueueModal />
     </main>
   )
 }
