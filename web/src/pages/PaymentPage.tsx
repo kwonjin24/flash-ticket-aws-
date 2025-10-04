@@ -2,10 +2,11 @@ import { useEffect } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { http } from '../api/http'
+import { AppLayout } from '../components/AppLayout'
 import { CenteredPage } from '../components/CenteredPage'
 import { useOrderStore } from '../store/order'
 
-export const PaymentPage = ({ onLogout }: { onLogout: () => void }) => {
+export const PaymentPage = () => {
   const navigate = useNavigate()
   const orderId = useOrderStore((state) => state.orderId)
   const amount = useOrderStore((state) => state.amount)
@@ -57,59 +58,58 @@ export const PaymentPage = ({ onLogout }: { onLogout: () => void }) => {
   }
 
   return (
-    <CenteredPage>
-      <main className="payment-page">
-        <div className="payment-page__card">
-          <header className="payment-page__header">
-            <h1>결제 진행</h1>
-            <button className="payment-page__logout" type="button" onClick={onLogout}>
-              로그아웃
-            </button>
-          </header>
+    <AppLayout>
+      <CenteredPage>
+        <section className="payment-page">
+          <div className="payment-page__card">
+            <header className="payment-page__header">
+              <h1>결제 진행</h1>
+            </header>
 
-          <section className="payment-page__summary">
-            {eventName && <p className="payment-page__event-name">{eventName}</p>}
-            <div className="payment-page__info">
-              <p>주문 번호: {orderId}</p>
-              {qty && <p>수량: {qty}매</p>}
-              <p className="payment-page__amount">결제 금액: {amount.toLocaleString()} 원</p>
-            </div>
-            {paymentId && (
-              <div className="payment-page__payment-info">
-                <p>결제 ID: {paymentId}</p>
-                {paymentStatus && <p>결제 상태: {paymentStatus}</p>}
+            <section className="payment-page__summary">
+              {eventName && <p className="payment-page__event-name">{eventName}</p>}
+              <div className="payment-page__info">
+                <p>주문 번호: {orderId}</p>
+                {qty && <p>수량: {qty}매</p>}
+                <p className="payment-page__amount">결제 금액: {amount.toLocaleString()} 원</p>
               </div>
-            )}
-          </section>
+              {paymentId && (
+                <div className="payment-page__payment-info">
+                  <p>결제 ID: {paymentId}</p>
+                  {paymentStatus && <p>결제 상태: {paymentStatus}</p>}
+                </div>
+              )}
+            </section>
 
-          <div className="payment-page__actions">
-            <button
-              className="payment-page__primary"
-              type="button"
-              onClick={() => createPaymentMutation.mutate()}
-              disabled={createPaymentMutation.isPending || Boolean(paymentId)}
-            >
-              {createPaymentMutation.isPending ? '결제 생성 중...' : '결제 요청'}
-            </button>
-            <button
-              className="payment-page__secondary"
-              type="button"
-              onClick={() => finalizePaymentMutation.mutate('OK')}
-              disabled={!paymentId || finalizePaymentMutation.isPending}
-            >
-              {finalizePaymentMutation.isPending ? '결제 처리 중...' : '결제 성공 처리'}
-            </button>
-            <button
-              className="payment-page__danger"
-              type="button"
-              onClick={() => finalizePaymentMutation.mutate('FAIL')}
-              disabled={!paymentId || finalizePaymentMutation.isPending}
-            >
-              결제 실패 처리
-            </button>
+            <div className="payment-page__actions">
+              <button
+                className="payment-page__primary"
+                type="button"
+                onClick={() => createPaymentMutation.mutate()}
+                disabled={createPaymentMutation.isPending || Boolean(paymentId)}
+              >
+                {createPaymentMutation.isPending ? '결제 생성 중...' : '결제 요청'}
+              </button>
+              <button
+                className="payment-page__secondary"
+                type="button"
+                onClick={() => finalizePaymentMutation.mutate('OK')}
+                disabled={!paymentId || finalizePaymentMutation.isPending}
+              >
+                {finalizePaymentMutation.isPending ? '결제 처리 중...' : '결제 성공 처리'}
+              </button>
+              <button
+                className="payment-page__danger"
+                type="button"
+                onClick={() => finalizePaymentMutation.mutate('FAIL')}
+                disabled={!paymentId || finalizePaymentMutation.isPending}
+              >
+                결제 실패 처리
+              </button>
+            </div>
           </div>
-        </div>
-      </main>
-    </CenteredPage>
+        </section>
+      </CenteredPage>
+    </AppLayout>
   )
 }

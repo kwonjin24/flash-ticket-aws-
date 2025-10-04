@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import type { UserRole } from '../store/auth'
 
 type NavigationProps = {
@@ -8,29 +8,31 @@ type NavigationProps = {
 }
 
 export const Navigation = ({ userId, role, onLogout }: NavigationProps) => {
-  const navigate = useNavigate()
-
   return (
-    <header className="app-nav">
-      <h1 className="app-nav__brand" onClick={() => navigate('/')}>
-        Flash Tickets
-      </h1>
-      <nav className="app-nav__menu">
-        {role === 'ADMIN' && (
-          <div className="app-nav__admin-btns">
-            <button type="button" className="app-nav__admin-btn" onClick={() => navigate('/admin/events')}>
-              이벤트 관리
-            </button>
-            <button type="button" className="app-nav__admin-btn" onClick={() => navigate('/admin/events/new')}>
-              이벤트 등록
-            </button>
-          </div>
-        )}
-        <span className="app-nav__user">@{userId}</span>
-        <button type="button" className="app-nav__logout" onClick={onLogout}>
-          로그아웃
-        </button>
-      </nav>
+    <header className="site-header">
+      <div className="navbar">
+        <div className="nav-left">
+          <Link to="/" className="navbar__brand">
+            Flash Tickets
+          </Link>
+        </div>
+        <div className="nav-right">
+          {role === 'ADMIN' && (
+            <div className="nav-actions">
+              <Link to="/admin/events" className="btn btn-ghost">
+                이벤트 관리
+              </Link>
+              <Link to="/admin/events/new" className="btn btn-primary">
+                이벤트 등록
+              </Link>
+            </div>
+          )}
+          <span className="username">@{userId}</span>
+          <button type="button" className="btn btn-ghost" onClick={onLogout}>
+            로그아웃
+          </button>
+        </div>
+      </div>
     </header>
   )
 }

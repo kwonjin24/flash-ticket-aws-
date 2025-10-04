@@ -59,7 +59,7 @@ const buildStatusMessage = (state: QueueStatus['state'] | null, position?: numbe
 
 export const useQueueStore = create<QueueState>()(
   persist(
-    (set, get) => {
+    (set) => {
       let socketInitialized = false
 
       const ensureSocket = () => {

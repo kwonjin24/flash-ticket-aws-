@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
-import { http } from '../api/http'
-import type { UserRole } from '../store/auth'
-import { useQueueStore } from '../store/queue'
+import { AppLayout } from '../components/AppLayout'
 import { QueuePopup } from '../components/QueuePopup'
+import { http } from '../api/http'
+import { useAuthStore } from '../store/auth'
+import { useQueueStore } from '../store/queue'
 
 export type EventSummary = {
   id: string
@@ -24,8 +24,8 @@ const formatDateRange = (startsAt: string, endsAt: string) => {
   return `${start.toLocaleString('ko-KR')} ~ ${end.toLocaleString('ko-KR')}`
 }
 
-export const LandingPage = ({ userId, role, onLogout }: { userId: string; role: UserRole; onLogout: () => void }) => {
-  const navigate = useNavigate()
+export const LandingPage = () => {
+  const userId = useAuthStore((state) => state.userId) ?? ''
   const [selectedEvent, setSelectedEvent] = useState<EventSummary | null>(null)
   const { joinQueue, ticketId } = useQueueStore()
 
@@ -50,78 +50,60 @@ export const LandingPage = ({ userId, role, onLogout }: { userId: string; role: 
   }
 
   return (
-    <main className="landing-page">
-      <header className="landing-page__header">
-        <h1 className="landing-page__brand">Flash Tickets</h1>
-        <nav className="landing-page__nav">
-          {role === 'ADMIN' && (
-            <div className="landing-page__admin-btns">
-              <button type="button" className="landing-page__admin-btn" onClick={() => navigate('/admin/events')}>
-                이벤트 관리
-              </button>
-              <button type="button" className="landing-page__admin-btn" onClick={() => navigate('/admin/events/new')}>
-                이벤트 등록
-              </button>
+    <AppLayout>
+      <section className="landing-page">
+        <div className="landing-page__content">
+          <div className="landing-page__welcome">
+            <h2>환영합니다, {userId}님!</h2>
+            <p>원하는 이벤트를 선택하고 대기열에 참여하세요.</p>
+          </div>
+
+          {eventsQuery.isLoading && (
+            <div className="landing-page__loading">
+              <p>이벤트를 불러오는 중...</p>
             </div>
           )}
-          <span className="landing-page__user">@{userId}</span>
-          <button type="button" className="landing-page__logout" onClick={onLogout}>
-            로그아웃
-          </button>
-        </nav>
-      </header>
 
-      <div className="landing-page__content">
-        <div className="landing-page__welcome">
-          <h2>환영합니다, {userId}님!</h2>
-          <p>원하는 이벤트를 선택하고 대기열에 참여하세요.</p>
+          {eventsQuery.isError && (
+            <div className="landing-page__error">
+              <p>이벤트 목록을 불러올 수 없습니다.</p>
+            </div>
+          )}
+
+          {activeEvents.length > 0 ? (
+            <div>
+              <h3 className="landing-page__events-title">진행 중인 이벤트</h3>
+              <div className="landing-page__events-grid">
+                {activeEvents.map((event) => (
+                  <article key={event.id} className="landing-page__event-card">
+                    <h4 className="landing-page__event-title">{event.name}</h4>
+                    <p className="landing-page__event-date">{formatDateRange(event.startsAt, event.endsAt)}</p>
+                    <p className="landing-page__event-stock">
+                      재고: {Math.max(event.totalQty - event.soldQty, 0)} / {event.totalQty}
+                    </p>
+                    <p className="landing-page__event-price">{event.price.toLocaleString()} 원</p>
+                    <button
+                      type="button"
+                      className="landing-page__event-btn"
+                      onClick={() => handleEventClick(event)}
+                    >
+                      대기열 참여하기
+                    </button>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ) : (
+            !eventsQuery.isLoading && (
+              <div className="landing-page__no-events">
+                <p>현재 진행 중인 이벤트가 없습니다.</p>
+              </div>
+            )
+          )}
         </div>
-
-        {eventsQuery.isLoading && (
-          <div className="landing-page__loading">
-            <p>이벤트를 불러오는 중...</p>
-          </div>
-        )}
-
-        {eventsQuery.isError && (
-          <div className="landing-page__error">
-            <p>이벤트 목록을 불러올 수 없습니다.</p>
-          </div>
-        )}
-
-        {activeEvents.length > 0 ? (
-          <div>
-            <h3 className="landing-page__events-title">진행 중인 이벤트</h3>
-            <div className="landing-page__events-grid">
-              {activeEvents.map((event) => (
-                <article key={event.id} className="landing-page__event-card">
-                  <h4 className="landing-page__event-title">{event.name}</h4>
-                  <p className="landing-page__event-date">{formatDateRange(event.startsAt, event.endsAt)}</p>
-                  <p className="landing-page__event-stock">
-                    재고: {Math.max(event.totalQty - event.soldQty, 0)} / {event.totalQty}
-                  </p>
-                  <p className="landing-page__event-price">{event.price.toLocaleString()} 원</p>
-                  <button
-                    type="button"
-                    className="landing-page__event-btn"
-                    onClick={() => handleEventClick(event)}
-                  >
-                    대기열 참여하기
-                  </button>
-                </article>
-              ))}
-            </div>
-          </div>
-        ) : (
-          !eventsQuery.isLoading && (
-            <div className="landing-page__no-events">
-              <p>현재 진행 중인 이벤트가 없습니다.</p>
-            </div>
-          )
-        )}
-      </div>
+      </section>
 
       {ticketId && selectedEvent && <QueuePopup event={selectedEvent} onClose={handleClosePopup} />}
-    </main>
+    </AppLayout>
   )
 }

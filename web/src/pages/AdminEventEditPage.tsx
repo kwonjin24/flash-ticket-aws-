@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { http } from '../api/http'
+import { AppLayout } from '../components/AppLayout'
 import { CenteredPage } from '../components/CenteredPage'
 import type { EventSummary } from './LandingPage'
 
@@ -90,31 +91,36 @@ export const AdminEventEditPage = () => {
 
   if (eventQuery.isLoading) {
     return (
-      <CenteredPage>
-        <div className="admin-event">
-          <p>이벤트 정보를 불러오는 중...</p>
-        </div>
-      </CenteredPage>
+      <AppLayout>
+        <CenteredPage>
+          <div className="admin-event">
+            <p>이벤트 정보를 불러오는 중...</p>
+          </div>
+        </CenteredPage>
+      </AppLayout>
     )
   }
 
   if (eventQuery.isError) {
     return (
-      <CenteredPage>
-        <div className="admin-event">
-          <p className="admin-event__error">이벤트를 불러올 수 없습니다.</p>
-          <button type="button" onClick={() => navigate('/admin/events')}>
-            목록으로 돌아가기
-          </button>
-        </div>
-      </CenteredPage>
+      <AppLayout>
+        <CenteredPage>
+          <div className="admin-event">
+            <p className="admin-event__error">이벤트를 불러올 수 없습니다.</p>
+            <button type="button" onClick={() => navigate('/admin/events')}>
+              목록으로 돌아가기
+            </button>
+          </div>
+        </CenteredPage>
+      </AppLayout>
     )
   }
 
   return (
-    <CenteredPage>
-      <main className="admin-event">
-        <div className="admin-event__card">
+    <AppLayout>
+      <CenteredPage>
+        <section className="admin-event">
+          <div className="admin-event__card">
           <header className="admin-event__header">
             <h1>이벤트 수정</h1>
             <p>이벤트 정보를 수정하세요. 판매된 수량보다 적게 변경할 수 없습니다.</p>
@@ -213,7 +219,8 @@ export const AdminEventEditPage = () => {
             </div>
           </form>
         </div>
-      </main>
+      </section>
     </CenteredPage>
-  )
+  </AppLayout>
+)
 }
