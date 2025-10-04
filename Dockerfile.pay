@@ -1,0 +1,23 @@
+# syntax=docker/dockerfile:1.7
+FROM node:20-alpine AS base
+WORKDIR /workspace
+ENV PNPM_HOME=/root/.local/share/pnpm
+RUN corepack enable
+
+FROM base AS install
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY pay/package.json pay/package.json
+RUN pnpm install --frozen-lockfile --filter pay...
+
+FROM install AS build
+COPY . .
+RUN pnpm --filter pay... build
+
+FROM node:20-alpine AS runtime
+WORKDIR /app
+ENV NODE_ENV=dev
+COPY --from=build /workspace/pay/dist ./dist
+COPY --from=install /workspace/node_modules ./node_modules
+COPY pay/package.json ./package.json
+EXPOSE 4100
+CMD [ "node", "dist/index.js" ]
