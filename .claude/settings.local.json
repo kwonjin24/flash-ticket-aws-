@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/highgarden/clouddx/최종프로젝트/flash-tickets/web/src/**)",
+      "Read(//Users/highgarden/clouddx/최종프로젝트/flash-tickets/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

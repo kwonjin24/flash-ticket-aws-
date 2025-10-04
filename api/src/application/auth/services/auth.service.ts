@@ -5,10 +5,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Repository } from 'typeorm';
 import { LoginUserDto } from '../dto/login-user.dto';
+import { RegisterAdminDto } from '../dto/register-admin.dto';
 import { RegisterUserDto } from '../dto/register-user.dto';
 import { RefreshTokenDto, TokenDto } from '../dto/token.dto';
 import { JwtPayload } from '../../../infrastructure/auth/strategies/jwt-payload.interface';
 import { User } from '../../../domain/auth/entities/user.entity';
+import { UserRole } from '../../../domain/auth/enums/user-role.enum';
 
 @Injectable()
 export class AuthService {
@@ -30,6 +32,29 @@ export class AuthService {
     const user = this.usersRepository.create({
       userId: dto.userId,
       passwordHash,
+      role: UserRole.USER,
+    });
+
+    await this.usersRepository.save(user);
+  }
+
+  async registerAdmin(dto: RegisterAdminDto): Promise<void> {
+    const adminSecret = this.configService.getOrThrow<string>('ADMIN_REGISTER_SECRET');
+    if (dto.adminSecret !== adminSecret) {
+      throw new UnauthorizedException('Invalid admin secret');
+    }
+
+    const existing = await this.usersRepository.findOne({ where: { userId: dto.userId } });
+    if (existing) {
+      throw new ConflictException('User ID already registered');
+    }
+
+    const passwordHash = await bcrypt.hash(dto.password, 10);
+
+    const user = this.usersRepository.create({
+      userId: dto.userId,
+      passwordHash,
+      role: UserRole.ADMIN,
     });
 
     await this.usersRepository.save(user);

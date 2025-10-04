@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { LoginUserDto } from '../dto/login-user.dto';
-import { RefreshTokenDto, TokenDto } from '../dto/token.dto';
+import { RegisterAdminDto } from '../dto/register-admin.dto';
 import { RegisterUserDto } from '../dto/register-user.dto';
+import { RefreshTokenDto, TokenDto } from '../dto/token.dto';
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
@@ -10,6 +11,10 @@ export class AuthFacade {
 
   register(dto: RegisterUserDto): Promise<void> {
     return this.authService.register(dto);
+  }
+
+  registerAdmin(dto: RegisterAdminDto): Promise<void> {
+    return this.authService.registerAdmin(dto);
   }
 
   login(dto: LoginUserDto): Promise<TokenDto> {
