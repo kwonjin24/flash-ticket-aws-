@@ -46,19 +46,42 @@ export class QueuePromotionProcessor implements OnModuleInit, OnModuleDestroy {
     );
 
     const repeatEvery = this.queueTicketService.getPromotionIntervalMs();
-    const existingJob = await this.queue.getJob(PROMOTION_JOB_ID);
-    if (!existingJob) {
-      await this.queue.add(
-        'promote',
-        {},
-        {
-          jobId: PROMOTION_JOB_ID,
-          repeat: {
-            every: repeatEvery,
-          },
-        },
-      );
+    const nodeEnv = process.env.NODE_ENV ?? 'local';
+
+    if (nodeEnv !== 'production') {
+      try {
+        await this.queue.obliterate({ force: true });
+      } catch (error) {
+        this.logger.warn(
+          `Failed to obliterate queue during init: ${(error as Error).message}`,
+        );
+      }
     }
+
+    const repeatables = await this.queue.getRepeatableJobs();
+    // Remove stale repeat schedules so we always have exactly one job
+    for (const job of repeatables) {
+      if (job.name === 'promote') {
+        await this.queue.removeRepeatableByKey(job.key);
+      }
+    }
+    // Clear any lingering jobs that were scheduled with the old cadence
+    await this.queue.drain(true);
+    await this.queue.clean(0, 1000, 'completed');
+    await this.queue.clean(0, 1000, 'failed');
+
+    await this.queue.add(
+      'promote',
+      {},
+      {
+        jobId: PROMOTION_JOB_ID,
+        repeat: {
+          every: repeatEvery,
+        },
+        removeOnComplete: true,
+        removeOnFail: true,
+      },
+    );
   }
 
   async onModuleDestroy(): Promise<void> {
