@@ -11,6 +11,7 @@ import {
   AdminEventPage,
   AdminEventsPage,
   AdminEventEditPage,
+  AdminMonitoringPage,
   LandingPage,
   LoginPage,
   QueuePage,
@@ -154,6 +155,15 @@ function App() {
           element={
             <RequireAuth>
               <ResultPage />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/admin/monitoring"
+          element={
+            <RequireAuth allowRoles={['ADMIN']}>
+              <AdminMonitoringPage />
             </RequireAuth>
           }
         />

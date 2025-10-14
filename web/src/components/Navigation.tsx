@@ -22,6 +22,9 @@ export const Navigation = ({ userId, role, onLogout }: NavigationProps) => {
           </Link>
           {role === 'ADMIN' && (
             <>
+              <Link to="/admin/monitoring" className="btn btn-ghost">
+                모니터링
+              </Link>
               <Link to="/admin/events" className="btn btn-ghost">
                 이벤트 관리
               </Link>

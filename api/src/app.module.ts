@@ -11,6 +11,7 @@ import { EventsModule } from './presentation/events/events.module';
 import { OrdersModule } from './presentation/orders/orders.module';
 import { QueueModule } from './presentation/queue/queue.module';
 import { PaymentsModule } from './presentation/payments/payments.module';
+import { MonitoringModule } from './presentation/monitoring/monitoring.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { PaymentsModule } from './presentation/payments/payments.module';
     OrdersModule,
     QueueModule,
     PaymentsModule,
+    MonitoringModule,
   ],
 })
 export class AppModule {}
