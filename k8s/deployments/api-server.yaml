@@ -1,0 +1,165 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-server
+  labels:
+    app: api-server
+spec:
+  replicas: 2  # 최소 2개로 시작
+  selector:
+    matchLabels:
+      app: api-server
+  template:
+    metadata:
+      labels:
+        app: api-server
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "4000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+      - name: api
+        image: flash-tickets-api:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 4000
+          name: http
+        env:
+        - name: PORT
+          value: "4000"
+        # ConfigMap에서 환경변수 주입
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DATABASE_URL
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: REDIS_PORT
+        - name: REDIS_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: REDIS_PASSWORD
+        - name: RABBITMQ_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBITMQ_HOST
+        - name: RABBITMQ_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBITMQ_PORT
+        - name: RABBITMQ_USER
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBITMQ_USER
+        - name: RABBITMQ_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBITMQ_PASSWORD
+        - name: RABBITMQ_VHOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBITMQ_VHOST
+        - name: PAYMENT_REQUEST_QUEUE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: PAYMENT_REQUEST_QUEUE
+        - name: PAYMENT_RESULT_QUEUE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: PAYMENT_RESULT_QUEUE
+        # Secret에서 민감정보 주입
+        - name: JWT_ACCESS_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: JWT_ACCESS_SECRET
+        - name: JWT_REFRESH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: JWT_REFRESH_SECRET
+        - name: ADMIN_REGISTER_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: ADMIN_REGISTER_SECRET
+        - name: JWT_ACCESS_EXP
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: JWT_ACCESS_EXP
+        - name: JWT_REFRESH_EXP
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: JWT_REFRESH_EXP
+        - name: QUEUE_READY_CAPACITY
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: QUEUE_READY_CAPACITY
+        - name: QUEUE_GATE_TOKEN_TTL_MS
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: QUEUE_GATE_TOKEN_TTL_MS
+        - name: QUEUE_PROMOTION_INTERVAL_MS
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: QUEUE_PROMOTION_INTERVAL_MS
+        - name: QUEUE_WS_REFRESH_MS
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: QUEUE_WS_REFRESH_MS
+        - name: CLIENT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: CLIENT_URL
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: NODE_ENV
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /events
+            port: 4000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /events
+            port: 4000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3

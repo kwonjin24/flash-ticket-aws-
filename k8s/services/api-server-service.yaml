@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-server
+  labels:
+    app: api-server
+spec:
+  selector:
+    app: api-server
+  ports:
+  - protocol: TCP
+    port: 4000
+    targetPort: 4000
+    nodePort: 30000  # Minikube에서 http://localhost:30000으로 접속 가능
+  type: NodePort
