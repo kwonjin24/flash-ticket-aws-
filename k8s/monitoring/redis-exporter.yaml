@@ -16,6 +16,8 @@ spec:
       containers:
         - name: redis-exporter
           image: oliver006/redis_exporter:v1.55.0
+          args:
+            - --check-keys=queue:event:__global__:queue,queue:event:__global__:ready
           env:
             - name: REDIS_ADDR
               value: "redis:6379"

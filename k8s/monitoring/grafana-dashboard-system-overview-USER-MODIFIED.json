@@ -1,29 +1,8 @@
 {
   "dashboard": {
-    "title": "System Overview",
-    "tags": ["overview", "kubernetes", "system"],
-    "timezone": "browser",
-    "schemaVersion": 38,
-    "version": 5,
-    "refresh": "30s",
+    "id": 6,
     "panels": [
       {
-        "id": 1,
-        "title": "Pod Status Distribution",
-        "type": "piechart",
-        "gridPos": {
-          "x": 0,
-          "y": 0,
-          "w": 6,
-          "h": 8
-        },
-        "targets": [
-          {
-            "expr": "sum by (phase) (kube_pod_status_phase{namespace=\"default\"})",
-            "legendFormat": "{{phase}}",
-            "refId": "A"
-          }
-        ],
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -32,36 +11,41 @@
             "unit": "short"
           }
         },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
         "options": {
           "legend": {
             "displayMode": "table",
             "placement": "right",
-            "values": ["value", "percent"]
+            "values": [
+              "value",
+              "percent"
+            ]
           },
           "pieType": "pie"
-        }
-      },
-      {
-        "id": 2,
-        "title": "Event Loop Lag (ms)",
-        "type": "stat",
-        "gridPos": {
-          "x": 6,
-          "y": 0,
-          "w": 4,
-          "h": 4
         },
         "targets": [
           {
-            "expr": "max(api_nodejs_eventloop_lag_seconds) * 1000",
+            "expr": "sum by (phase) (kube_pod_status_phase{namespace=\"default\"})",
+            "legendFormat": "{{phase}}",
             "refId": "A"
           }
         ],
+        "title": "Pod Status Distribution",
+        "type": "piechart"
+      },
+      {
         "fieldConfig": {
           "defaults": {
             "color": {
               "mode": "thresholds"
             },
+            "decimals": 1,
             "thresholds": {
               "mode": "absolute",
               "steps": [
@@ -79,32 +63,31 @@
                 }
               ]
             },
-            "unit": "short",
-            "decimals": 1
+            "unit": "short"
           }
         },
-        "options": {
-          "graphMode": "area",
-          "colorMode": "value",
-          "textMode": "value_and_name"
-        }
-      },
-      {
-        "id": 3,
-        "title": "Container Restarts (1h)",
-        "type": "stat",
         "gridPos": {
-          "x": 10,
-          "y": 0,
+          "h": 4,
           "w": 4,
-          "h": 4
+          "x": 6,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "textMode": "value_and_name"
         },
         "targets": [
           {
-            "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=\"default\"}[1h]))",
+            "expr": "max(api_nodejs_eventloop_lag_seconds) * 1000",
             "refId": "A"
           }
         ],
+        "title": "Event Loop Lag (ms)",
+        "type": "stat"
+      },
+      {
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -130,34 +113,28 @@
             "unit": "short"
           }
         },
-        "options": {
-          "graphMode": "none",
-          "colorMode": "value",
-          "textMode": "value_and_name"
-        }
-      },
-      {
-        "id": 6,
-        "title": "Redis Status",
-        "type": "stat",
         "gridPos": {
-          "x": 14,
-          "y": 0,
-          "w": 5,
-          "h": 4
+          "h": 4,
+          "w": 4,
+          "x": 10,
+          "y": 0
+        },
+        "id": 3,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "textMode": "value_and_name"
         },
         "targets": [
           {
-            "expr": "redis_connected_clients",
-            "legendFormat": "Clients",
+            "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=\"default\"}[1h]))",
             "refId": "A"
-          },
-          {
-            "expr": "redis_memory_used_bytes / 1024 / 1024",
-            "legendFormat": "Memory (MB)",
-            "refId": "B"
           }
         ],
+        "title": "Container Restarts (1h)",
+        "type": "stat"
+      },
+      {
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -179,34 +156,34 @@
             "unit": "short"
           }
         },
-        "options": {
-          "orientation": "auto",
-          "textMode": "value_and_name",
-          "colorMode": "value"
-        }
-      },
-      {
-        "id": 7,
-        "title": "RabbitMQ Status",
-        "type": "stat",
         "gridPos": {
-          "x": 19,
-          "y": 0,
+          "h": 4,
           "w": 5,
-          "h": 4
+          "x": 14,
+          "y": 0
+        },
+        "id": 6,
+        "options": {
+          "colorMode": "value",
+          "orientation": "auto",
+          "textMode": "value_and_name"
         },
         "targets": [
           {
-            "expr": "rabbitmq_connections",
-            "legendFormat": "Connections",
+            "expr": "redis_connected_clients",
+            "legendFormat": "Clients",
             "refId": "A"
           },
           {
-            "expr": "sum(rabbitmq_queue_messages)",
-            "legendFormat": "Queue Messages",
+            "expr": "redis_memory_used_bytes / 1024 / 1024",
+            "legendFormat": "Memory (MB)",
             "refId": "B"
           }
         ],
+        "title": "Redis Status",
+        "type": "stat"
+      },
+      {
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -232,29 +209,34 @@
             "unit": "short"
           }
         },
-        "options": {
-          "orientation": "auto",
-          "textMode": "value_and_name",
-          "colorMode": "value"
-        }
-      },
-      {
-        "id": 8,
-        "title": "Deployment Replicas",
-        "type": "bargauge",
         "gridPos": {
-          "x": 6,
-          "y": 4,
-          "w": 18,
-          "h": 4
+          "h": 4,
+          "w": 5,
+          "x": 19,
+          "y": 0
+        },
+        "id": 7,
+        "options": {
+          "colorMode": "value",
+          "orientation": "auto",
+          "textMode": "value_and_name"
         },
         "targets": [
           {
-            "expr": "kube_deployment_status_replicas{namespace=\"default\"}",
-            "legendFormat": "{{deployment}}",
+            "expr": "rabbitmq_connections",
+            "legendFormat": "Connections",
             "refId": "A"
+          },
+          {
+            "expr": "sum(rabbitmq_queue_messages)",
+            "legendFormat": "Queue Messages",
+            "refId": "B"
           }
         ],
+        "title": "RabbitMQ Status",
+        "type": "stat"
+      },
+      {
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -280,21 +262,59 @@
             "unit": "short"
           }
         },
+        "gridPos": {
+          "h": 4,
+          "w": 18,
+          "x": 6,
+          "y": 4
+        },
+        "id": 8,
         "options": {
-          "orientation": "horizontal",
           "displayMode": "gradient",
+          "orientation": "horizontal",
           "showUnfilled": true
-        }
+        },
+        "targets": [
+          {
+            "expr": "kube_deployment_status_replicas{namespace=\"default\"}",
+            "legendFormat": "{{deployment}}",
+            "refId": "A"
+          }
+        ],
+        "title": "Deployment Replicas",
+        "type": "bargauge"
       },
       {
-        "id": 9,
-        "title": "CPU Usage by Pod (%)",
-        "type": "timeseries",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisPlacement": "auto",
+              "fillOpacity": 10,
+              "lineWidth": 2
+            },
+            "min": 0,
+            "unit": "percent"
+          }
+        },
         "gridPos": {
-          "x": 0,
-          "y": 8,
+          "h": 8,
           "w": 12,
-          "h": 8
+          "x": 0,
+          "y": 8
+        },
+        "id": 9,
+        "options": {
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "values": [
+              "last",
+              "max"
+            ]
+          }
         },
         "targets": [
           {
@@ -303,6 +323,10 @@
             "refId": "A"
           }
         ],
+        "title": "CPU Usage by Pod (%)",
+        "type": "timeseries"
+      },
+      {
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -313,27 +337,26 @@
               "fillOpacity": 10,
               "lineWidth": 2
             },
-            "unit": "percent",
-            "min": 0
+            "min": 0,
+            "unit": "short"
           }
         },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "id": 10,
         "options": {
           "legend": {
             "displayMode": "table",
             "placement": "right",
-            "values": ["last", "max"]
+            "values": [
+              "last",
+              "max"
+            ]
           }
-        }
-      },
-      {
-        "id": 10,
-        "title": "Memory Usage by Pod (MB)",
-        "type": "timeseries",
-        "gridPos": {
-          "x": 12,
-          "y": 8,
-          "w": 12,
-          "h": 8
         },
         "targets": [
           {
@@ -342,45 +365,10 @@
             "refId": "A"
           }
         ],
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisPlacement": "auto",
-              "fillOpacity": 10,
-              "lineWidth": 2
-            },
-            "unit": "short",
-            "min": 0
-          }
-        },
-        "options": {
-          "legend": {
-            "displayMode": "table",
-            "placement": "right",
-            "values": ["last", "max"]
-          }
-        }
+        "title": "Memory Usage by Pod (MB)",
+        "type": "timeseries"
       },
       {
-        "id": 11,
-        "title": "HPA Auto-Scaling Status",
-        "type": "timeseries",
-        "gridPos": {
-          "x": 0,
-          "y": 16,
-          "w": 24,
-          "h": 6
-        },
-        "targets": [
-          {
-            "expr": "kube_horizontalpodautoscaler_status_current_replicas{namespace=\"default\"}",
-            "legendFormat": "{{horizontalpodautoscaler}}",
-            "refId": "A"
-          }
-        ],
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -394,41 +382,111 @@
             "unit": "short"
           }
         },
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 0,
+          "y": 16
+        },
+        "id": 11,
         "options": {
           "legend": {
             "displayMode": "table",
             "placement": "right",
-            "values": ["last"]
+            "values": [
+              "last"
+            ]
           }
-        }
-      },
-      {
-        "id": 12,
-        "title": "HTTP Request Rate & Errors",
-        "type": "timeseries",
-        "gridPos": {
-          "x": 0,
-          "y": 22,
-          "w": 24,
-          "h": 8
         },
         "targets": [
           {
-            "expr": "sum(rate(http_requests_total[1m]))",
-            "legendFormat": "Total Requests/sec",
+            "expr": "kube_horizontalpodautoscaler_status_current_replicas{namespace=\"default\"}",
+            "legendFormat": "{{horizontalpodautoscaler}}",
+            "refId": "A"
+          }
+        ],
+        "title": "HPA Auto-Scaling Status",
+        "type": "timeseries"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisPlacement": "auto",
+              "fillOpacity": 10,
+              "lineWidth": 2
+            },
+            "unit": "short"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Waiting"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "orange",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Ready"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "green",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 12,
+          "y": 16
+        },
+        "id": 16,
+        "options": {
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "values": [
+              "last",
+              "max"
+            ]
+          }
+        },
+        "targets": [
+          {
+            "expr": "redis_key_size{key=\"queue:event:__global__:queue\"}",
+            "legendFormat": "Waiting",
             "refId": "A"
           },
           {
-            "expr": "sum(rate(http_requests_total{status=~\"5..\"}[1m]))",
-            "legendFormat": "5xx Errors/sec",
+            "expr": "redis_key_size{key=\"queue:event:__global__:ready\"}",
+            "legendFormat": "Ready",
             "refId": "B"
-          },
-          {
-            "expr": "(sum(rate(http_requests_total{status=~\"5..\"}[1m])) or vector(0)) / (sum(rate(http_requests_total[1m])) or vector(1)) * 100",
-            "legendFormat": "Error Rate (%)",
-            "refId": "C"
           }
         ],
+        "title": "BullMQ Queue Status",
+        "type": "timeseries"
+      },
+      {
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -460,23 +518,60 @@
             }
           ]
         },
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 22
+        },
+        "id": 12,
         "options": {
           "legend": {
             "displayMode": "table",
             "placement": "bottom",
-            "values": ["last", "max"]
+            "values": [
+              "last",
+              "max"
+            ]
           }
-        }
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(http_requests_total[1m]))",
+            "legendFormat": "Total Requests/sec",
+            "refId": "A"
+          },
+          {
+            "expr": "sum(rate(http_requests_total{status=~\"5..\"}[1m]))",
+            "legendFormat": "5xx Errors/sec",
+            "refId": "B"
+          },
+          {
+            "expr": "(sum(rate(http_requests_total{status=~\"5..\"}[1m])) or vector(0)) / (sum(rate(http_requests_total[1m])) or vector(1)) * 100",
+            "legendFormat": "Error Rate (%)",
+            "refId": "C"
+          }
+        ],
+        "title": "HTTP Request Rate & Errors",
+        "type": "timeseries"
       },
       {
-        "id": 13,
-        "title": "Top 5 Routes by Request Count",
-        "type": "table",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            }
+          }
+        },
         "gridPos": {
-          "x": 0,
-          "y": 30,
+          "h": 8,
           "w": 12,
-          "h": 8
+          "x": 0,
+          "y": 30
+        },
+        "id": 13,
+        "options": {
+          "showHeader": true
         },
         "targets": [
           {
@@ -486,16 +581,7 @@
             "refId": "A"
           }
         ],
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            }
-          }
-        },
-        "options": {
-          "showHeader": true
-        },
+        "title": "Top 5 Routes by Request Count",
         "transformations": [
           {
             "id": "organize",
@@ -504,35 +590,15 @@
                 "Time": true
               },
               "renameByName": {
-                "route": "Route",
-                "Value": "Requests/sec"
+                "Value": "Requests/sec",
+                "route": "Route"
               }
             }
           }
-        ]
+        ],
+        "type": "table"
       },
       {
-        "id": 14,
-        "title": "Redis Performance",
-        "type": "timeseries",
-        "gridPos": {
-          "x": 12,
-          "y": 30,
-          "w": 12,
-          "h": 8
-        },
-        "targets": [
-          {
-            "expr": "redis_memory_used_bytes / 1024 / 1024",
-            "legendFormat": "Memory (MB)",
-            "refId": "A"
-          },
-          {
-            "expr": "rate(redis_commands_processed_total[5m])",
-            "legendFormat": "Commands/sec",
-            "refId": "B"
-          }
-        ],
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -571,30 +637,35 @@
             }
           ]
         },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 30
+        },
+        "id": 14,
         "options": {
           "legend": {
             "displayMode": "list",
             "placement": "bottom"
           }
-        }
-      },
-      {
-        "id": 15,
-        "title": "RabbitMQ Queue Status",
-        "type": "timeseries",
-        "gridPos": {
-          "x": 0,
-          "y": 38,
-          "w": 24,
-          "h": 6
         },
         "targets": [
           {
-            "expr": "sum by (queue) (rabbitmq_queue_messages)",
-            "legendFormat": "{{queue}}",
+            "expr": "redis_memory_used_bytes / 1024 / 1024",
+            "legendFormat": "Memory (MB)",
             "refId": "A"
+          },
+          {
+            "expr": "rate(redis_commands_processed_total[5m])",
+            "legendFormat": "Commands/sec",
+            "refId": "B"
           }
         ],
+        "title": "Redis Performance",
+        "type": "timeseries"
+      },
+      {
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -608,14 +679,41 @@
             "unit": "short"
           }
         },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 38
+        },
+        "id": 15,
         "options": {
           "legend": {
             "displayMode": "list",
             "placement": "bottom"
           }
-        }
+        },
+        "targets": [
+          {
+            "expr": "sum by (queue) (rabbitmq_queue_messages)",
+            "legendFormat": "{{queue}}",
+            "refId": "A"
+          }
+        ],
+        "title": "RabbitMQ Queue Status",
+        "type": "timeseries"
       }
-    ]
+    ],
+    "refresh": "30s",
+    "schemaVersion": 38,
+    "tags": [
+      "overview",
+      "kubernetes",
+      "system"
+    ],
+    "timezone": "browser",
+    "title": "System Overview",
+    "uid": "f8969b80-0b47-4242-bf93-27c12cf96ab7",
+    "version": 9
   },
   "overwrite": true
 }
