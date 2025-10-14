@@ -1,0 +1,441 @@
+{
+  "dashboard": {
+    "title": "Kubernetes Resources",
+    "tags": ["kubernetes", "resources", "phase2"],
+    "timezone": "browser",
+    "schemaVersion": 38,
+    "version": 1,
+    "refresh": "30s",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Deployment Replicas",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "kube_deployment_status_replicas{namespace=\"default\"}",
+            "legendFormat": "{{deployment}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisPlacement": "auto",
+              "fillOpacity": 10,
+              "lineWidth": 2
+            },
+            "unit": "short"
+          }
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "HPA: API Server Scaling",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 12,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "kube_horizontalpodautoscaler_status_current_replicas{horizontalpodautoscaler=\"api-server-hpa\"}",
+            "legendFormat": "Current Replicas",
+            "refId": "A"
+          },
+          {
+            "expr": "kube_horizontalpodautoscaler_spec_min_replicas{horizontalpodautoscaler=\"api-server-hpa\"}",
+            "legendFormat": "Min Replicas",
+            "refId": "B"
+          },
+          {
+            "expr": "kube_horizontalpodautoscaler_spec_max_replicas{horizontalpodautoscaler=\"api-server-hpa\"}",
+            "legendFormat": "Max Replicas",
+            "refId": "C"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisPlacement": "auto",
+              "fillOpacity": 10,
+              "lineWidth": 2
+            },
+            "unit": "short"
+          }
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "title": "Pod Status Distribution",
+        "type": "piechart",
+        "gridPos": {
+          "x": 0,
+          "y": 8,
+          "w": 8,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "sum by (phase) (kube_pod_status_phase{namespace=\"default\", phase=\"Running\"})",
+            "legendFormat": "{{phase}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "unit": "short"
+          }
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "right"
+          },
+          "pieType": "pie"
+        }
+      },
+      {
+        "id": 4,
+        "title": "Pods per Application",
+        "type": "stat",
+        "gridPos": {
+          "x": 8,
+          "y": 8,
+          "w": 8,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "count by (label_app) (kube_pod_info{namespace=\"default\"})",
+            "legendFormat": "{{label_app}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 3
+                },
+                {
+                  "color": "red",
+                  "value": 5
+                }
+              ]
+            },
+            "unit": "short"
+          }
+        },
+        "options": {
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value"
+        }
+      },
+      {
+        "id": 5,
+        "title": "Container Restarts (Last 1h)",
+        "type": "table",
+        "gridPos": {
+          "x": 16,
+          "y": 8,
+          "w": 8,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "sum by (pod, container) (increase(kube_pod_container_status_restarts_total{namespace=\"default\"}[1h]))",
+            "format": "table",
+            "instant": true,
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 1
+                },
+                {
+                  "color": "red",
+                  "value": 3
+                }
+              ]
+            }
+          }
+        },
+        "options": {
+          "showHeader": true
+        },
+        "transformations": [
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true
+              },
+              "renameByName": {
+                "pod": "Pod",
+                "container": "Container",
+                "Value": "Restarts"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "HPA: Pay Service Scaling",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 0,
+          "y": 16,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "kube_horizontalpodautoscaler_status_current_replicas{horizontalpodautoscaler=\"pay-service-hpa\"}",
+            "legendFormat": "Current Replicas",
+            "refId": "A"
+          },
+          {
+            "expr": "kube_horizontalpodautoscaler_spec_min_replicas{horizontalpodautoscaler=\"pay-service-hpa\"}",
+            "legendFormat": "Min Replicas",
+            "refId": "B"
+          },
+          {
+            "expr": "kube_horizontalpodautoscaler_spec_max_replicas{horizontalpodautoscaler=\"pay-service-hpa\"}",
+            "legendFormat": "Max Replicas",
+            "refId": "C"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisPlacement": "auto",
+              "fillOpacity": 10,
+              "lineWidth": 2
+            },
+            "unit": "short"
+          }
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "title": "Deployment Status",
+        "type": "table",
+        "gridPos": {
+          "x": 12,
+          "y": 16,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "kube_deployment_status_replicas{namespace=\"default\"}",
+            "format": "table",
+            "instant": true,
+            "refId": "A"
+          },
+          {
+            "expr": "kube_deployment_status_replicas_available{namespace=\"default\"}",
+            "format": "table",
+            "instant": true,
+            "refId": "B"
+          },
+          {
+            "expr": "kube_deployment_status_replicas_unavailable{namespace=\"default\"}",
+            "format": "table",
+            "instant": true,
+            "refId": "C"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            }
+          }
+        },
+        "options": {
+          "showHeader": true
+        },
+        "transformations": [
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true,
+                "instance": true,
+                "job": true,
+                "namespace": true
+              },
+              "renameByName": {
+                "deployment": "Deployment",
+                "Value #A": "Total",
+                "Value #B": "Available",
+                "Value #C": "Unavailable"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Pod Memory Usage",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 0,
+          "y": 24,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "api_process_resident_memory_bytes / 1024 / 1024",
+            "legendFormat": "API Server (MB)",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisPlacement": "auto",
+              "fillOpacity": 10,
+              "lineWidth": 2
+            },
+            "unit": "short"
+          }
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "title": "Node.js Event Loop Lag",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 12,
+          "y": 24,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "api_nodejs_eventloop_lag_seconds * 1000",
+            "legendFormat": "Event Loop Lag (ms)",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisPlacement": "auto",
+              "fillOpacity": 10,
+              "lineWidth": 2
+            },
+            "unit": "short",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 50
+                },
+                {
+                  "color": "red",
+                  "value": 100
+                }
+              ]
+            }
+          }
+        },
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          }
+        }
+      }
+    ]
+  },
+  "overwrite": true
+}

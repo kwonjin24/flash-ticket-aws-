@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pay-service
+  labels:
+    app: pay-service
+spec:
+  replicas: 2  # 최소 2개
+  selector:
+    matchLabels:
+      app: pay-service
+  template:
+    metadata:
+      labels:
+        app: pay-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "4001"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+      - name: pay
+        image: flash-tickets-pay:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 4001
+          name: metrics
+        env:
+        - name: RABBITMQ_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBITMQ_HOST
+        - name: RABBITMQ_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBITMQ_PORT
+        - name: RABBITMQ_USER
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBITMQ_USER
+        - name: RABBITMQ_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBITMQ_PASSWORD
+        - name: RABBITMQ_VHOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: RABBITMQ_VHOST
+        - name: PAYMENT_REQUEST_QUEUE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: PAYMENT_REQUEST_QUEUE
+        - name: PAYMENT_RESULT_QUEUE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: PAYMENT_RESULT_QUEUE
+        - name: PAYMENT_SUCCESS_RATE
+          value: "0.85"
+        - name: PAYMENT_PROCESSING_MIN_MS
+          value: "1000"
+        - name: PAYMENT_PROCESSING_MAX_MS
+          value: "4000"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
