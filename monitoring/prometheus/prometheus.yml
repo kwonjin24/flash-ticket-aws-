@@ -1,0 +1,40 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+scrape_configs:
+  # 모니터링 서버 자체 메트릭
+  - job_name: 'monitoring-server'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  # Flash Tickets EC2 메트릭
+  - job_name: 'flash-tickets-system'
+    static_configs:
+      - targets: ['10.0.10.24:9100']
+    scrape_interval: 30s
+
+  - job_name: 'flash-tickets-containers'
+    static_configs:
+      - targets: ['10.0.10.24:8080']
+    scrape_interval: 30s
+
+  - job_name: 'flash-tickets-redis'
+    static_configs:
+      - targets: ['10.0.10.24:9121']
+    scrape_interval: 30s
+
+  - job_name: 'flash-tickets-api'
+    static_configs:
+      - targets: ['10.0.10.24:3001']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
