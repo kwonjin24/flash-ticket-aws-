@@ -1,0 +1,64 @@
+```mermaid
+flowchart TB
+  %% DNS / TLS
+  subgraph DNS_TLS[Route53 & ACM]
+    DNS["Route53 Hosted Zone\nwww.highgarden.cloud\napi.highgarden.cloud"]
+    ACM["ACM TLS 인증서"]
+  end
+
+  DNS --> ACM
+
+  %% Edge & Load Balancing
+  subgraph Edge[Public Access Layer]
+    IGW["Internet Gateway"]
+    ALB["Application Load Balancer\nHTTPS Listener"]
+  end
+
+  DNS -->|DNS A/ALIAS| ALB
+
+  %% VPC Layout
+  subgraph VPC["VPC (2 AZ)"]
+    direction TB
+
+    subgraph AZ1[AZ-A]
+      direction TB
+      subgraph PublicAZ1[Public Subnet A]
+        ALB -.-> IGW
+        ALB --> ECSWebA["ECS Service\nWeb Task"]
+        ALB --> ECSApiA["ECS Service\nAPI Task"]
+        NAT1["NAT Gateway A"] --> IGW
+      end
+
+      subgraph PrivateAZ1[Private Subnet A]
+        ECSPrivateA["ECS Services\nPay / Redis / MQ"]
+      end
+    end
+
+    subgraph AZ2[AZ-B]
+      direction TB
+      subgraph PublicAZ2[Public Subnet B]
+        ALB --> ECSWebB["ECS Service\nWeb Task"]
+        ALB --> ECSApiB["ECS Service\nAPI Task"]
+        NAT2["NAT Gateway B"] --> IGW
+      end
+
+      subgraph PrivateAZ2[Private Subnet B]
+        ECSPrivateB["ECS Services\nPay / Redis / MQ"]
+      end
+    end
+  end
+
+  %% Private service routing
+  ECSPrivateA -->|Outbound HTTPS| NAT1
+  ECSPrivateB -->|Outbound HTTPS| NAT2
+
+  %% External DB
+  subgraph ExternalDB[더존비즈온 관리형 DB]
+    DB["Managed PostgreSQL"]
+  end
+
+  ECSApiA -->|Inbound/Outbound| DB
+  ECSApiB -->|Inbound/Outbound| DB
+  ECSPrivateA -->|Outbound| DB
+  ECSPrivateB -->|Outbound| DB
+```

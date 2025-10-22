@@ -2,6 +2,21 @@ import dotenv from 'dotenv';
 import path from 'node:path';
 
 const loadEnvironment = () => {
+  const shouldLoadEnvFiles =
+    (process.env.LOAD_ENV_FILES ?? 'true').toLowerCase() !== 'false';
+  if (!shouldLoadEnvFiles) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.info(
+        '[PayConfig] LOAD_ENV_FILES=false, runtime environment variables only',
+      );
+    }
+    return;
+  }
+
+  if (process.env.NODE_ENV !== 'test') {
+    console.info('[PayConfig] Loading environment files as fallback');
+  }
+
   const env = process.env.NODE_ENV ?? 'local';
   const candidates = [
     `.env.${env}.local`,

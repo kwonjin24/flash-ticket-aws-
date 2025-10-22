@@ -6,17 +6,29 @@ import { Event } from '../../domain/events/entities/event.entity';
 import { Order } from '../../domain/orders/entities/order.entity';
 import { User } from '../../domain/auth/entities/user.entity';
 
-const envCandidates = [
-  resolve(__dirname, '../../../../.env'),
-  resolve(__dirname, '../../../.env'),
-  resolve(__dirname, '../../.env'),
-  resolve(__dirname, '../.env'),
-];
+const shouldLoadEnvFiles =
+  (process.env.LOAD_ENV_FILES ?? 'true').toLowerCase() !== 'false';
 
-for (const filePath of envCandidates) {
-  if (existsSync(filePath)) {
-    config({ path: filePath, override: true });
+if (shouldLoadEnvFiles) {
+  if (process.env.NODE_ENV !== 'test') {
+    console.info('[TypeORM] Loading environment files as fallback');
   }
+  const envCandidates = [
+    resolve(__dirname, '../../../../.env'),
+    resolve(__dirname, '../../../.env'),
+    resolve(__dirname, '../../.env'),
+    resolve(__dirname, '../.env'),
+  ];
+
+  for (const filePath of envCandidates) {
+    if (existsSync(filePath)) {
+      config({ path: filePath, override: true });
+    }
+  }
+} else if (process.env.NODE_ENV !== 'test') {
+  console.info(
+    '[TypeORM] LOAD_ENV_FILES=false, using runtime environment variables only',
+  );
 }
 
 export const dataSourceOptions: DataSourceOptions = {
