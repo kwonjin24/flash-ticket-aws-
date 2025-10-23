@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
-export type OrderStatus = 'HOLD' | 'PAID' | 'CANCELLED' | 'EXPIRED'
+export type OrderStatus = 'HOLD' | 'PAID' | 'CANCELLED' | 'EXPIRED' | 'FAIL'
 
 export type PaymentStatus = 'REQ' | 'OK' | 'FAIL'
 

@@ -8,7 +8,7 @@
 ### 범위 (Phase 1)
 - 단일 이벤트(공연/존) **한정 수량 판매**
 - HTTP API: `POST /purchase`, `POST /pay/:orderId`, `GET /healthz`, `GET /metrics`
-- WebSocket: `/ws?eventId=...` (재고/대기열/주문 상태 방송)
+- WebSocket: `socket.io` `queue` 네임스페이스 (재고/대기열/주문 상태 방송)
 - 데이터 저장: **PostgreSQL (RDS t4g.micro)** — *원자 차감/락 기반* (Redis 없이 시작)
 - 관측: Prometheus + Grafana, 로그: Loki + S3
 - 네트워크 보안: Cilium NetworkPolicy (기본 거부 + 허용만 화이트리스트)
@@ -20,8 +20,8 @@
 ---
 
 ## 2. 상위 아키텍처 (요약)
-- **경로**: Route53 → **NLB(L4, PROXY)** → **NGINX Ingress(TLS 종료, WS)** → **App Pods**  
-- **데이터**: **RDS(PostgreSQL)**, (옵션) Phase 2에 **Redis**  
+- **경로**: Route53 → **NLB(L4, PROXY)** → **NGINX Ingress(TLS 종료, WS)** → **Auth/Queue Gateway Pods** & **Tickets API Pods**  
+- **데이터**: **RDS(PostgreSQL)**, **Redis(Queue 스토리지)**  
 - **관측/로그**: **kube-prometheus-stack**, **Grafana**, **Loki + Promtail(S3)**  
 - **네트워크 보안**: **Cilium**(eBPF LB + NetworkPolicy) + **Hubble**
 
@@ -29,10 +29,15 @@
 flowchart LR
   A[Route53 DNS] --> B[NLB (TCP 80/443, PROXY)]
   B --> C[NGINX Ingress (TLS, WS)]
-  C --> D[App Pods (Tickets API + WS)]
+  C --> G[Auth+Queue Gateway Pods]
+  C --> D[Tickets API Pods]
   D <---> E[(RDS: PostgreSQL)]
+  G <---> E
+  G --> R[(Redis Queue)]
   D -->|/metrics| F[Prometheus]
+  G -->|/metrics| F
   D -->|logs| G[Loki]
+  G -->|logs| G
   G --> H[S3 (Object Storage)]
 ```
 
@@ -69,7 +74,7 @@ flowchart LR
 ---
 
 ## 4. WebSocket 프로토콜
-- **엔드포인트**: `GET /ws?eventId=E1`  
+- **엔드포인트**: Queue Gateway `socket.io` namespace `queue` (예: `wss://api.highgarden.cloud/socket.io/?EIO=4&transport=websocket&namespace=queue&eventId=E1`)  
 - **전달 형식**: JSON Line
 - **서버 → 클라 이벤트**
   - `sale.open`: 판매 시작 알림  

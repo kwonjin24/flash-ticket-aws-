@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { Redis } from 'ioredis';
-import { REDIS_QUEUE_CLIENT } from 'src/infrastructure/queue/redis.provider';
+import { REDIS_QUEUE_CLIENT } from '@queue/infrastructure/redis.provider';
 
 export interface HealthCheckResult {
   status: 'ok' | 'error';

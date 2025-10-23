@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { http } from './api/http'
+import { gatewayHttp } from './api/http'
 import { AppLayout } from './components/AppLayout'
 import { AuthLayout } from './components/AuthLayout'
 import { useAuthStore } from './store/auth'
@@ -62,7 +62,7 @@ function App() {
   const { accessToken, userUuid, setSession } = useAuthStore()
 
   const login = async (credentials: LoginCredentials) => {
-    const response = await http.post('auth/login', { json: credentials }).json<TokenDto>()
+    const response = await gatewayHttp.post('auth/login', { json: credentials }).json<TokenDto>()
     const { userId, userUuid, role } = decodeToken(response.accessToken)
     if (!userUuid) {
       throw new Error('토큰에서 사용자 정보를 추출할 수 없습니다.')
@@ -78,11 +78,11 @@ function App() {
 
   const register = async (credentials: RegisterCredentials) => {
     if (credentials.isAdmin) {
-      await http.post('auth/register/admin', {
+      await gatewayHttp.post('auth/register/admin', {
         json: { userId: credentials.userId, password: credentials.password, adminSecret: credentials.adminSecret },
       })
     } else {
-      await http.post('auth/register', {
+      await gatewayHttp.post('auth/register', {
         json: { userId: credentials.userId, password: credentials.password },
       })
     }

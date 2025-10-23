@@ -109,7 +109,11 @@ export const LandingPage = () => {
       navigate('/purchase', { replace: true })
       return
     }
-    window.alert('대기열 준비가 완료될 때까지 잠시만 기다려주세요.')
+    window.alert('서버와의 연결이 끊겼습니다.')
+    clearSession()
+    resetQueue()
+    resetOrder()
+    navigate('/auth/login', { replace: true })
   }
 
   return (

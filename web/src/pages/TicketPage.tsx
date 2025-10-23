@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { http } from '../api/http'
+import { http, gatewayHttp } from '../api/http'
 import { CenteredPage } from '../components/CenteredPage'
 import { useQueueStore } from '../store/queue'
 import { useOrderStore } from '../store/order'
@@ -52,7 +52,7 @@ export const TicketPage = () => {
   const enterMutation = useMutation({
     mutationFn: async () => {
       if (!ticketId || !gateToken) return
-      await http.post('queue/enter', { json: { ticketId, gateToken } })
+      await gatewayHttp.post('queue/enter', { json: { ticketId, gateToken } })
     },
     onSuccess: () => {
       setQueueState('ORDER_PENDING')

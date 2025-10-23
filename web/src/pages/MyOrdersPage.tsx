@@ -37,6 +37,8 @@ const getStatusLabel = (status: OrderStatus) => {
       return '취소됨'
     case 'EXPIRED':
       return '만료됨'
+    case 'FAIL':
+      return '결제 실패'
     default:
       return status
   }
@@ -58,8 +60,8 @@ export const MyOrdersPage = () => {
 
   const orders = ordersQuery.data ?? EMPTY_ORDERS
   const { holdingOrders, otherOrders } = useMemo(() => {
-    const holding = orders.filter((order) => order.status === 'HOLD')
-    const rest = orders.filter((order) => order.status !== 'HOLD')
+    const holding = orders.filter((order) => order.status === 'HOLD' || order.status === 'FAIL')
+    const rest = orders.filter((order) => order.status !== 'HOLD' && order.status !== 'FAIL')
     return { holdingOrders: holding, otherOrders: rest }
   }, [orders])
 
@@ -111,7 +113,7 @@ export const MyOrdersPage = () => {
                         className="orders-page__action-btn"
                         onClick={() => handleProceedPayment(order)}
                       >
-                        결제 진행하기
+                        {order.status === 'FAIL' ? '다시 결제하기' : '결제 진행하기'}
                       </button>
                     </div>
                   </li>

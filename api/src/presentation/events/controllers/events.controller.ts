@@ -12,7 +12,7 @@ import { CreateEventDto } from '../../../application/events/dto/create-event.dto
 import { UpdateEventDto } from '../../../application/events/dto/update-event.dto';
 import { EventsFacade } from '../../../application/events/facades/events.facade';
 import { UserRole } from '../../../domain/auth/enums/user-role.enum';
-import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '@auth/common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../../common/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { EventResponseDto } from '../dto/event-response.dto';

@@ -1,0 +1,27 @@
+# syntax=docker/dockerfile:1.7
+FROM node:20-alpine AS base
+WORKDIR /workspace
+ENV PNPM_HOME=/root/.local/share/pnpm
+RUN corepack enable
+
+FROM base AS install
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY api/package.json api/package.json
+COPY gateway/package.json gateway/package.json
+COPY web/package.json web/package.json
+COPY pay/package.json pay/package.json
+RUN pnpm install --frozen-lockfile
+
+FROM install AS build
+COPY . .
+RUN pnpm --filter gateway... build
+
+FROM node:20-alpine AS runtime
+WORKDIR /app
+ENV NODE_ENV=dev
+COPY --from=build /workspace/gateway/dist ./dist
+COPY --from=install /workspace/node_modules ../node_modules
+COPY --from=install /workspace/gateway/node_modules ./node_modules
+COPY gateway/package.json ./package.json
+EXPOSE 3000
+CMD [ "node", "dist/main.js" ]

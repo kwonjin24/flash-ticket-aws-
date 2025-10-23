@@ -56,6 +56,7 @@ export const PaymentPage = () => {
     },
     onSuccess: (data) => {
       setPayment({ paymentId: data.paymentId, status: data.status })
+      setOrderStatus('HOLD')
       queryClient.invalidateQueries({ queryKey: ['payment-order-status', orderId] }).catch(() => {
         /* ignore */
       })
@@ -100,9 +101,9 @@ export const PaymentPage = () => {
       }
       const status = query.state.data?.status
       if (!status) {
-        return 3000
+        return 4000
       }
-      return status === 'HOLD' ? 1000 : false
+      return status === 'HOLD' ? 4000 : false
     },
     refetchIntervalInBackground: true,
   })
@@ -112,11 +113,13 @@ export const PaymentPage = () => {
   }
 
   const isPaymentCreated = Boolean(paymentId)
+  const isPaymentPending = paymentStatus === 'REQ'
 
   const handleCreatePayment = () => {
-    if (!isPaymentCreated) {
-      createPaymentMutation.mutate()
+    if (isPaymentPending) {
+      return
     }
+    createPaymentMutation.mutate()
   }
 
   const latestOrderStatus = useMemo<OrderStatus | null>(() => {
@@ -125,6 +128,16 @@ export const PaymentPage = () => {
     }
     return orderStatus ?? null
   }, [orderStatusQuery.data, orderStatus])
+
+  const showRetryNotice = latestOrderStatus === 'FAIL'
+
+  const primaryButtonLabel = createPaymentMutation.isPending
+    ? '결제 생성 중...'
+    : isPaymentPending
+      ? '결제 요청 완료'
+      : showRetryNotice
+        ? '결제 다시 시도'
+        : '결제 요청'
 
   useEffect(() => {
     if (!orderStatusQuery.data) {
@@ -144,12 +157,8 @@ export const PaymentPage = () => {
         redirectedRef.current = true
         navigate(`/result/${orderId}`, { replace: true })
       }
-    } else if (nextStatus === 'CANCELLED' || nextStatus === 'EXPIRED') {
+    } else if (nextStatus === 'FAIL') {
       setPayment({ paymentId, status: 'FAIL' })
-      if (!redirectedRef.current) {
-        redirectedRef.current = true
-        navigate(`/result/${orderId}`, { replace: true })
-      }
     }
   }, [orderStatusQuery.data, orderId, navigate, paymentId, setOrderStatus, setPayment])
 
@@ -160,10 +169,10 @@ export const PaymentPage = () => {
     if (nextOrderStatus === 'PAID') {
       return '결제 완료'
     }
-    if (nextOrderStatus === 'CANCELLED' || nextOrderStatus === 'EXPIRED') {
+    if (nextOrderStatus === 'CANCELLED' || nextOrderStatus === 'EXPIRED' || nextOrderStatus === 'FAIL') {
       return '결제 실패'
     }
-    if (status === 'REQ' || isPaymentCreated) {
+    if (status === 'REQ' || isPaymentPending) {
       return '결제 대기'
     }
     return '결제 준비 중'
@@ -179,6 +188,8 @@ export const PaymentPage = () => {
         return '취소됨'
       case 'EXPIRED':
         return '만료됨'
+      case 'FAIL':
+        return '결제 실패'
       default:
         return '확인 중'
     }
@@ -237,18 +248,26 @@ export const PaymentPage = () => {
                   </div>
                 )}
               </div>
-              <p className="payment-screen__helper">결제 요청 후 5분 이내에 결제 완료 또는 실패를 선택해주세요.</p>
+              <p className="payment-screen__helper">
+                {showRetryNotice
+                  ? '결제가 실패했습니다. 아래 버튼을 눌러 다시 결제를 시도하세요.'
+                  : '결제 요청 후 5분 이내에 결제 완료 또는 실패를 선택해주세요.'}
+              </p>
             </section>
           </div>
+
+          {showRetryNotice && (
+            <p className="payment-screen__status">결제가 실패했습니다. 결제 정보를 확인하고 다시 요청해 주세요.</p>
+          )}
 
           <div className="payment-screen__actions">
             <button
               className="payment-screen__button payment-screen__button--primary"
               type="button"
               onClick={handleCreatePayment}
-              disabled={createPaymentMutation.isPending || isPaymentCreated}
+              disabled={createPaymentMutation.isPending || isPaymentPending}
             >
-              {createPaymentMutation.isPending ? '결제 생성 중...' : isPaymentCreated ? '결제 요청 완료' : '결제 요청'}
+              {primaryButtonLabel}
             </button>
             <div className="payment-screen__actions-row payment-screen__actions-row--support">
               <button
@@ -260,7 +279,7 @@ export const PaymentPage = () => {
                 상태 새로고침
               </button>
               <span className="payment-screen__hint">
-                {orderStatusQuery.isFetching ? '최신 상태 확인 중...' : '자동으로 3초마다 상태를 확인합니다.'}
+                {orderStatusQuery.isFetching ? '최신 상태 확인 중...' : '자동으로 4초마다 상태를 확인합니다.'}
               </span>
             </div>
           </div>

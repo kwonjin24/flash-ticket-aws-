@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@queue/*": ["../libs/queue/src/*"],
+      "@auth": ["../libs/auth/src/index"],
+      "@auth/*": ["../libs/auth/src/*"],
+      "@api/*": ["../api/src/*"],
+      "@nestjs/*": ["../api/node_modules/@nestjs/*"],
+      "class-validator": ["../api/node_modules/class-validator"],
+      "class-transformer": ["../api/node_modules/class-transformer"],
+      "bcryptjs": ["../api/node_modules/bcryptjs"],
+      "typeorm": ["../api/node_modules/typeorm"],
+      "passport-jwt": ["../api/node_modules/passport-jwt"],
+      "rxjs": ["../api/node_modules/rxjs"],
+      "ioredis": ["../api/node_modules/ioredis"],
+      "bullmq": ["../api/node_modules/bullmq"],
+      "socket.io": ["../api/node_modules/socket.io"]
+    }
+  }
+}

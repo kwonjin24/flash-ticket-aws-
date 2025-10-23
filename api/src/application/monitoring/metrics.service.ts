@@ -6,7 +6,7 @@ import { Order } from 'src/domain/orders/entities/order.entity';
 import { OrderStatus } from 'src/domain/orders/enums/order-status.enum';
 import { Payment } from 'src/domain/payments/entities/payment.entity';
 import { PaymentStatus } from 'src/domain/payments/enums/payment-status.enum';
-import { REDIS_QUEUE_CLIENT } from 'src/infrastructure/queue/redis.provider';
+import { REDIS_QUEUE_CLIENT } from '@queue/infrastructure/redis.provider';
 
 interface BusinessMetrics {
   // Queue metrics
@@ -19,6 +19,7 @@ interface BusinessMetrics {
   orders_hold_total: number;
   orders_paid_total: number;
   orders_cancelled_total: number;
+  orders_failed_total: number;
 
   // Payment metrics
   payments_pending_total: number;
@@ -111,14 +112,18 @@ export class MetricsService {
     orders_hold_total: number;
     orders_paid_total: number;
     orders_cancelled_total: number;
+    orders_failed_total: number;
   }> {
     try {
-      const [total, hold, paid, cancelled] = await Promise.all([
+      const [total, hold, paid, cancelled, failed] = await Promise.all([
         this.ordersRepository.count(),
         this.ordersRepository.count({ where: { status: OrderStatus.HOLD } }),
         this.ordersRepository.count({ where: { status: OrderStatus.PAID } }),
         this.ordersRepository.count({
           where: { status: OrderStatus.CANCELLED },
+        }),
+        this.ordersRepository.count({
+          where: { status: OrderStatus.FAIL },
         }),
       ]);
 
@@ -127,6 +132,7 @@ export class MetricsService {
         orders_hold_total: hold,
         orders_paid_total: paid,
         orders_cancelled_total: cancelled,
+        orders_failed_total: failed,
       };
     } catch (error) {
       console.error('Failed to collect order metrics:', error);
@@ -135,6 +141,7 @@ export class MetricsService {
         orders_hold_total: 0,
         orders_paid_total: 0,
         orders_cancelled_total: 0,
+        orders_failed_total: 0,
       };
     }
   }
@@ -220,6 +227,11 @@ export class MetricsService {
     );
     lines.push('# TYPE orders_cancelled_total counter');
     lines.push(`orders_cancelled_total ${metrics.orders_cancelled_total}`);
+    lines.push('');
+
+    lines.push('# HELP orders_failed_total Total number of failed orders');
+    lines.push('# TYPE orders_failed_total counter');
+    lines.push(`orders_failed_total ${metrics.orders_failed_total}`);
     lines.push('');
 
     // Payment metrics

@@ -3,13 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthFacade } from '../../application/auth/facades/auth.facade';
-import { AuthService } from '../../application/auth/services/auth.service';
-import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { JwtAuthGuard, JwtStrategy } from '@auth';
 import { User } from '../../domain/auth/entities/user.entity';
-import { JwtRefreshStrategy } from '../../infrastructure/auth/strategies/jwt-refresh.strategy';
-import { JwtStrategy } from '../../infrastructure/auth/strategies/jwt.strategy';
-import { AuthController } from './controllers/auth.controller';
 
 @Module({
   imports: [
@@ -24,14 +19,7 @@ import { AuthController } from './controllers/auth.controller';
       }),
     }),
   ],
-  controllers: [AuthController],
-  providers: [
-    AuthService,
-    AuthFacade,
-    JwtStrategy,
-    JwtRefreshStrategy,
-    JwtAuthGuard,
-  ],
-  exports: [AuthFacade, JwtAuthGuard],
+  providers: [JwtStrategy, JwtAuthGuard],
+  exports: [JwtAuthGuard],
 })
 export class AuthModule {}

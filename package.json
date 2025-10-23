@@ -7,11 +7,12 @@
     "node": "20.19.x"
   },
   "scripts": {
-    "dev": "concurrently -k -n api,web,pay -c blue,magenta,green \"pnpm --dir api start:dev\" \"pnpm --dir web dev --host 127.0.0.1\" \"pnpm --dir pay dev\"",
+    "dev": "concurrently -k -n gateway,api,web,pay -c cyan,blue,magenta,green \"pnpm --dir gateway start:dev\" \"pnpm --dir api start:dev\" \"pnpm --dir web dev --host 127.0.0.1\" \"pnpm --dir pay dev\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "workspaces": [
     "api",
+    "gateway",
     "web",
     "pay"
   ],

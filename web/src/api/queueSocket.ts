@@ -1,5 +1,5 @@
 import { io, type Socket } from 'socket.io-client'
-import { API_BASE_URL } from './http'
+import { GATEWAY_BASE_URL } from './http'
 
 let queueSocket: Socket | null = null
 
@@ -26,8 +26,9 @@ export const createQueueSocket = (handlers: QueueSocketHandlers): Socket => {
     return queueSocket
   }
 
-  const endpoint = `${API_BASE_URL.replace(/\/$/, '')}/queue`
-  queueSocket = io(endpoint, {
+  const endpoint = GATEWAY_BASE_URL.replace(/\/$/, '')
+  queueSocket = io(`${endpoint}/queue`, {
+    path: '/socket.io/',
     transports: ['websocket'],
     withCredentials: true,
     autoConnect: true,
