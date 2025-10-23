@@ -13,11 +13,14 @@ RUN pnpm install --filter web... --frozen-lockfile
 
 FROM install AS build
 COPY . .
-ARG VITE_API_BASE_URL=https://api.highgarden.cloud
-ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 RUN pnpm --filter web... build
 
 FROM nginx:1.27-alpine AS runtime
 COPY nginx/default.web.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /workspace/web/dist /usr/share/nginx/html
+COPY docker/web-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
 EXPOSE 80
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD [ "nginx", "-g", "daemon off;" ]

@@ -18,10 +18,10 @@ RUN pnpm --filter gateway... build
 
 FROM node:20-alpine AS runtime
 WORKDIR /app
-ENV NODE_ENV=dev
+ENV NODE_ENV=production
 COPY --from=build /workspace/gateway/dist ./dist
 COPY --from=install /workspace/node_modules ../node_modules
 COPY --from=install /workspace/gateway/node_modules ./node_modules
 COPY gateway/package.json ./package.json
 EXPOSE 3000
-CMD [ "node", "dist/main.js" ]
+CMD [ "node", "dist/gateway/src/main.js" ]
