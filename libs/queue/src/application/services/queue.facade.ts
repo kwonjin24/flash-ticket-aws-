@@ -3,7 +3,7 @@ import { QueueTicketService } from './queue-ticket.service';
 
 @Injectable()
 export class QueueFacade {
-  constructor(private readonly queueTicketService: QueueTicketService) {}
+  constructor(private readonly queueTicketService: QueueTicketService) { }
 
   enqueue(userId: string, eventId: string) {
     return this.queueTicketService.enqueue(userId, eventId);
@@ -15,5 +15,9 @@ export class QueueFacade {
 
   enter(userId: string, ticketId: string, gateToken: string) {
     return this.queueTicketService.enter(userId, ticketId, gateToken);
+  }
+
+  getPromotionIntervalMs() {
+    return this.queueTicketService.getPromotionIntervalMs();
   }
 }
