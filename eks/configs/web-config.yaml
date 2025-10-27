@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-config
+  namespace: flash-tickets
+data:
+  NODE_ENV: "production"
+  LOAD_ENV_FILES: "false"
+  API_BASE_URL: "https://api.highgarden.cloud"
+  GATEWAY_BASE_URL: "https://gateway.highgarden.cloud"

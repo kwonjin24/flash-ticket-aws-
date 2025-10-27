@@ -51,4 +51,10 @@ export class QueueController {
     await this.queueFacade.enter(user.id, dto.ticketId, dto.gateToken);
     return { status: 'entered' };
   }
+
+  @Get('healthz')
+  async check(): Promise<{ status: string }> {
+    await this.queueFacade.getPromotionIntervalMs();
+    return { status: 'ok' };
+  }
 }

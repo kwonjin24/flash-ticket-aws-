@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-config
+  namespace: flash-tickets
+data:
+  NODE_ENV: "production"
+  LOAD_ENV_FILES: "false"
+  PORT: "4000"
+  PAYMENT_REQUEST_QUEUE: "payments_request"
+  PAYMENT_RESULT_QUEUE: "payments_result"
+  REDIS_HOST: "master.flash-tickets-redis.rrzszk.apn2.cache.amazonaws.com"
+  REDIS_PORT: "6379"
+  JWT_ACCESS_EXP: "20m"
+  JWT_REFRESH_EXP: "7d"
+  QUEUE_READY_CAPACITY: "400"
+  QUEUE_GATE_TOKEN_TTL_MS: "1200000"
+  QUEUE_PROMOTION_INTERVAL_MS: "200"
+  QUEUE_WS_REFRESH_MS: "1000"
+  CLIENT_URL: "https://www.highgarden.cloud"

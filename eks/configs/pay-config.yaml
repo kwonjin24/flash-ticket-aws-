@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pay-config
+  namespace: flash-tickets
+data:
+  NODE_ENV: "production"
+  LOAD_ENV_FILES: "false"
+  PAYMENT_REQUEST_QUEUE: "payments_request"
+  PAYMENT_RESULT_QUEUE: "payments_result"
+  PAYMENT_SUCCESS_RATE: "0.85"
+  PAYMENT_PROCESSING_MIN_MS: "1000"
+  PAYMENT_PROCESSING_MAX_MS: "4000"
+

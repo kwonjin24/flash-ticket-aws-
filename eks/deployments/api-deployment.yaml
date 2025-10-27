@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flash-api
+  namespace: flash-tickets
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flash-api
+  template:
+    metadata:
+      labels:
+        app: flash-api
+    spec:
+      containers:
+        - name: api
+          image: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/api:amd64
+          ports:
+            - containerPort: 4000
+          envFrom:
+            - secretRef:
+                name: api-secret
+            - configMapRef:
+                name: api-config
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 20
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flash-api
+  namespace: flash-tickets
+spec:
+  selector:
+    app: flash-api
+  ports:
+    - name: http
+      port: 4000
+      targetPort: 4000
