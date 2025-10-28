@@ -2,7 +2,7 @@
 
 ## 3-1. API Deployment & Service
 - 이미지: `flash-tickets-api:amd64` (필요 시 리전/계정 경로 포함)
-- 네임스페이스: `flash-tickets`
+- 네임스페이스: `flash-ticket`
 - Secret / ConfigMap: `api-secret`, `api-config`
 - 예시 파일: `deployments/api-deployment.yaml`
 - 적용: `kubectl apply -f deployments/api-deployment.yaml`
@@ -28,17 +28,17 @@
   ```bash
   kubectl set image deployment/flash-gateway \
     gateway=339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/gateway:<NEW_TAG> \
-    -n flash-tickets
+    -n flash-ticket
   ```
 - 롤링 업데이트 진행 상황 확인:
   ```bash
-  kubectl rollout status deployment/flash-gateway -n flash-tickets
-  kubectl get pods -n flash-tickets
+  kubectl rollout status deployment/flash-gateway -n flash-ticket
+  kubectl get pods -n flash-ticket
   ```
 - 문제가 있으면 롤백:
   ```bash
-  kubectl rollout undo deployment/flash-gateway -n flash-tickets
+  kubectl rollout undo deployment/flash-gateway -n flash-ticket
   ```
 - 다른 서비스(API, Web 등)도 동일한 방식으로 이미지를 교체할 수 있습니다.
 
-> 각 매니페스트에는 `imagePullSecrets`, `resources`, `liveness/readinessProbe` 등을 필요한 수준으로 설정하세요. 작성 후 `kubectl apply -f deployments/ -n flash-tickets`로 배포합니다. 이후 `kubectl get pods -n flash-tickets`로 상태를 확인합니다.
+> 각 매니페스트에는 `imagePullSecrets`, `resources`, `liveness/readinessProbe` 등을 필요한 수준으로 설정하세요. 작성 후 `kubectl apply -f deployments/ -n flash-ticket`로 배포합니다. 이후 `kubectl get pods -n flash-ticket`로 상태를 확인합니다.

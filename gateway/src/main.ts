@@ -80,13 +80,13 @@ async function bootstrap() {
       console.log(`[Gateway] Health check endpoint: http://${host}:${port}/queue/healthz`);
     });
 
-    // Additional server event handlers for monitoring
-    httpServer.on('connection', (socket) => {
-      console.log(`[Gateway] Connection established: ${socket.remoteAddress}:${socket.remotePort}`);
-      socket.on('close', () => {
-        console.log(`[Gateway] Connection closed: ${socket.remoteAddress}:${socket.remotePort}`);
-      });
-    });
+    // Connection monitoring disabled to reduce log noise
+    // httpServer.on('connection', (socket) => {
+    //   console.log(`[Gateway] Connection established: ${socket.remoteAddress}:${socket.remotePort}`);
+    //   socket.on('close', () => {
+    //     console.log(`[Gateway] Connection closed: ${socket.remoteAddress}:${socket.remotePort}`);
+    //   });
+    // });
 
   } catch (error) {
     console.error(`[Gateway] ❌ Bootstrap failed:`, error);

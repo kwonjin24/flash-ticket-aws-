@@ -142,11 +142,26 @@ export class PaymentQueueService implements OnModuleInit, OnModuleDestroy {
   }
 
   private getAmqpUrl(): string {
-    const directUrl = this.configService.get<string>('RABBITMQ_URL');
+    const directUrl =
+      this.configService.get<string>('RABBITMQ_URL') ?? process.env.RABBITMQ_URL;
     if (directUrl) {
-      return directUrl;
+      return this.normalizeRabbitUrl(directUrl);
     }
 
+    if (this.isProduction()) {
+      throw new Error(
+        '[PaymentQueueService] RABBITMQ_URL is required in production environments',
+      );
+    }
+
+    this.logger.warn(
+      'RABBITMQ_URL not set; falling back to legacy amqp:// connection (no TLS).',
+    );
+
+    return this.normalizeRabbitUrl(this.buildLegacyAmqpUrl());
+  }
+
+  private buildLegacyAmqpUrl(): string {
     const host = this.configService.get<string>('RABBITMQ_HOST') ?? '127.0.0.1';
     const port = Number(this.configService.get<number>('RABBITMQ_PORT') ?? 5672);
     const user = this.configService.get<string>('RABBITMQ_USER') ?? 'guest';
@@ -159,6 +174,32 @@ export class PaymentQueueService implements OnModuleInit, OnModuleDestroy {
     const encodedVhost = encodeURIComponent(vhost);
 
     return `amqp://${encodedUser}:${encodedPass}@${host}:${port}/${encodedVhost}`;
+  }
+
+  private normalizeRabbitUrl(url: string): string {
+    const trimmed = url.trim();
+    if (trimmed.startsWith('amqps://')) {
+      return trimmed;
+    }
+
+    const shouldForceTls =
+      (this.configService.get<string>('RABBITMQ_FORCE_TLS') ??
+        process.env.RABBITMQ_FORCE_TLS ??
+        (this.isProduction() ? 'true' : 'false')) !== 'false';
+
+    if (shouldForceTls && trimmed.startsWith('amqp://')) {
+      return trimmed.replace(/^amqp:/, 'amqps:');
+    }
+
+    return trimmed;
+  }
+
+  private isProduction(): boolean {
+    const env =
+      this.configService.get<string>('NODE_ENV') ??
+      process.env.NODE_ENV ??
+      'local';
+    return env === 'production';
   }
 
   private getRequestQueueName(): string {

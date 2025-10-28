@@ -10,6 +10,7 @@ COPY api/package.json api/package.json
 COPY gateway/package.json gateway/package.json
 COPY web/package.json web/package.json
 COPY pay/package.json pay/package.json
+COPY libs/auth/package.json libs/auth/package.json
 RUN pnpm install --frozen-lockfile
 
 FROM install AS build

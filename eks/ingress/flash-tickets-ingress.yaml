@@ -2,14 +2,23 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: flash-ingress
-  namespace: flash-tickets
+  namespace: flash-ticket
   annotations:
-    spec.ingressClassName: alb
+    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
     alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ap-northeast-2:339712948064:certificate/00596951-525b-4bdd-8451-a7a1081fa19b,arn:aws:acm:ap-northeast-2:339712948064:certificate/8f0b62ea-3544-48c2-824d-bea976bb49af'
     alb.ingress.kubernetes.io/subnets: subnet-025f2ee8789712d88,subnet-041b5e3307bdb4253
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/success-codes: '200'
+    alb.ingress.kubernetes.io/target-group-attributes: deregistration_delay.timeout_seconds=30
+    alb.ingress.kubernetes.io/tags: Environment=production,Service=flash-tickets
 spec:
   rules:
     - host: api.highgarden.cloud

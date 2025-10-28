@@ -2,11 +2,11 @@
 
 ## 2-1. 네임스페이스 생성
 ```bash
-kubectl create namespace flash-tickets
+kubectl create namespace flash-ticket
 ```
 이미 존재하면 아래 명령으로 확인만 합니다.
 ```bash
-kubectl get ns flash-tickets
+kubectl get ns flash-ticket
 ```
 
 ## 2-2. Secret / ConfigMap 작성 계획
@@ -26,7 +26,7 @@ configs/
 - Secret 항목 (예: `api-secret.yaml`)
   - `DATABASE_URL`
   - `JWT_ACCESS_SECRET`
-  - `RABBITMQ_URL` 혹은 `RABBITMQ_{HOST,PORT,USER,PASSWORD,VHOST}`
+  - `RABBITMQ_URL` (필수, `amqps://` 권장)
 - ConfigMap 항목 (예: `api-config.yaml`)
   - `PORT` (선택)
   - `PAYMENT_REQUEST_QUEUE`, `PAYMENT_RESULT_QUEUE`
@@ -55,16 +55,16 @@ configs/
   - `PAYMENT_SUCCESS_RATE`
   - `PAYMENT_PROCESSING_MIN_MS`, `PAYMENT_PROCESSING_MAX_MS`
 - Secret
-  - `RABBITMQ_URL` 또는 host/port/user/password
+  - `RABBITMQ_URL`
 
 ## 2-3. 적용
 작성한 YAML을 아래 순서로 적용합니다.
 ```bash
-kubectl apply -f configs/ -n flash-tickets
+kubectl apply -f configs/ -n flash-ticket
 ```
 적용 후 리소스를 확인합니다.
 ```bash
-kubectl get secret,cm -n flash-tickets
+kubectl get secret,cm -n flash-ticket
 ```
 
 > 다음 단계에서는 Deployment/Service 매니페스트를 작성합니다.

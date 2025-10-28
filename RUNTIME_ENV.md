@@ -10,7 +10,8 @@
 - 🚨 `DATABASE_URL` – PostgreSQL 접속 URL
 - 🚨 `JWT_ACCESS_SECRET` – Gateway에서 발급한 Access 토큰 검증용 시크릿
 - ⚙️ `PORT` – HTTP 리스닝 포트 (기본 `4000`)
-- ⚙️ `RABBITMQ_HOST` / `RABBITMQ_PORT` / `RABBITMQ_USER` / `RABBITMQ_PASSWORD` / `RABBITMQ_VHOST`
+- 🚨 `RABBITMQ_URL` – RabbitMQ 연결 URL (`amqps://` 권장)
+- ⚙️ `RABBITMQ_FORCE_TLS` – `true`일 경우 `amqp://` URL도 TLS로 강제 변환 (기본값: production에서만 `true`)
 - ⚙️ `PAYMENT_REQUEST_QUEUE`, `PAYMENT_RESULT_QUEUE` – 결제 요청/결과 큐 이름 (기본 `payments_request`, `payments_result`)
 - ⚙️ `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD` – 모니터링에 사용하는 Redis 접속 정보 (기본 `localhost:6379`)
 
@@ -28,7 +29,8 @@
 
 ## Pay 워커 (Mock 결제)
 - 🚨 `PAYMENT_REQUEST_QUEUE`, `PAYMENT_RESULT_QUEUE` – API와 동일한 큐 이름
-- ⚙️ `RABBITMQ_HOST` / `RABBITMQ_PORT` / `RABBITMQ_USER` / `RABBITMQ_PASSWORD` / `RABBITMQ_VHOST`
+- 🚨 `RABBITMQ_URL` – RabbitMQ 연결 URL (`amqps://` 권장)
+- ⚙️ `RABBITMQ_FORCE_TLS` – 필요 시 TLS 강제 여부 제어 (API와 동일 로직)
 - ⚙️ `PAYMENT_SUCCESS_RATE` – 성공 확률(0~1, 기본 `0.85`)
 - ⚙️ `PAYMENT_PROCESSING_MIN_MS`, `PAYMENT_PROCESSING_MAX_MS` – 처리 소요 시간 범위(ms, 기본 `1000`~`4000`)
 

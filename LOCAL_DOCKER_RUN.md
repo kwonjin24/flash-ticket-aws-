@@ -105,10 +105,7 @@ docker run --rm -d \
   -p 4000:4000 \
   -e DATABASE_URL=postgres://flash_tickets_app:flash_tickets_app@localhost:5432/flash_tickets \
   -e JWT_ACCESS_SECRET=replace-with-access-secret \
-  -e RABBITMQ_HOST=localhost \
-  -e RABBITMQ_PORT=5672 \
-  -e RABBITMQ_USER=guest \
-  -e RABBITMQ_PASSWORD=guest \
+  -e RABBITMQ_URL=amqp://guest:guest@localhost:5672/ \
   -e REDIS_HOST=localhost \
   -e REDIS_PORT=6379 \
   -e PAYMENT_REQUEST_QUEUE=payments_request \

@@ -293,7 +293,7 @@
   kind: Ingress
   metadata:
     name: flash-ingress
-    namespace: flash-tickets
+    namespace: flash-ticket
     annotations:
       kubernetes.io/ingress.class: alb
       alb.ingress.kubernetes.io/scheme: internet-facing
@@ -364,11 +364,11 @@
 - Ingress 디렉토리 생성(없다면): `mkdir -p eks/ingress`
 - 리소스 적용:
   ```bash
-  kubectl apply -f eks/configs/ -n flash-tickets
-  kubectl apply -f eks/deployments/ -n flash-tickets
+  kubectl apply -f eks/configs/ -n flash-ticket
+  kubectl apply -f eks/deployments/ -n flash-ticket
   kubectl apply -f eks/ingress/flash-ingress.yaml
   ```
-- ALB 주소 확인: `kubectl get ingress flash-ingress -n flash-tickets`
+- ALB 주소 확인: `kubectl get ingress flash-ingress -n flash-ticket`
 - Route 53에서 ALB DNS를 CNAME으로 연결하고 SSL 인증서(ACM)를 DNS에 반영합니다.
 - 웹/Gateway/API 접속 및 헬스체크 경로(`/health`)가 모두 성공하는지 검증하세요.
 

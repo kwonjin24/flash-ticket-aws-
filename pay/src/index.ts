@@ -45,7 +45,10 @@ const connectWithRetry = async (
       throw error;
     }
     const delay = INITIAL_RETRY_DELAY_MS * Math.pow(2, attempt - 1);
-    logger.warn(`[Pay] ⚠️ Connection failed, retrying in ${delay}ms...`, error);
+    logger.warn(`[Pay] ⚠️ Connection failed, retrying in ${delay}ms...`);
+    if (error instanceof Error) {
+      logger.error(`[Pay] Connection error details: ${error.message}`, error);
+    }
     await sleep(delay);
     return connectWithRetry(url, attempt + 1);
   }

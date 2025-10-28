@@ -79,13 +79,13 @@ async function bootstrap() {
       console.log(`[API] Health check endpoint: http://${host}:${port}/health`);
     });
 
-    // Additional server event handlers for monitoring
-    httpServer.on('connection', (socket) => {
-      console.log(`[API] Connection established: ${socket.remoteAddress}:${socket.remotePort}`);
-      socket.on('close', () => {
-        console.log(`[API] Connection closed: ${socket.remoteAddress}:${socket.remotePort}`);
-      });
-    });
+    // Connection monitoring disabled to reduce log noise (see gateway service for reference)
+    // httpServer.on('connection', (socket) => {
+    //   console.log(`[API] Connection established: ${socket.remoteAddress}:${socket.remotePort}`);
+    //   socket.on('close', () => {
+    //     console.log(`[API] Connection closed: ${socket.remoteAddress}:${socket.remotePort}`);
+    //   });
+    // });
 
   } catch (error) {
     console.error(`[API] ❌ Bootstrap failed:`, error);

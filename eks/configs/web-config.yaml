@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: web-config
-  namespace: flash-tickets
+  namespace: flash-ticket
 data:
   NODE_ENV: "production"
   LOAD_ENV_FILES: "false"

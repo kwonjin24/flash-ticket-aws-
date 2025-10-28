@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: api-config
-  namespace: flash-tickets
+  namespace: flash-ticket
 data:
   NODE_ENV: "production"
   LOAD_ENV_FILES: "false"
@@ -11,6 +11,8 @@ data:
   PAYMENT_RESULT_QUEUE: "payments_result"
   REDIS_HOST: "master.flash-tickets-redis.rrzszk.apn2.cache.amazonaws.com"
   REDIS_PORT: "6379"
+  REDIS_TLS: "true"
+  DATABASE_SSL_MODE: "disable"
   JWT_ACCESS_EXP: "20m"
   JWT_REFRESH_EXP: "7d"
   QUEUE_READY_CAPACITY: "400"
