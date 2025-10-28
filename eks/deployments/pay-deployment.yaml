@@ -17,8 +17,23 @@ spec:
         - name: pay
           image: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/pay:amd64
           imagePullPolicy: Always
+          ports:
+            - containerPort: 3100
           envFrom:
             - secretRef:
                 name: pay-secret
             - configMapRef:
                 name: pay-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flash-pay
+  namespace: flash-ticket
+spec:
+  selector:
+    app: flash-pay
+  ports:
+    - name: health
+      port: 3100
+      targetPort: 3100

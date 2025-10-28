@@ -63,6 +63,27 @@ export class QueueTicketService {
     return this.redis.zcard(QUEUE_KEY(eventId));
   }
 
+  async getQueueLengths(): Promise<
+    Array<{ eventId: string; queueLength: number }>
+  > {
+    const eventIds = await this.redis.smembers(EVENTS_SET_KEY);
+    const uniqueEventIds = new Set<string>(eventIds ?? []);
+    uniqueEventIds.add(GLOBAL_QUEUE_EVENT_ID);
+
+    const orderedEventIds = Array.from(uniqueEventIds);
+    const pipeline = this.redis.pipeline();
+    for (const id of orderedEventIds) {
+      pipeline.zcard(QUEUE_KEY(id));
+    }
+
+    const results = await pipeline.exec();
+    return orderedEventIds.map((eventId, index) => {
+      const [, value] = results?.[index] ?? [];
+      const queueLength = typeof value === 'number' ? value : 0;
+      return { eventId, queueLength };
+    });
+  }
+
   async enqueue(
     userId: string,
     eventId: string,
