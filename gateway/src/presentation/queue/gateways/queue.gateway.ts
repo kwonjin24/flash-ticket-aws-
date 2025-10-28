@@ -18,6 +18,12 @@ import {
 
 const DEFAULT_REFRESH_INTERVAL_MS = 3000;
 
+const ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'https://www.highgarden.cloud',
+  'https://dev.highgarden.cloud',
+];
+
 type ClientContext = {
   eventId?: string;
   ticketId?: string;
@@ -35,7 +41,16 @@ type LeaveQueuePayload = {
 
 @WebSocketGateway({
   namespace: 'queue',
-  cors: { origin: '*', credentials: true },
+  cors: {
+    origin: (origin, callback) => {
+      if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  },
 })
 export class QueueGateway
   implements OnGatewayConnection, OnGatewayDisconnect
