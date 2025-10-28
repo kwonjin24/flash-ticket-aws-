@@ -27,12 +27,7 @@ pay/
 
 | 변수                          | 설명             | 기본값                |
 | --------------------------- | -------------- | ------------------ |
-| `RABBITMQ_URL`              | AMQP 연결 URL (우선 적용) | 자동 조합 (아래 값) |
-| `RABBITMQ_HOST`             | RabbitMQ 호스트      | `127.0.0.1`        |
-| `RABBITMQ_PORT`             | RabbitMQ 포트       | `5672`             |
-| `RABBITMQ_USER`             | RabbitMQ 사용자      | `guest`            |
-| `RABBITMQ_PASSWORD`         | RabbitMQ 비밀번호    | `guest`            |
-| `RABBITMQ_VHOST`            | RabbitMQ Virtual Host | `/`               |
+| `RABBITMQ_URL`              | AMQP 연결 URL (`amqps://` 권장) | `amqp://guest:guest@localhost:5672/` |
 | `PAYMENT_REQUEST_QUEUE`     | 결제 요청 큐 이름     | `payments_request` |
 | `PAYMENT_RESULT_QUEUE`      | 결과 게시 큐 이름     | `payments_result`  |
 | `PAYMENT_SUCCESS_RATE`      | 결제 성공 확률(0–1)  | `0.85`             |

@@ -1,6 +1,6 @@
 # Flash Tickets 개발 서버 배포 가이드
 
-이 문서는 EC2 한 대에서 Flash Tickets 서비스의 개발 환경을 컨테이너로 실행하는 시나리오를 정리합니다. 프런트엔드는 별도로 빌드된 정적 파일을 사용하며, API 서버와 의존성은 모두 Docker 컨테이너로 구성됩니다.
+이 문서는 EC2 한 대에서 Flash Tickets 서비스의 개발 환경을 컨테이너로 실행하는 시나리오를 정리합니다. 프런트엔드는 별도로 빌드된 정적 파일을 사용하며, REST API 서버와 대기열 전용 Queue Gateway, 그리고 의존성은 모두 Docker 컨테이너로 구성됩니다.
 
 ## 1. 사전 준비
 
@@ -31,7 +31,8 @@ docker --version
 컨테이너별 데이터/로그를 `/data/docker` 아래에 저장합니다.
 
 ```bash
-sudo mkdir -p /data/docker/{redis,rabbitmq,api,pay,nginx}/data
+sudo mkdir -p /data/docker/{redis,rabbitmq,api,queue,pay,nginx}/data
+sudo mkdir -p /data/docker/{api,queue,pay}/logs
 sudo mkdir -p /data/docker/nginx/html
 sudo chown -R $USER:$USER /data/docker
 ```
@@ -71,7 +72,7 @@ docker network create backend || true
 
 source /data/docker/.env.dev
 
-docker rm -f flash-tickets-nginx flash-tickets-api flash-tickets-pay flash-tickets-rabbitmq flash-tickets-redis 2>/dev/null || true
+docker rm -f flash-tickets-nginx flash-tickets-api flash-tickets-queue flash-tickets-pay flash-tickets-rabbitmq flash-tickets-redis 2>/dev/null || true
 
 docker run -d --name flash-tickets-redis \
   --network backend \
@@ -97,6 +98,12 @@ docker run -d --name flash-tickets-api \
   -v /data/docker/api/logs:/app/logs \
   flash-tickets-api:dev
 
+docker run -d --name flash-tickets-queue \
+  --network backend \
+  --env-file /data/docker/.env.dev \
+  -v /data/docker/queue/logs:/app/logs \
+  flash-tickets-queue:dev
+
 docker run -d --name flash-tickets-pay \
   --network backend \
   --env-file /data/docker/.env.dev \
@@ -112,6 +119,7 @@ docker run -d --name flash-tickets-nginx \
 # 5) 상태 확인
 docker ps
 docker logs -f flash-tickets-api
+docker logs -f flash-tickets-queue
 ```
 
 > **중요**: FTP 전송 시 반드시 **바이너리 모드(binary mode)**를 사용해야 합니다. 텍스트 모드로 전송하면 파일이 손상됩니다.
@@ -134,6 +142,9 @@ docker logs -f flash-tickets-api
 
 > 🔐 **주의**: `.env.dev`에는 민감 정보가 포함될 수 있으므로 버전 관리에서 제외되어야 합니다.
 
+> 💡 **ECS 등 런타임 환경변수 사용 시**  
+> 컨테이너 실행 시 `LOAD_ENV_FILES=false`를 함께 전달하면(`-e LOAD_ENV_FILES=false`) 애플리케이션이 `.env` 파일 로딩을 건너뛰고 런타임에 주입된 환경변수만 사용합니다.
+
 ## 3. 정적 프런트 배포
 
 - CI 또는 로컬 환경에서 `web` 워크스페이스를 빌드합니다.
@@ -153,6 +164,7 @@ pnpm --dir web build
 | 파일 | 역할 |
 | --- | --- |
 | `Dockerfile.api` | NestJS API를 빌드하고 `node dist/main.js`로 실행 |
+| `Dockerfile.queue` | Queue Gateway(WebSocket/Queue API)를 빌드하고 `node dist/main.js`로 실행 |
 | `Dockerfile.pay` | RabbitMQ mock 결제 워커를 빌드/실행 |
 | `nginx/Dockerfile` | Nginx reverse proxy + 정적 파일 서빙 |
 | `docker-compose.dev.yml` | 전체 스택(redis, rabbitmq, api, pay, nginx) 오케스트레이션 |
@@ -164,6 +176,9 @@ pnpm --dir web build
 ```bash
 # API 이미지 빌드
 docker build -t flash-tickets-api:dev -f Dockerfile.api .
+
+# Queue Gateway 이미지 빌드
+docker build -t flash-tickets-queue:dev -f Dockerfile.queue .
 
 # Mock 결제 서버 이미지 빌드
 docker build -t flash-tickets-pay:dev -f Dockerfile.pay .
@@ -214,7 +229,7 @@ docker run -d \
 4. **API 서버**
 
 ```bash
-docker run -d \
+ docker run -d \
   --name flash-tickets-api \
   --network backend \
   --env-file .env.dev \
@@ -222,7 +237,18 @@ docker run -d \
   flash-tickets-api:dev
 ```
 
-5. **Mock 결제 서버(pay)**
+5. **Queue Gateway**
+
+```bash
+docker run -d \
+  --name flash-tickets-queue \
+  --network backend \
+  --env-file .env.dev \
+  -v /data/docker/queue/logs:/app/logs \
+  flash-tickets-queue:dev
+```
+
+6. **Mock 결제 서버(pay)**
 
 ```bash
 docker run -d \
@@ -233,7 +259,7 @@ docker run -d \
   flash-tickets-pay:dev
 ```
 
-6. **Nginx (정적 프런트 + 프록시)**
+7. **Nginx (정적 프런트 + 프록시)**
 
 ```bash
 docker run -d \
@@ -248,14 +274,15 @@ docker run -d \
 
 ```bash
 docker logs -f flash-tickets-api
+docker logs -f flash-tickets-queue
 docker logs -f flash-tickets-pay
 ```
 
 ### 4.5 컨테이너 중지 및 삭제
 
 ```bash
-docker stop flash-tickets-nginx flash-tickets-api flash-tickets-pay flash-tickets-rabbitmq flash-tickets-redis
-docker rm flash-tickets-nginx flash-tickets-api flash-tickets-pay flash-tickets-rabbitmq flash-tickets-redis
+docker stop flash-tickets-nginx flash-tickets-api flash-tickets-queue flash-tickets-pay flash-tickets-rabbitmq flash-tickets-redis
+docker rm flash-tickets-nginx flash-tickets-api flash-tickets-queue flash-tickets-pay flash-tickets-rabbitmq flash-tickets-redis
 docker network rm backend
 ```
 
@@ -263,8 +290,10 @@ docker network rm backend
 
 `nginx/default.conf`는 기본적으로 다음 규칙을 제공합니다.
 
-- `/api/` → `http://api:4000/` (Nest API)
-- `/socket.io/` → WebSocket Proxy → `api:4000`
+- `/api/` → `http://flash-tickets-api:4000/` (비즈니스 API)
+- `/auth/` → `http://flash-tickets-queue:4030/auth/` (로그인/토큰 발급)
+- `/queue/` → `http://flash-tickets-queue:4030/queue/` (Queue Gateway REST)
+- `/socket.io/` → WebSocket Proxy → `flash-tickets-queue:4030`
 - `/*` → 정적 파일 (SPA)
 
 HTTPS(ACM) 적용 시 ALB 또는 CloudFront에서 SSL 종료 후 Nginx로 트래픽을 전달하는 구조를 권장합니다.

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flash-pay
+  namespace: flash-ticket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flash-pay
+  template:
+    metadata:
+      labels:
+        app: flash-pay
+    spec:
+      containers:
+        - name: pay
+          image: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/pay:amd64
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: pay-secret
+            - configMapRef:
+                name: pay-config

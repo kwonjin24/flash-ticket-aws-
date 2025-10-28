@@ -3,7 +3,7 @@ import { PaymentsFacade } from '../../../application/payments/facades/payments.f
 import { CreatePaymentDto } from '../../../application/payments/dto/create-payment.dto';
 import { CompletePaymentDto } from '../../../application/payments/dto/complete-payment.dto';
 import { CurrentUser } from '../../../common/decorators/current-user.decorator';
-import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '@auth/common/guards/jwt-auth.guard';
 import { User } from '../../../domain/auth/entities/user.entity';
 import { CreatePaymentRequestDto } from '../dto/create-payment-request.dto';
 import { PaymentCallbackRequestDto } from '../dto/payment-callback-request.dto';

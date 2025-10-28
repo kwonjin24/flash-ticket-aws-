@@ -49,31 +49,11 @@ spec:
             configMapKeyRef:
               name: app-config
               key: REDIS_PASSWORD
-        - name: RABBITMQ_HOST
+        - name: RABBITMQ_URL
           valueFrom:
             configMapKeyRef:
               name: app-config
-              key: RABBITMQ_HOST
-        - name: RABBITMQ_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: app-config
-              key: RABBITMQ_PORT
-        - name: RABBITMQ_USER
-          valueFrom:
-            configMapKeyRef:
-              name: app-config
-              key: RABBITMQ_USER
-        - name: RABBITMQ_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              name: app-config
-              key: RABBITMQ_PASSWORD
-        - name: RABBITMQ_VHOST
-          valueFrom:
-            configMapKeyRef:
-              name: app-config
-              key: RABBITMQ_VHOST
+              key: RABBITMQ_URL
         - name: PAYMENT_REQUEST_QUEUE
           valueFrom:
             configMapKeyRef:

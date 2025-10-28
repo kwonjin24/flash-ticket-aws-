@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
 import {
   HealthService,
   type HealthCheckResult,
@@ -10,6 +10,13 @@ export class HealthController {
 
   @Get()
   async checkHealth(): Promise<HealthCheckResult> {
-    return this.healthService.check();
+    const result = await this.healthService.check();
+
+    // If health check fails, return HTTP 503 Service Unavailable
+    if (result.status === 'error') {
+      throw new HttpException(result, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    return result;
   }
 }

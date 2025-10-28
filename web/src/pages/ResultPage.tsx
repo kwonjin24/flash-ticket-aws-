@@ -3,12 +3,12 @@ import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import { http } from '../api/http'
 import { CenteredPage } from '../components/CenteredPage'
-import { useOrderStore, type PaymentStatus } from '../store/order'
+import { useOrderStore, type PaymentStatus, type OrderStatus } from '../store/order'
 import { useQueueStore } from '../store/queue'
 
 type OrderDetail = {
   id: string
-  status: 'HOLD' | 'PAID' | 'CANCELLED' | 'EXPIRED'
+  status: OrderStatus
   qty: number
   amount: number
   eventId: string
@@ -62,6 +62,8 @@ export const ResultPage = () => {
         return '취소됨'
       case 'EXPIRED':
         return '만료됨'
+      case 'FAIL':
+        return '결제 실패'
       default:
         return status
     }
@@ -77,7 +79,7 @@ export const ResultPage = () => {
     if (orderState === 'PAID') {
       return '결제 완료'
     }
-    if (orderState === 'CANCELLED' || orderState === 'EXPIRED') {
+    if (orderState === 'CANCELLED' || orderState === 'EXPIRED' || orderState === 'FAIL') {
       return '결제 실패'
     }
     if (status === 'REQ') {

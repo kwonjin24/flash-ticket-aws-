@@ -2,6 +2,21 @@ import dotenv from 'dotenv';
 import path from 'node:path';
 
 const loadEnvironment = () => {
+  const shouldLoadEnvFiles =
+    (process.env.LOAD_ENV_FILES ?? 'true').toLowerCase() !== 'false';
+  if (!shouldLoadEnvFiles) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.info(
+        '[PayConfig] LOAD_ENV_FILES=false, runtime environment variables only',
+      );
+    }
+    return;
+  }
+
+  if (process.env.NODE_ENV !== 'test') {
+    console.info('[PayConfig] Loading environment files as fallback');
+  }
+
   const env = process.env.NODE_ENV ?? 'local';
   const candidates = [
     `.env.${env}.local`,
@@ -41,11 +56,24 @@ const parseNumber = (value: string | undefined, fallback: number): number => {
 const clamp = (value: number, min: number, max: number): number =>
   Math.min(Math.max(value, min), max);
 
-const buildAmqpUrl = (): string => {
-  if (process.env.RABBITMQ_URL) {
-    return process.env.RABBITMQ_URL;
+const normalizeRabbitUrl = (url: string): string => {
+  const trimmed = url.trim();
+  if (trimmed.startsWith('amqps://')) {
+    return trimmed;
   }
 
+  const shouldForceTls =
+    (process.env.RABBITMQ_FORCE_TLS ??
+      (process.env.NODE_ENV === 'production' ? 'true' : 'false')) !== 'false';
+
+  if (shouldForceTls && trimmed.startsWith('amqp://')) {
+    return trimmed.replace(/^amqp:/, 'amqps:');
+  }
+
+  return trimmed;
+};
+
+const buildLegacyAmqpUrl = (): string => {
   const host = process.env.RABBITMQ_HOST ?? '127.0.0.1';
   const port = parseNumber(process.env.RABBITMQ_PORT, 5672);
   const user = process.env.RABBITMQ_USER ?? 'guest';
@@ -57,6 +85,24 @@ const buildAmqpUrl = (): string => {
   const encodedVhost = encodeURIComponent(vhost);
 
   return `amqp://${encodedUser}:${encodedPass}@${host}:${port}/${encodedVhost}`;
+};
+
+const buildAmqpUrl = (): string => {
+  if (process.env.RABBITMQ_URL) {
+    return normalizeRabbitUrl(process.env.RABBITMQ_URL);
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error(
+      '[PayConfig] RABBITMQ_URL is required in production environments',
+    );
+  }
+
+  console.warn(
+    '[PayConfig] RABBITMQ_URL not set, falling back to legacy amqp:// connection (no TLS)',
+  );
+
+  return normalizeRabbitUrl(buildLegacyAmqpUrl());
 };
 
 export const loadConfig = (): PaymentMockConfig => {

@@ -12,11 +12,7 @@ data:
   REDIS_PASSWORD: ""
 
   # RabbitMQ
-  RABBITMQ_HOST: "rabbitmq"
-  RABBITMQ_PORT: "5672"
-  RABBITMQ_USER: "guest"
-  RABBITMQ_PASSWORD: "guest"
-  RABBITMQ_VHOST: "/"
+  RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
   PAYMENT_REQUEST_QUEUE: "payments_request"
   PAYMENT_RESULT_QUEUE: "payments_result"
 

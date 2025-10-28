@@ -55,6 +55,11 @@ export class PaymentsService {
       throw new BadRequestException('Order is already paid');
     }
 
+    if (order.status === OrderStatus.FAIL) {
+      order.status = OrderStatus.HOLD;
+      await this.ordersRepository.save(order);
+    }
+
     if (order.status !== OrderStatus.HOLD) {
       throw new BadRequestException('Order is not eligible for payment');
     }
@@ -184,6 +189,11 @@ export class PaymentsService {
       if (payment.status !== PaymentStatus.FAIL) {
         payment.status = PaymentStatus.FAIL;
         await paymentsRepo.save(payment);
+      }
+
+      if (order.status !== OrderStatus.FAIL) {
+        order.status = OrderStatus.FAIL;
+        await ordersRepo.save(order);
       }
 
       return payment;

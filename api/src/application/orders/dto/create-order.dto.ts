@@ -9,9 +9,6 @@ export class CreateOrderDto {
   qty: number;
 
   @IsString()
-  gateToken: string;
-
-  @IsString()
   idempotencyKey: string;
 
   @IsString()

@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "resolvePackageJsonExports": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "isolatedModules": true,
     "declaration": true,
@@ -14,6 +13,20 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@queue/*": ["../libs/queue/src/*"],
+      "@auth": ["../libs/auth/src/index"],
+      "@auth/*": ["../libs/auth/src/*"],
+      "@api/*": ["./src/*"],
+      "@nestjs/*": ["node_modules/@nestjs/*"],
+      "class-validator": ["node_modules/class-validator"],
+      "class-transformer": ["node_modules/class-transformer"],
+      "bcryptjs": ["node_modules/bcryptjs"],
+      "typeorm": ["node_modules/typeorm"],
+      "passport-jwt": ["node_modules/passport-jwt"],
+      "ioredis": ["node_modules/ioredis"],
+      "bullmq": ["node_modules/bullmq"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,

@@ -40,17 +40,16 @@ const generateIdempotencyKey = () => {
 export const PurchasePage = () => {
   const navigate = useNavigate()
   const eventId = useQueueStore((state) => state.eventId)
-  const gateToken = useQueueStore((state) => state.gateToken)
   const setQueueState = useQueueStore((state) => state.setState)
   const setOrder = useOrderStore((state) => state.setOrder)
   const [qty, setQty] = useState(1)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!eventId || !gateToken) {
+    if (!eventId) {
       navigate('/', { replace: true })
     }
-  }, [eventId, gateToken, navigate])
+  }, [eventId, navigate])
 
   const eventQuery = useQuery({
     queryKey: ['event-detail', eventId],
@@ -78,7 +77,6 @@ export const PurchasePage = () => {
         json: { event_id: payload.eventId, qty: payload.qty },
         headers: {
           'Idempotency-Key': idemKey,
-          'X-Gate-Token': gateToken ?? '',
         },
       })
       return (await response.json()) as {
@@ -104,11 +102,11 @@ export const PurchasePage = () => {
     },
     onError: (mutationError) => {
       console.error(mutationError)
-      setError('주문 생성에 실패했습니다. 수량과 게이트 토큰을 확인해주세요.')
+      setError('주문 생성에 실패했습니다. 수량을 확인해주세요.')
     },
   })
 
-  if (!eventId || !gateToken) {
+  if (!eventId) {
     return null
   }
 
