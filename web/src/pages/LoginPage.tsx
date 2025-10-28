@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import type { LoginCredentials } from '../types'
 import { INITIAL_LOGIN_FORM } from '../utils'
-import { LoginQueueModal } from '../components/LoginQueueModal'
 import { useQueueStore, GLOBAL_QUEUE_EVENT_ID } from '../store/queue'
 import { useAuthStore } from '../store/auth'
 
@@ -103,7 +102,6 @@ export const LoginPage = ({ onLogin }: { onLogin: (credentials: LoginCredentials
           아직 계정이 없으신가요? <Link to="/auth/register">회원가입하기</Link>
         </p>
       </div>
-      <LoginQueueModal />
     </main>
   )
 }

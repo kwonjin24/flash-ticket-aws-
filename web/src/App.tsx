@@ -3,8 +3,9 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { gatewayHttp } from './api/http'
 import { AppLayout } from './components/AppLayout'
 import { AuthLayout } from './components/AuthLayout'
+import { LoginQueueModal } from './components/LoginQueueModal'
 import { useAuthStore } from './store/auth'
-import { useQueueStore } from './store/queue'
+import { useQueueStore, GLOBAL_QUEUE_EVENT_ID } from './store/queue'
 import type { LoginCredentials, RegisterCredentials, TokenDto } from './types'
 import { decodeToken } from './utils'
 import {
@@ -60,6 +61,10 @@ const RequireAuth = ({ children, allowRoles }: RequireAuthProps) => {
 
 function App() {
   const { accessToken, userUuid, setSession } = useAuthStore()
+  const resetQueue = useQueueStore((state) => state.reset)
+  const joinQueue = useQueueStore((state) => state.joinQueue)
+  const setQueuedUserId = useQueueStore((state) => state.setQueuedUserId)
+  const setPopupMode = useQueueStore((state) => state.setPopupMode)
 
   const login = async (credentials: LoginCredentials) => {
     const response = await gatewayHttp.post('auth/login', { json: credentials }).json<TokenDto>()
@@ -87,122 +92,134 @@ function App() {
       })
     }
     await login({ userId: credentials.userId, password: credentials.password })
+    resetQueue()
+    const authState = useAuthStore.getState()
+    const identifier = authState.userUuid ?? authState.userId
+    if (!identifier) {
+      throw new Error('사용자 정보를 확인할 수 없습니다.')
+    }
+    setQueuedUserId(identifier)
+    joinQueue(GLOBAL_QUEUE_EVENT_ID, identifier)
+    setPopupMode(true)
   }
 
   const isAuthenticated = Boolean(accessToken && userUuid)
 
   return (
-    <Routes>
-      <Route element={<AppLayout />}>
-        <Route
-          path="/"
-          element={
-            <RequireAuth>
-              <LandingPage />
-            </RequireAuth>
-          }
-        />
+    <>
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <LandingPage />
+              </RequireAuth>
+            }
+          />
 
-        <Route
-          path="/queue"
-          element={
-            <RequireAuth>
-              <QueuePage />
-            </RequireAuth>
-          }
-        />
+          <Route
+            path="/queue"
+            element={
+              <RequireAuth>
+                <QueuePage />
+              </RequireAuth>
+            }
+          />
 
-        <Route
-          path="/ticket"
-          element={
-            <RequireAuth>
-              <RequireGate>
-                <TicketPage />
-              </RequireGate>
-            </RequireAuth>
-          }
-        />
+          <Route
+            path="/ticket"
+            element={
+              <RequireAuth>
+                <RequireGate>
+                  <TicketPage />
+                </RequireGate>
+              </RequireAuth>
+            }
+          />
 
-        <Route
-          path="/purchase"
-          element={
-            <RequireAuth>
-              <PurchasePage />
-            </RequireAuth>
-          }
-        />
+          <Route
+            path="/purchase"
+            element={
+              <RequireAuth>
+                <PurchasePage />
+              </RequireAuth>
+            }
+          />
 
-        <Route
-          path="/orders"
-          element={
-            <RequireAuth>
-              <MyOrdersPage />
-            </RequireAuth>
-          }
-        />
+          <Route
+            path="/orders"
+            element={
+              <RequireAuth>
+                <MyOrdersPage />
+              </RequireAuth>
+            }
+          />
 
-        <Route
-          path="/payment"
-          element={
-            <RequireAuth>
-              <PaymentPage />
-            </RequireAuth>
-          }
-        />
+          <Route
+            path="/payment"
+            element={
+              <RequireAuth>
+                <PaymentPage />
+              </RequireAuth>
+            }
+          />
 
-        <Route
-          path="/result/:orderId"
-          element={
-            <RequireAuth>
-              <ResultPage />
-            </RequireAuth>
-          }
-        />
+          <Route
+            path="/result/:orderId"
+            element={
+              <RequireAuth>
+                <ResultPage />
+              </RequireAuth>
+            }
+          />
 
-        <Route
-          path="/admin/monitoring"
-          element={
-            <RequireAuth allowRoles={['ADMIN']}>
-              <AdminMonitoringPage />
-            </RequireAuth>
-          }
-        />
+          <Route
+            path="/admin/monitoring"
+            element={
+              <RequireAuth allowRoles={['ADMIN']}>
+                <AdminMonitoringPage />
+              </RequireAuth>
+            }
+          />
 
-        <Route
-          path="/admin/events"
-          element={
-            <RequireAuth allowRoles={['ADMIN']}>
-              <AdminEventsPage />
-            </RequireAuth>
-          }
-        />
+          <Route
+            path="/admin/events"
+            element={
+              <RequireAuth allowRoles={['ADMIN']}>
+                <AdminEventsPage />
+              </RequireAuth>
+            }
+          />
 
-        <Route
-          path="/admin/events/new"
-          element={
-            <RequireAuth allowRoles={['ADMIN']}>
-              <AdminEventPage />
-            </RequireAuth>
-          }
-        />
+          <Route
+            path="/admin/events/new"
+            element={
+              <RequireAuth allowRoles={['ADMIN']}>
+                <AdminEventPage />
+              </RequireAuth>
+            }
+          />
 
-        <Route
-          path="/admin/events/:eventId/edit"
-          element={
-            <RequireAuth allowRoles={['ADMIN']}>
-              <AdminEventEditPage />
-            </RequireAuth>
-          }
-        />
-      </Route>
+          <Route
+            path="/admin/events/:eventId/edit"
+            element={
+              <RequireAuth allowRoles={['ADMIN']}>
+                <AdminEventEditPage />
+              </RequireAuth>
+            }
+          />
+        </Route>
 
-      <Route element={<AuthLayout />}>
-        <Route path="/auth/login" element={<LoginPage onLogin={login} />} />
-        <Route path="/auth/register" element={<RegisterPage onRegister={register} />} />
-      </Route>
+        <Route element={<AuthLayout />}>
+          <Route path="/auth/login" element={<LoginPage onLogin={login} />} />
+          <Route path="/auth/register" element={<RegisterPage onRegister={register} />} />
+        </Route>
 
-      <Route path="*" element={<Navigate to={isAuthenticated ? '/' : '/auth/login'} replace />} />
-    </Routes>
+        <Route path="*" element={<Navigate to={isAuthenticated ? '/' : '/auth/login'} replace />} />
+      </Routes>
+      <LoginQueueModal />
+    </>
   )
 }
 
