@@ -8,4 +8,4 @@ resources:
 images:
 - name: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/pay
   newName: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/pay
-  newTag: 04da862bbf7bba54f3ef88312b81db4b8cfea4d2
+  newTag: 04a8a4aaee01888fa4f6aed397e1bb9c2529f402
