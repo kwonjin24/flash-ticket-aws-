@@ -20,4 +20,8 @@ export class QueueFacade {
   getPromotionIntervalMs() {
     return this.queueTicketService.getPromotionIntervalMs();
   }
+
+  getQueueLengths() {
+    return this.queueTicketService.getQueueLengths();
+  }
 }

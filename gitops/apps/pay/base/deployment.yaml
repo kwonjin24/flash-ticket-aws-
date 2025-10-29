@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flash-pay
+  namespace: flash-ticket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flash-pay
+  template:
+    metadata:
+      labels:
+        app: flash-pay
+    spec:
+      containers:
+        - name: pay
+          image: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/pay:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3100
+          envFrom:
+            - secretRef:
+                name: pay-secret
+            - configMapRef:
+                name: pay-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

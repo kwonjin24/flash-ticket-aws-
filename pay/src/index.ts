@@ -1,4 +1,5 @@
 import { connect, Connection, Channel, ConsumeMessage } from 'amqplib';
+import { createServer, Server } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { loadConfig } from './config';
 import { logger } from './logger';
@@ -12,6 +13,7 @@ const config = loadConfig();
 
 let connection: Connection | null = null;
 let channel: Channel | null = null;
+let healthServer: Server | null = null;
 
 const MAX_RETRY_ATTEMPTS = 5;
 const INITIAL_RETRY_DELAY_MS = 1000;
@@ -24,6 +26,31 @@ logger.info('[Pay] Starting mock payment processor', {
   minProcessingMs: config.minProcessingMs,
   maxProcessingMs: config.maxProcessingMs,
 });
+
+const startHealthServer = (port: number): Server => {
+  const server = createServer((req, res) => {
+    const path = req.url ? req.url.split('?')[0] : undefined;
+    if (req.method === 'GET' && path === '/live') {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'text/plain; version=0.0.4; charset=utf-8');
+      res.end('# HELP service_live Service liveness signal\n# TYPE service_live gauge\nservice_live 1\n');
+      return;
+    }
+
+    res.statusCode = 404;
+    res.end('Not Found');
+  });
+
+  server.on('error', (error) => {
+    logger.error('[Pay] Health server encountered an error', error);
+  });
+
+  server.listen(port, () => {
+    logger.info(`[Pay] Health server listening on port ${port}`);
+  });
+
+  return server;
+};
 
 const connectWithRetry = async (
   url: string,
@@ -149,6 +176,9 @@ const processMessage = async (msg: ConsumeMessage, ch: Channel): Promise<void> =
 const start = async () => {
   try {
     logger.info('[Pay] Initializing payment processor...');
+    if (!healthServer) {
+      healthServer = startHealthServer(config.healthPort);
+    }
     const ch = await ensureChannel();
 
     logger.info('[Pay] 🚀 Starting to consume payment requests...');
@@ -174,6 +204,14 @@ const start = async () => {
 const shutdown = async () => {
   logger.info('[Pay] 🛑 Shutting down mock payment processor');
   try {
+    if (healthServer) {
+      logger.info('[Pay] Closing health server...');
+      await new Promise<void>((resolve) =>
+        healthServer?.close(() => resolve()),
+      );
+      healthServer = null;
+      logger.info('[Pay] ✅ Health server closed');
+    }
     if (channel) {
       logger.info('[Pay] Closing channel...');
       await channel.close();
@@ -196,4 +234,5 @@ process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
 
 logger.info('[Pay] 🔧 Initializing payment processor...');
+healthServer = startHealthServer(config.healthPort);
 start();

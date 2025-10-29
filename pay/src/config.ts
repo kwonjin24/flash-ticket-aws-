@@ -43,6 +43,7 @@ export type PaymentMockConfig = {
   successRate: number;
   minProcessingMs: number;
   maxProcessingMs: number;
+  healthPort: number;
 };
 
 const parseNumber = (value: string | undefined, fallback: number): number => {
@@ -124,5 +125,6 @@ export const loadConfig = (): PaymentMockConfig => {
     successRate,
     minProcessingMs,
     maxProcessingMs,
+    healthPort: parseNumber(process.env.PAY_HEALTH_PORT, 3100),
   };
 };

@@ -1,0 +1,207 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - deployment
+    paths:
+      - 'api/**'
+      - 'gateway/**'
+      - 'pay/**'
+      - 'libs/**'
+      - 'Dockerfile.*'
+      - '.github/workflows/ci-cd.yaml'
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REGISTRY: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com
+  ECR_REPOSITORY_PREFIX: flash-tickets
+
+jobs:
+  detect-changes:
+    name: Detect Changed Services
+    runs-on: ubuntu-latest
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+      gateway: ${{ steps.filter.outputs.gateway }}
+      pay: ${{ steps.filter.outputs.pay }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            api:
+              - 'api/**'
+              - 'libs/**'
+              - 'Dockerfile.api'
+            gateway:
+              - 'gateway/**'
+              - 'libs/**'
+              - 'Dockerfile.gateway'
+            pay:
+              - 'pay/**'
+              - 'libs/**'
+              - 'Dockerfile.pay'
+
+  build-and-deploy-api:
+    name: Build & Deploy API
+    needs: detect-changes
+    if: needs.detect-changes.outputs.api == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.api
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/api:${{ github.sha }}
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/api:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Update Kustomize image tag
+        run: |
+          cd gitops/apps/api/base
+          kustomize edit set image ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/api=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/api:${{ github.sha }}
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add gitops/apps/api/base/kustomization.yaml
+          git commit -m "chore: update api image to ${{ github.sha }}" || exit 0
+          git push
+
+  build-and-deploy-gateway:
+    name: Build & Deploy Gateway
+    needs: detect-changes
+    if: needs.detect-changes.outputs.gateway == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.gateway
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/gateway:${{ github.sha }}
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/gateway:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Update Kustomize image tag
+        run: |
+          cd gitops/apps/gateway/base
+          kustomize edit set image ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/gateway=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/gateway:${{ github.sha }}
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add gitops/apps/gateway/base/kustomization.yaml
+          git commit -m "chore: update gateway image to ${{ github.sha }}" || exit 0
+          git push
+
+  build-and-deploy-pay:
+    name: Build & Deploy Pay
+    needs: detect-changes
+    if: needs.detect-changes.outputs.pay == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.pay
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/pay:${{ github.sha }}
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/pay:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Update Kustomize image tag
+        run: |
+          cd gitops/apps/pay/base
+          kustomize edit set image ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/pay=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/pay:${{ github.sha }}
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add gitops/apps/pay/base/kustomization.yaml
+          git commit -m "chore: update pay image to ${{ github.sha }}" || exit 0
+          git push

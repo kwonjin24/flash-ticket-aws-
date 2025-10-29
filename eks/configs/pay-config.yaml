@@ -6,6 +6,7 @@ metadata:
 data:
   NODE_ENV: "production"
   LOAD_ENV_FILES: "false"
+  PAY_HEALTH_PORT: "3100"
   PAYMENT_REQUEST_QUEUE: "payments_request"
   PAYMENT_RESULT_QUEUE: "payments_result"
   PAYMENT_SUCCESS_RATE: "0.85"
