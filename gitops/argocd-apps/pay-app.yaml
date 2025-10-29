@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/CloudDx/flash-tickets.git
+    repoURL: https://github.com/CloudDx/flash-ticket-final.git
     targetRevision: main
     path: gitops/apps/pay/base
   destination:
