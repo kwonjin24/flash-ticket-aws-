@@ -7,4 +7,4 @@ resources:
 
 images:
   - name: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/gateway
-    newTag: latest
+    newTag: amd64-20251028-ha-live
