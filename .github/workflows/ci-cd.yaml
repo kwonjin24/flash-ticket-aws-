@@ -48,19 +48,17 @@ jobs:
               - 'libs/**'
               - 'Dockerfile.pay'
 
-  build-and-deploy-api:
-    name: Build & Deploy API
+  build-api:
+    name: Build API
     needs: detect-changes
     if: needs.detect-changes.outputs.api == 'true'
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: write
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -88,32 +86,17 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Update Kustomize image tag
-        run: |
-          cd gitops/apps/api/base
-          kustomize edit set image ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/api=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/api:${{ github.sha }}
-
-      - name: Commit and push changes
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add gitops/apps/api/base/kustomization.yaml
-          git commit -m "chore: update api image to ${{ github.sha }}" || exit 0
-          git push
-
-  build-and-deploy-gateway:
-    name: Build & Deploy Gateway
+  build-gateway:
+    name: Build Gateway
     needs: detect-changes
     if: needs.detect-changes.outputs.gateway == 'true'
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: write
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -141,32 +124,17 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Update Kustomize image tag
-        run: |
-          cd gitops/apps/gateway/base
-          kustomize edit set image ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/gateway=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/gateway:${{ github.sha }}
-
-      - name: Commit and push changes
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add gitops/apps/gateway/base/kustomization.yaml
-          git commit -m "chore: update gateway image to ${{ github.sha }}" || exit 0
-          git push
-
-  build-and-deploy-pay:
-    name: Build & Deploy Pay
+  build-pay:
+    name: Build Pay
     needs: detect-changes
     if: needs.detect-changes.outputs.pay == 'true'
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: write
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -194,15 +162,45 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Update Kustomize image tag
+  update-manifests:
+    name: Update Kubernetes Manifests
+    needs: [detect-changes, build-api, build-gateway, build-pay]
+    if: always() && (needs.build-api.result == 'success' || needs.build-gateway.result == 'success' || needs.build-pay.result == 'success')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update API Kustomize image tag
+        if: needs.detect-changes.outputs.api == 'true' && needs.build-api.result == 'success'
+        run: |
+          cd gitops/apps/api/base
+          kustomize edit set image ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/api=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/api:${{ github.sha }}
+
+      - name: Update Gateway Kustomize image tag
+        if: needs.detect-changes.outputs.gateway == 'true' && needs.build-gateway.result == 'success'
+        run: |
+          cd gitops/apps/gateway/base
+          kustomize edit set image ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/gateway=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/gateway:${{ github.sha }}
+
+      - name: Update Pay Kustomize image tag
+        if: needs.detect-changes.outputs.pay == 'true' && needs.build-pay.result == 'success'
         run: |
           cd gitops/apps/pay/base
           kustomize edit set image ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/pay=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_PREFIX }}/pay:${{ github.sha }}
 
-      - name: Commit and push changes
+      - name: Commit and push manifest changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add gitops/apps/pay/base/kustomization.yaml
-          git commit -m "chore: update pay image to ${{ github.sha }}" || exit 0
+          git add gitops/apps/*/base/kustomization.yaml
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: update image tags to ${{ github.sha }}"
           git push
