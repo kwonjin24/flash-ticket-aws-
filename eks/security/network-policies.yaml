@@ -1,0 +1,137 @@
+# Default Deny All - 모든 트래픽 차단 후 필요한 것만 허용
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: flash-ticket
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+
+---
+# Gateway - 외부에서 접근 가능, API와 외부 서비스 접근 허용
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: flash-gateway-policy
+  namespace: flash-ticket
+spec:
+  podSelector:
+    matchLabels:
+      app: flash-gateway
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # ALB에서 들어오는 트래픽 허용
+  - ports:
+    - protocol: TCP
+      port: 3000
+  egress:
+  # API 서비스 접근 허용
+  - to:
+    - podSelector:
+        matchLabels:
+          app: flash-api
+    ports:
+    - protocol: TCP
+      port: 4000
+  # Redis (ElastiCache) 접근 허용
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 6379
+  # DNS 조회 허용
+  - to: []
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+
+---
+# API - Gateway에서만 접근 허용, 외부 서비스 접근 허용
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: flash-api-policy
+  namespace: flash-ticket
+spec:
+  podSelector:
+    matchLabels:
+      app: flash-api
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Gateway에서만 접근 허용
+  - from:
+    - podSelector:
+        matchLabels:
+          app: flash-gateway
+    ports:
+    - protocol: TCP
+      port: 4000
+  # ALB Health Check 허용 (ALB에서 직접 헬스체크 하는 경우)
+  - ports:
+    - protocol: TCP
+      port: 4000
+  egress:
+  # PostgreSQL 데이터베이스 접근 허용
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 15432
+  # Redis (ElastiCache) 접근 허용
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 6379
+  # RabbitMQ (Amazon MQ) 접근 허용
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 5671
+  # DNS 조회 허용
+  - to: []
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+
+---
+# Pay Worker - 외부 접근 완전 차단, 필요한 외부 서비스만 접근
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: flash-pay-policy
+  namespace: flash-ticket
+spec:
+  podSelector:
+    matchLabels:
+      app: flash-pay
+  policyTypes:
+  - Ingress
+  - Egress
+  # Ingress 규칙 없음 = 모든 인바운드 트래픽 차단
+  egress:
+  # RabbitMQ (Amazon MQ) 접근 허용 - 메시지 수신
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 5671
+  # DNS 조회 허용
+  - to: []
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+  # 외부 결제 API 접근 허용 (HTTPS)
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
