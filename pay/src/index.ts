@@ -9,9 +9,6 @@ import {
 } from './types';
 import { pickFailureReason, sleep } from './utils';
 
-// Dummy data for pipeline testing
-const PIPELINE_TEST_DATA = 'live-test-2025-10-29';
-
 const config = loadConfig();
 
 let connection: Connection | null = null;

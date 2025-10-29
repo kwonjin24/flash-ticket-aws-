@@ -1,8 +1,5 @@
 import { Controller, Get, Header } from '@nestjs/common';
 
-// Dummy data for pipeline testing
-const PIPELINE_TEST_DATA = 'live-test-2025-10-29';
-
 @Controller()
 export class LiveController {
   @Get('live')
