@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: gateway
-          image: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/gateway:latest
+          image: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/gateway:amd64-20251028-ha-live
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
