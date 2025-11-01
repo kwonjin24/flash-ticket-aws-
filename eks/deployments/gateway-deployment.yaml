@@ -4,7 +4,7 @@ metadata:
   name: flash-gateway
   namespace: flash-ticket
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: flash-gateway
@@ -35,6 +35,9 @@ spec:
                   values:
                   - flash-gateway
               topologyKey: kubernetes.io/hostname
+      # Karpenter 노드에만 배치
+      nodeSelector:
+        karpenter.sh/nodepool: default
       containers:
         - name: gateway
           image: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/gateway:amd64-20251028-ha-live

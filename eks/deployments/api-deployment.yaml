@@ -35,6 +35,9 @@ spec:
                   values:
                   - flash-api
               topologyKey: kubernetes.io/hostname
+      # Karpenter 노드에만 배치
+      nodeSelector:
+        karpenter.sh/nodepool: default
       containers:
         - name: api
           image: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/api:amd64
