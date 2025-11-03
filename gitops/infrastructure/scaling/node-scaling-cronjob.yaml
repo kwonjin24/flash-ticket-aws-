@@ -5,7 +5,7 @@ metadata:
   name: nodepool-activate
   namespace: flash-ticket
 spec:
-  schedule: "16 12 * * *"  # UTC 12:16 (KST 21:16, 파드 스케일업 2분 전)
+  schedule: "30 12 * * *"  # UTC 12:30 (KST 21:30, 파드 스케일업 2분 전)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -44,14 +44,14 @@ spec:
                         values: ["spot", "on-demand"]
                       - key: node.kubernetes.io/instance-type
                         operator: In
-                        values: ["t3.medium", "t3.large", "c5.large"]
+                        values: ["t3.large", "c5.large"]
                       - key: topology.kubernetes.io/zone
                         operator: In
                         values: ["ap-northeast-2a", "ap-northeast-2b"]
                     nodeClassRef:
                       name: default
                 limits:
-                  cpu: 2000
+                  cpu: 500
                 disruption:
                   consolidationPolicy: WhenEmpty
                   consolidateAfter: 30m
@@ -72,7 +72,7 @@ metadata:
   name: nodepool-deactivate
   namespace: flash-ticket
 spec:
-  schedule: "23 12 * * *"  # UTC 12:23 (KST 21:23, 파드 스케일다운 5분 후)
+  schedule: "37 12 * * *"  # UTC 12:37 (KST 21:37, 파드 스케일다운 3분 후)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
