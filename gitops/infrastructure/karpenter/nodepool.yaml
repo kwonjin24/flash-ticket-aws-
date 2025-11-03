@@ -20,7 +20,7 @@ spec:
           values: ["t3.medium"]
         - key: topology.kubernetes.io/zone
           operator: In
-          values: ["ap-northeast-2a", "ap-northeast-2b",]
+          values: ["ap-northeast-2a", "ap-northeast-2b"]
       nodeClassRef:
         name: default
   limits:
