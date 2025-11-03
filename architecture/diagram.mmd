@@ -1,0 +1,68 @@
+graph TD
+    subgraph AWS["AWS Account 339712948064 (ap-northeast-2)"]
+        subgraph VPC["VPC: vpc-0b89143b4397e00e6"]
+            subgraph PublicSubnet["Public Subnets"]
+                ALB[[Application Load Balancer\nflash-ingress]]
+            end
+            subgraph PrivateSubnet["Private Subnets"]
+                subgraph EKS["EKS Cluster: flash-tickets-eks"]
+                    subgraph ArgoCDNS["Namespace: argocd"]
+                        ArgoCD["Argo CD\nApplication Controller"]
+                    end
+                    subgraph FlashNS["Namespace: flash-ticket"]
+                        Web["Deployment: flash-web (React SPA)"]
+                        Gateway["Deployment: flash-gateway (NestJS Queue)"]
+                        API["Deployment: flash-api (NestJS API)"]
+                        Pay["Deployment: flash-pay (Mock Payment Worker)"]
+                        HPA["HPAs (api/gateway/pay)"]
+                    end
+                    Karpenter["Karpenter Controller\n(NodePool default Spot t3.medium)"]
+                    NodeGroup["Managed Node Group\nflash-tickets-nodes"]
+                end
+                CloudWatch[("Amazon CloudWatch\nObservability")]
+            end
+        end
+
+        subgraph Managed["Managed Services"]
+            Redis[("ElastiCache Redis\nmaster.flash-tickets-redis")]
+            RDS[("PostgreSQL\n211.46.52.152:15432")]
+            RabbitMQ[("Amazon MQ for RabbitMQ\nb-45e98261-...mq.ap-northeast-2.on.aws")]
+            ECR[("Amazon ECR\nflash-tickets/*")]
+            ACM[("AWS Certificate Manager")]
+        end
+    end
+
+    subgraph GitHub["GitHub Repo: CloudDx/flash-ticket-final"]
+        Repo[("GitOps Manifests & Source")]
+    end
+
+    subgraph Developers["Developers"]
+        Dev["Build & Push Images"]
+    end
+
+    User["End Users"]
+
+    User -->|HTTPS| ALB
+    ALB -->|"/"| Web
+    ALB -->|"/auth,/queue"| Gateway
+    ALB -->|"/api"| API
+
+    Gateway -->|"queue events"| Redis
+    Gateway -->|REST| API
+    API -->|"orders/payments"| RDS
+    API -->|"enqueue payments"| RabbitMQ
+    Pay -->|consume| RabbitMQ
+    Pay -->|"update status"| API
+
+    Web -->|"static assets"| S3[("Static Assets\n(inside container)")]
+
+    ArgoCD -->|"Sync manifests"| FlashNS
+    ArgoCD -->|"Karpenter manifests"| Karpenter
+    Repo --> ArgoCD
+    Dev -->|"docker push"| ECR
+    ArgoCD -->|"pull images"| ECR
+
+    ALB --> ACM
+    Gateway --> CloudWatch
+    API --> CloudWatch
+    Pay --> CloudWatch

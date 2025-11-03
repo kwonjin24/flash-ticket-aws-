@@ -1,0 +1,4163 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1762148759018,286,1. Login,401,Unauthorized,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",349,298,1,1,https://gateway.highgarden.cloud/auth/login,283,0,234
+1762148759319,202,2. Get Events,200,OK,Smoke Test Users 1-1,text,true,,3274,186,1,1,https://api.highgarden.cloud/events,202,0,167
+1762148759525,18,3. Enqueue,401,Unauthorized,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",319,304,1,1,https://gateway.highgarden.cloud/queue/enqueue,18,0,0
+1762148759965,115,1. Login,401,Unauthorized,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",349,298,2,2,https://gateway.highgarden.cloud/auth/login,115,0,71
+1762148760082,108,2. Get Events,200,OK,Smoke Test Users 1-2,text,true,,3274,186,2,2,https://api.highgarden.cloud/events,108,0,79
+1762148760191,16,3. Enqueue,401,Unauthorized,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",319,304,2,2,https://gateway.highgarden.cloud/queue/enqueue,16,0,0
+1762148760967,115,1. Login,401,Unauthorized,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",349,298,3,3,https://gateway.highgarden.cloud/auth/login,114,0,58
+1762148761082,188,2. Get Events,200,OK,Smoke Test Users 1-3,text,true,,3274,186,3,3,https://api.highgarden.cloud/events,188,0,96
+1762148761272,53,3. Enqueue,401,Unauthorized,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",319,304,3,3,https://gateway.highgarden.cloud/queue/enqueue,53,0,0
+1762148761968,92,1. Login,401,Unauthorized,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",349,298,4,4,https://gateway.highgarden.cloud/auth/login,92,0,66
+1762148762061,99,2. Get Events,200,OK,Smoke Test Users 1-4,text,true,,3274,186,4,4,https://api.highgarden.cloud/events,99,0,54
+1762148762161,12,3. Enqueue,401,Unauthorized,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",319,304,4,4,https://gateway.highgarden.cloud/queue/enqueue,12,0,0
+1762148762968,99,1. Login,401,Unauthorized,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",349,298,5,5,https://gateway.highgarden.cloud/auth/login,99,0,73
+1762148763068,128,2. Get Events,200,OK,Smoke Test Users 1-5,text,true,,3274,186,5,5,https://api.highgarden.cloud/events,128,0,83
+1762148763197,15,3. Enqueue,401,Unauthorized,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",319,304,5,5,https://gateway.highgarden.cloud/queue/enqueue,15,0,0
+1762148763976,133,1. Login,401,Unauthorized,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",349,298,6,6,https://gateway.highgarden.cloud/auth/login,133,0,70
+1762148764110,86,2. Get Events,200,OK,Smoke Test Users 1-6,text,true,,3274,186,6,6,https://api.highgarden.cloud/events,86,0,59
+1762148764197,36,3. Enqueue,401,Unauthorized,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",319,304,6,6,https://gateway.highgarden.cloud/queue/enqueue,36,0,0
+1762148764596,13,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,6,6,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148764969,141,1. Login,401,Unauthorized,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",349,298,7,7,https://gateway.highgarden.cloud/auth/login,141,0,49
+1762148765215,15,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,7,7,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148765111,123,2. Get Events,200,OK,Smoke Test Users 1-7,text,true,,3274,186,7,7,https://api.highgarden.cloud/events,123,0,41
+1762148765235,14,3. Enqueue,401,Unauthorized,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",319,304,7,7,https://gateway.highgarden.cloud/queue/enqueue,14,0,0
+1762148765967,113,1. Login,401,Unauthorized,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",349,298,8,8,https://gateway.highgarden.cloud/auth/login,112,0,46
+1762148766081,80,2. Get Events,200,OK,Smoke Test Users 1-8,text,true,,3274,186,8,8,https://api.highgarden.cloud/events,80,0,61
+1762148766162,53,3. Enqueue,401,Unauthorized,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",319,304,8,8,https://gateway.highgarden.cloud/queue/enqueue,53,0,0
+1762148766329,15,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,8,8,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148766968,109,1. Login,401,Unauthorized,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",349,298,9,9,https://gateway.highgarden.cloud/auth/login,109,0,61
+1762148767078,77,2. Get Events,200,OK,Smoke Test Users 1-9,text,true,,3274,186,9,9,https://api.highgarden.cloud/events,77,0,43
+1762148767156,12,3. Enqueue,401,Unauthorized,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",319,304,9,9,https://gateway.highgarden.cloud/queue/enqueue,12,0,0
+1762148767180,14,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,9,9,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148767967,70,1. Login,401,Unauthorized,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",349,298,10,10,https://gateway.highgarden.cloud/auth/login,70,0,41
+1762148768038,127,2. Get Events,200,OK,Smoke Test Users 1-10,text,true,,3274,186,10,10,https://api.highgarden.cloud/events,127,0,97
+1762148768166,22,3. Enqueue,401,Unauthorized,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[4]]]01
+
+****** comparison: [[[2]]]01
+
+/",319,304,10,10,https://gateway.highgarden.cloud/queue/enqueue,22,0,0
+1762148768219,12,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148769240,12,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148769618,16,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148770239,11,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148770256,11,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148771222,26,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,26,0,0
+1762148771348,68,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,68,0,0
+1762148772176,13,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148772199,16,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148773196,34,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,34,0,0
+1762148773238,15,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148774256,18,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148774642,27,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,27,0,0
+1762148775255,13,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148775274,16,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148776257,13,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148776424,14,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148777196,29,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,29,0,0
+1762148777223,16,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148778237,14,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148778263,16,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148779281,32,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,32,0,0
+1762148779675,95,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,95,0,0
+1762148780274,16,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148780296,15,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148781279,14,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148781445,31,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,31,0,0
+1762148782237,16,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148782247,14,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148783256,41,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,41,0,0
+1762148783285,19,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148784322,38,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,38,0,0
+1762148784775,15,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148785300,26,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,26,0,0
+1762148785318,15,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148786309,13,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148786484,15,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148787264,18,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148787266,17,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148788306,22,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762148788312,21,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762148789366,37,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,37,0,0
+1762148789798,69,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,69,0,0
+1762148790333,15,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148790336,17,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148791325,14,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148791506,20,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148792291,11,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148792291,19,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148793341,12,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148793337,16,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148794409,17,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148794873,14,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148795364,12,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148795363,15,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148796341,18,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148796532,13,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148797306,16,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148797313,17,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148798356,16,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148798358,21,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762148799431,12,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148799890,16,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148800380,16,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148800383,14,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148801371,16,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148801552,16,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148802328,13,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148802342,12,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148803375,20,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148803383,20,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148804451,42,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,42,0,0
+1762148804911,93,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,93,0,0
+1762148805405,12,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148805405,16,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148806413,47,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,47,0,0
+1762148806577,18,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148807347,16,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148807359,13,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148808399,21,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762148808408,13,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148809496,33,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,33,0,0
+1762148810012,12,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148810423,14,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148810423,20,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148811466,35,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,35,0,0
+1762148811602,32,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,32,0,0
+1762148812365,12,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148812377,13,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148813425,12,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148813425,13,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148814533,11,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148815030,17,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148815442,19,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148815450,13,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148816509,16,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148816641,22,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,22,0,0
+1762148817385,12,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148817396,13,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148818441,13,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148818442,13,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148819549,12,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148820051,58,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,58,0,26
+1762148820463,12,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148820465,43,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,43,0,24
+1762148821527,15,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148821669,64,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,64,0,47
+1762148822401,23,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,23,0,0
+1762148822415,38,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,38,0,20
+1762148823457,17,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148823462,93,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,93,0,80
+1762148824565,44,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,44,0,27
+1762148825117,124,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,124,0,0
+1762148825481,45,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,45,0,29
+1762148825514,12,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148826548,46,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,45,0,30
+1762148826737,19,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148827460,14,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148827433,47,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,47,0,37
+1762148828481,71,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,71,0,57
+1762148828561,16,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148829617,21,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762148830249,17,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148830532,21,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762148830530,231,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,231,0,0
+1762148831599,40,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,40,0,0
+1762148831763,13,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148832482,15,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148832488,19,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148833558,31,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,31,0,0
+1762148833585,17,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148834645,18,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148835273,13,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148835559,12,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148835767,39,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,39,0,0
+1762148836644,15,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148836778,46,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,46,0,0
+1762148837503,20,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148837510,20,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148838591,14,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148838609,21,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762148839665,12,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148840294,12,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148840575,19,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148840814,15,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148841663,16,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148841830,18,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148842531,15,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148842532,14,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148843614,16,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148843633,116,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,116,0,0
+1762148844680,23,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,23,0,0
+1762148845313,78,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,78,0,0
+1762148845598,15,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148845838,12,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148846686,15,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148846856,12,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148847549,15,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148847553,16,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148848639,14,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148848752,12,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148849706,13,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148850398,44,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,44,0,0
+1762148850617,14,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148850854,24,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,24,0,0
+1762148851708,12,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148851876,20,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148852571,15,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148852573,13,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148853657,28,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,28,0,0
+1762148853771,34,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,34,0,0
+1762148854725,145,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,145,0,0
+1762148855450,20,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148855638,12,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148855883,14,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148856728,14,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148856904,12,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148857608,15,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148857612,14,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148858692,18,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148858811,13,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148859872,37,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,37,0,0
+1762148860474,15,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148860653,11,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148860902,25,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,25,0,0
+1762148861749,37,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,37,0,0
+1762148861921,11,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148862628,12,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148862632,12,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148863715,23,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,23,0,0
+1762148863834,50,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,50,0,0
+1762148864915,15,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148865502,54,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,54,0,0
+1762148865669,13,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148865934,48,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,48,0,0
+1762148866793,13,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148866937,11,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148867645,13,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148867651,11,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148868745,13,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148868890,38,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,37,0,0
+1762148869935,11,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148870565,71,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,71,0,0
+1762148870688,14,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148870989,153,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,153,0,0
+1762148871813,12,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148871952,17,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148872666,15,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148872665,17,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148873765,36,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,36,0,0
+1762148873931,17,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148874954,14,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148875642,22,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,22,0,0
+1762148875710,20,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148876148,16,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148876833,14,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148876975,13,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148877689,12,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148877690,19,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148878808,115,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,114,0,0
+1762148878953,13,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148879975,12,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148880673,51,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,51,0,36
+1762148880738,12,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148881167,49,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,49,0,34
+1762148881850,49,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,49,0,0
+1762148881995,57,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,57,0,43
+1762148882706,13,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148882715,54,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,54,0,40
+1762148883929,44,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,44,0,0
+1762148883973,49,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,49,0,34
+1762148884991,47,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,47,0,33
+1762148885728,28,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,28,0,0
+1762148885757,36,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,36,0,24
+1762148886221,22,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,22,0,0
+1762148886905,42,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,42,0,24
+1762148887059,52,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,52,0,0
+1762148887724,60,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,60,0,46
+1762148887776,13,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148888984,50,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,50,0,32
+1762148889030,13,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148890036,14,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148890751,31,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,31,0,0
+1762148890788,15,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148891238,46,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,46,0,0
+1762148891944,13,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148892107,44,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,44,0,0
+1762148892779,12,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148892779,12,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148894032,23,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,23,0,0
+1762148894041,14,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148895044,13,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148895778,13,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148895799,12,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148896280,15,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148896954,13,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148897145,49,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,49,0,0
+1762148897786,14,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148897787,13,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148899060,32,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,32,0,0
+1762148899079,19,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148900056,15,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148900790,16,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148900806,13,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148901297,29,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,29,0,0
+1762148901971,34,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,34,0,0
+1762148902194,43,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,43,0,0
+1762148902795,14,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148902800,12,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148904087,17,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148904092,20,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148905070,14,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148905808,19,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148905822,13,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148906330,12,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148907048,12,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148907240,12,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148907809,16,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148907814,14,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148909111,13,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148909102,22,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,22,0,0
+1762148910087,13,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148910827,12,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148910835,11,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148911345,12,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148912059,12,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148912254,49,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,49,0,0
+1762148912828,14,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148912830,14,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148914128,13,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148914128,20,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148915114,15,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148915843,13,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148915845,15,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148916360,16,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148917074,22,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,22,0,0
+1762148917304,13,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148917842,14,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148917844,13,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148919146,18,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148919152,19,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148920132,12,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148920861,13,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148920861,13,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148921379,12,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148922098,32,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,32,0,0
+1762148922322,18,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148922858,13,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148922859,18,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148924168,13,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148924177,13,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148925147,12,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148925880,13,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148925880,14,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148926392,12,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148927131,12,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148927346,13,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148927877,13,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148927880,17,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148929187,14,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148929194,14,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148930160,19,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148930896,14,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148930899,15,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148931409,17,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148932145,31,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,31,0,0
+1762148932363,13,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148932890,13,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148932896,11,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148934211,14,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148934207,19,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148935185,16,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148935912,12,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148935918,15,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148936429,19,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148937183,28,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,28,0,0
+1762148937381,15,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148937908,14,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148937909,14,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148939230,12,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148939230,20,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148940207,14,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148940931,12,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148940940,37,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,37,0,26
+1762148941453,54,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,54,0,40
+1762148942218,23,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,23,0,0
+1762148942402,85,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,85,0,67
+1762148942926,14,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148942928,34,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,34,0,24
+1762148944250,28,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,28,0,0
+1762148944264,33,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,33,0,21
+1762148945230,43,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,43,0,28
+1762148945947,48,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,48,0,35
+1762148945982,13,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148946514,26,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,26,0,0
+1762148947248,47,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,47,0,30
+1762148947493,24,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,23,0,0
+1762148947969,11,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148947945,52,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,52,0,33
+1762148949298,18,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148949284,39,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,39,0,25
+1762148950278,17,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148951001,12,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148950998,15,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148951546,29,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,29,0,0
+1762148952308,18,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148952523,16,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148953019,15,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148953019,19,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148954320,12,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148954326,14,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148955297,13,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148956019,12,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148956019,13,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148956578,21,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762148957331,14,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148957543,17,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148958040,13,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148958041,12,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148959341,19,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148959347,15,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148960317,13,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148961034,12,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148961040,12,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148961608,13,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148962355,25,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,25,0,0
+1762148962567,26,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,26,0,0
+1762148963059,12,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148963059,13,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148964363,13,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148964366,18,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148965336,12,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148966052,14,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148966055,13,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148966627,15,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148967386,12,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148967599,23,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,23,0,0
+1762148968077,14,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148968076,15,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148969385,13,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148969392,13,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148970355,14,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148971071,14,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148971071,14,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148971649,15,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148972404,21,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762148972629,28,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,28,0,0
+1762148973099,20,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148973099,22,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,22,0,0
+1762148974406,15,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148974408,21,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762148975377,14,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148976097,12,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148976099,14,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148976667,15,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148977431,14,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148977663,35,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,35,0,0
+1762148978134,25,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,25,0,0
+1762148978134,24,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,24,0,0
+1762148979426,25,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,25,0,0
+1762148979435,21,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762148980398,17,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762148981114,12,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148981119,15,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762148981684,12,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148982452,16,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148982705,14,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148983164,14,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148983167,12,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148984458,14,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148984460,19,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148985423,12,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148986131,11,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148986141,24,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,24,0,0
+1762148986701,13,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148987475,21,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762148987724,12,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148988182,13,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148988183,18,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148989477,18,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148989482,20,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762148990442,13,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148991148,14,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148991170,14,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148991716,14,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148992502,13,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148992743,46,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,46,0,0
+1762148993201,11,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762148993208,13,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148994503,19,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148994511,18,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762148995461,12,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148996169,19,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762148996187,14,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762148996736,13,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148997522,22,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,22,0,0
+1762148997794,38,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,38,0,0
+1762148998220,13,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762148998228,12,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762148999528,16,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762148999534,11,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762149000476,28,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,28,0,0
+1762149001203,18,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762149001191,50,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,50,0,35
+1762149001760,118,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,118,0,80
+1762149002550,45,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,45,0,0
+1762149002839,37,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,37,0,25
+1762149003243,18,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762149003234,46,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,46,0,30
+1762149004549,12,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149004552,77,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,77,0,60
+1762149005519,33,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,33,0,23
+1762149006246,12,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149006228,35,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,35,0,23
+1762149006887,20,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,20,0,0
+1762149007604,47,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,47,0,30
+1762149007885,26,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,26,0,0
+1762149008288,15,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762149008271,38,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,38,0,25
+1762149009579,50,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,49,0,35
+1762149009631,13,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762149010556,11,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762149011261,15,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762149011284,16,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762149011944,13,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762149012657,13,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762149012918,13,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762149013305,17,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762149013311,14,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762149014637,21,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762149014646,16,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762149015576,18,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762149016278,15,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762149016301,14,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762149016962,13,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762149017677,14,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762149017937,34,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,34,0,0
+1762149018327,12,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149018329,17,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762149019663,18,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762149019667,17,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762149020595,17,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762149021301,11,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762149021321,42,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,42,0,0
+1762149022013,54,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,54,0,0
+1762149022699,67,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,67,0,0
+1762149022977,22,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,22,0,0
+1762149023345,18,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762149023351,15,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762149024688,14,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762149024691,14,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762149025622,19,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762149026320,15,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762149026373,58,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,58,0,0
+1762149027070,14,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762149027773,17,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762149028006,12,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149028369,14,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762149028372,11,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762149029706,11,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762149029710,12,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149030646,18,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762149031341,12,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149031438,17,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762149032091,18,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762149032799,12,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149033025,11,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762149033394,12,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149033394,19,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762149034724,16,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762149034728,19,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,19,0,0
+1762149035677,11,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762149036356,13,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762149036461,21,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762149037116,31,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,31,0,0
+1762149037813,12,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149038040,12,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149038410,13,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762149038418,11,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,11,0,0
+1762149039746,13,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762149039753,15,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762149040696,13,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762149041376,18,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762149041486,17,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762149042154,13,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762149042833,39,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,39,0,0
+1762149043058,116,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,116,0,0
+1762149043428,15,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,15,0,0
+1762149043433,16,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762149044761,12,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149044777,88,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,88,0,0
+1762149045719,16,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,16,0,0
+1762149046397,12,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149046509,29,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,29,0,0
+1762149047170,29,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,29,0,0
+1762149047879,14,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762149048178,18,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,18,0,0
+1762149048444,21,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762149048455,17,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,17,0,0
+1762149049775,14,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762149049872,12,Get Queue Status,404,Not Found,Smoke Test Users 1-5,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149050743,25,Get Queue Status,404,Not Found,Smoke Test Users 1-6,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,25,0,0
+1762149051411,14,Get Queue Status,404,Not Found,Smoke Test Users 1-1,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,14,0,0
+1762149051544,21,Get Queue Status,404,Not Found,Smoke Test Users 1-7,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,21,0,0
+1762149052206,34,Get Queue Status,404,Not Found,Smoke Test Users 1-2,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,34,0,0
+1762149052900,28,Get Queue Status,404,Not Found,Smoke Test Users 1-8,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,28,0,0
+1762149053202,13,Get Queue Status,404,Not Found,Smoke Test Users 1-3,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762149053469,12,Get Queue Status,404,Not Found,Smoke Test Users 1-4,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,12,0,0
+1762149053475,13,Get Queue Status,404,Not Found,Smoke Test Users 1-9,text,false,"Test failed: code expected to equal /
+
+****** received  : [[[404]]]
+
+****** comparison: [[[200]]]
+
+/",346,211,10,10,https://gateway.highgarden.cloud/queue/status?ticketId=ERROR,13,0,0
+1762149054794,58,Get Queue Status,404,Not Found,Smoke Test Users 1-10,text,false,"Test failed: 
