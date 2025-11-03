@@ -25,26 +25,15 @@ spec:
                 values:
                 - default
                 - peak-time
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - flash-gateway
-              topologyKey: topology.kubernetes.io/zone
-          - weight: 50
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - flash-gateway
-              topologyKey: kubernetes.io/hostname
+      # 노드 재사용 최적화 - Pod Anti-Affinity 제거
+      # Topology Spread Constraints 대폭 완화
+      topologySpreadConstraints:
+      - maxSkew: 10
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: flash-gateway
       containers:
         - name: gateway
           image: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/gateway:amd64-20251028-ha-live
