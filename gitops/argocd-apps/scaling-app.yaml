@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: flash-tickets-scaling
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/CloudDx/flash-ticket-final.git
+    targetRevision: HEAD
+    path: gitops/infrastructure/scaling
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: flash-ticket
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

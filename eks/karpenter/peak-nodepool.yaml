@@ -1,0 +1,37 @@
+apiVersion: karpenter.sh/v1beta1
+kind: NodePool
+metadata:
+  name: peak-time
+  labels:
+    usage: peak-traffic
+spec:
+  template:
+    spec:
+      requirements:
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64"]
+        - key: kubernetes.io/os
+          operator: In
+          values: ["linux"]
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["spot", "on-demand"]
+        - key: node.kubernetes.io/instance-type
+          operator: In
+          values: ["t3.medium", "t3.large", "c5.large"]
+        - key: topology.kubernetes.io/zone
+          operator: In
+          values: ["ap-northeast-2a", "ap-northeast-2b", "ap-northeast-2c"]
+      nodeClassRef:
+        name: default
+      taints:
+        - key: "peak-traffic"
+          value: "true"
+          effect: "NoSchedule"
+  limits:
+    cpu: 2000  # 피크 시간에는 더 많은 CPU 리소스 허용
+  disruption:
+    consolidationPolicy: WhenEmpty
+    consolidateAfter: 30m  # 피크 종료 후 30분 뒤 정리
+    expireAfter: 60m

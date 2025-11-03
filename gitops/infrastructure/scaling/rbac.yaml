@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: scaling-operator
+  namespace: flash-ticket
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: scaling-operator
+rules:
+# Deployment 스케일링 권한
+- apiGroups: ["apps"]
+  resources: ["deployments", "deployments/scale"]
+  verbs: ["get", "list", "update", "patch"]
+# NodePool 관리 권한
+- apiGroups: ["karpenter.sh"]
+  resources: ["nodepools"]
+  verbs: ["get", "list", "create", "update", "patch", "delete"]
+# 노드 조회 권한
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "list"]
+# 파드 조회 권한
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: scaling-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: scaling-operator
+subjects:
+- kind: ServiceAccount
+  name: scaling-operator
+  namespace: flash-ticket

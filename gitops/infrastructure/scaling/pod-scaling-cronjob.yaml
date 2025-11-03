@@ -1,0 +1,80 @@
+# 파드 스케일업 CronJob (오후 4:50)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pod-scale-up
+  namespace: flash-ticket
+spec:
+  schedule: "10 17 * * *"  # 매일 오후 5:10 (NodePool 생성 2분 후)
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: scaling-operator
+          containers:
+          - name: kubectl
+            image: bitnami/kubectl:latest
+            command:
+            - /bin/sh
+            - -c
+            - |
+              echo "🚀 파드 스케일업 시작..."
+              
+              # 현재 상태 확인
+              echo "=== 스케일업 전 상태 ==="
+              kubectl get deployments -n flash-ticket
+              
+              # 스케일업 실행
+              echo "=== 스케일업 실행 ==="
+              kubectl scale deployment flash-api --replicas=8 -n flash-ticket
+              kubectl scale deployment flash-gateway --replicas=8 -n flash-ticket  
+              kubectl scale deployment flash-pay --replicas=8 -n flash-ticket
+              
+              # 결과 확인
+              echo "=== 스케일업 후 상태 ==="
+              kubectl get deployments -n flash-ticket
+              kubectl get pods -n flash-ticket | grep -E "(flash-api|flash-gateway|flash-pay)"
+              
+              echo "✅ 파드 스케일업 완료!"
+          restartPolicy: OnFailure
+---
+# 파드 스케일다운 CronJob (오후 5:30)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pod-scale-down
+  namespace: flash-ticket
+spec:
+  schedule: "12 17 * * *"  # 매일 오후 5:12 (2분 후 스케일다운)
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: scaling-operator
+          containers:
+          - name: kubectl
+            image: bitnami/kubectl:latest
+            command:
+            - /bin/sh
+            - -c
+            - |
+              echo "📉 파드 스케일다운 시작..."
+              
+              # 현재 상태 확인
+              echo "=== 스케일다운 전 상태 ==="
+              kubectl get deployments -n flash-ticket
+              
+              # 스케일다운 실행
+              echo "=== 스케일다운 실행 ==="
+              kubectl scale deployment flash-api --replicas=2 -n flash-ticket
+              kubectl scale deployment flash-gateway --replicas=2 -n flash-ticket
+              kubectl scale deployment flash-pay --replicas=2 -n flash-ticket
+              
+              # 결과 확인
+              echo "=== 스케일다운 후 상태 ==="
+              kubectl get deployments -n flash-ticket
+              
+              echo "✅ 파드 스케일다운 완료!"
+          restartPolicy: OnFailure

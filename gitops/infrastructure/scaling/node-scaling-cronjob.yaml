@@ -1,0 +1,99 @@
+# NodePool 활성화 CronJob (오후 4:45)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nodepool-activate
+  namespace: flash-ticket
+spec:
+  schedule: "8 17 * * *"  # 매일 오후 5:08 (파드 스케일업 2분 전)
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: scaling-operator
+          containers:
+          - name: kubectl
+            image: bitnami/kubectl:latest
+            command:
+            - /bin/sh
+            - -c
+            - |
+              echo "⚡ Peak-time NodePool 활성화 시작..."
+              
+              # NodePool 생성
+              kubectl apply -f - <<EOF
+              apiVersion: karpenter.sh/v1beta1
+              kind: NodePool
+              metadata:
+                name: peak-time
+                labels:
+                  usage: peak-traffic
+              spec:
+                template:
+                  spec:
+                    requirements:
+                      - key: kubernetes.io/arch
+                        operator: In
+                        values: ["amd64"]
+                      - key: kubernetes.io/os
+                        operator: In
+                        values: ["linux"]
+                      - key: karpenter.sh/capacity-type
+                        operator: In
+                        values: ["spot", "on-demand"]
+                      - key: node.kubernetes.io/instance-type
+                        operator: In
+                        values: ["t3.medium", "t3.large", "c5.large"]
+                      - key: topology.kubernetes.io/zone
+                        operator: In
+                        values: ["ap-northeast-2a", "ap-northeast-2b", "ap-northeast-2c"]
+                    nodeClassRef:
+                      name: default
+                limits:
+                  cpu: 2000
+                disruption:
+                  consolidationPolicy: WhenEmpty
+                  consolidateAfter: 30m
+                  expireAfter: 60m
+              EOF
+              
+              # 결과 확인
+              echo "=== NodePool 상태 ==="
+              kubectl get nodepools
+              
+              echo "✅ Peak-time NodePool 활성화 완료!"
+          restartPolicy: OnFailure
+---
+# NodePool 비활성화 CronJob (오후 5:45)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nodepool-deactivate
+  namespace: flash-ticket
+spec:
+  schedule: "15 17 * * *"  # 매일 오후 5:15 (파드 스케일다운 5분 후)
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: scaling-operator
+          containers:
+          - name: kubectl
+            image: bitnami/kubectl:latest
+            command:
+            - /bin/sh
+            - -c
+            - |
+              echo "🔽 Peak-time NodePool 비활성화 시작..."
+              
+              # NodePool 삭제
+              kubectl delete nodepool peak-time --ignore-not-found=true
+              
+              # 결과 확인
+              echo "=== NodePool 상태 ==="
+              kubectl get nodepools
+              
+              echo "✅ Peak-time NodePool 비활성화 완료!"
+          restartPolicy: OnFailure
