@@ -5,7 +5,7 @@ metadata:
   name: pod-scale-up
   namespace: flash-ticket
 spec:
-  schedule: "30 17 * * *"  # 매일 오후 5:30 (NodePool 생성 2분 후)
+  schedule: "10 21 * * *"  # 매일 오후 9:10 (NodePool 생성 2분 후)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -29,7 +29,7 @@ spec:
               echo "=== HPA 피크 모드 활성화 ==="
               kubectl patch hpa flash-api-hpa -n flash-ticket -p '{"spec":{"minReplicas":8}}'
               kubectl patch hpa flash-gateway-hpa -n flash-ticket -p '{"spec":{"minReplicas":8}}'
-              kubectl patch hpa flash-pay-hpa -n flash-ticket -p '{"spec":{"minReplicas":6}}'
+              kubectl patch hpa flash-pay-hpa -n flash-ticket -p '{"spec":{"minReplicas":4}}'
               
               # 결과 확인
               echo "=== 스케일업 후 상태 ==="
@@ -46,7 +46,7 @@ metadata:
   name: pod-scale-down
   namespace: flash-ticket
 spec:
-  schedule: "32 17 * * *"  # 매일 오후 5:32 (2분 후 스케일다운)
+  schedule: "12 21 * * *"  # 매일 오후 9:12 (2분 후 스케일다운)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:

@@ -5,7 +5,7 @@ metadata:
   name: nodepool-activate
   namespace: flash-ticket
 spec:
-  schedule: "28 17 * * *"  # 매일 오후 5:28 (파드 스케일업 2분 전)
+  schedule: "8 21 * * *"  # 매일 오후 9:08 (파드 스케일업 2분 전)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -72,7 +72,7 @@ metadata:
   name: nodepool-deactivate
   namespace: flash-ticket
 spec:
-  schedule: "35 17 * * *"  # 매일 오후 5:35 (파드 스케일다운 5분 후)
+  schedule: "15 21 * * *"  # 매일 오후 9:15 (파드 스케일다운 5분 후)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
