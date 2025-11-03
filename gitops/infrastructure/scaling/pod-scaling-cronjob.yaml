@@ -5,7 +5,7 @@ metadata:
   name: pod-scale-up
   namespace: flash-ticket
 spec:
-  schedule: "10 17 * * *"  # 매일 오후 5:10 (NodePool 생성 2분 후)
+  schedule: "30 17 * * *"  # 매일 오후 5:30 (NodePool 생성 2분 후)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -21,20 +21,20 @@ spec:
             - |
               echo "🚀 파드 스케일업 시작..."
               
-              # 현재 상태 확인
-              echo "=== 스케일업 전 상태 ==="
-              kubectl get deployments -n flash-ticket
+              # 현재 HPA 상태 확인
+              echo "=== 스케일업 전 HPA 상태 ==="
+              kubectl get hpa -n flash-ticket
               
-              # 스케일업 실행
-              echo "=== 스케일업 실행 ==="
-              kubectl scale deployment flash-api --replicas=8 -n flash-ticket
-              kubectl scale deployment flash-gateway --replicas=8 -n flash-ticket  
-              kubectl scale deployment flash-pay --replicas=8 -n flash-ticket
+              # HPA minReplicas 증가로 강제 스케일업
+              echo "=== HPA 피크 모드 활성화 ==="
+              kubectl patch hpa flash-api-hpa -n flash-ticket -p '{"spec":{"minReplicas":8}}'
+              kubectl patch hpa flash-gateway-hpa -n flash-ticket -p '{"spec":{"minReplicas":8}}'
+              kubectl patch hpa flash-pay-hpa -n flash-ticket -p '{"spec":{"minReplicas":6}}'
               
               # 결과 확인
               echo "=== 스케일업 후 상태 ==="
+              kubectl get hpa -n flash-ticket
               kubectl get deployments -n flash-ticket
-              kubectl get pods -n flash-ticket | grep -E "(flash-api|flash-gateway|flash-pay)"
               
               echo "✅ 파드 스케일업 완료!"
           restartPolicy: OnFailure
@@ -46,7 +46,7 @@ metadata:
   name: pod-scale-down
   namespace: flash-ticket
 spec:
-  schedule: "12 17 * * *"  # 매일 오후 5:12 (2분 후 스케일다운)
+  schedule: "32 17 * * *"  # 매일 오후 5:32 (2분 후 스케일다운)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -62,18 +62,19 @@ spec:
             - |
               echo "📉 파드 스케일다운 시작..."
               
-              # 현재 상태 확인
-              echo "=== 스케일다운 전 상태 ==="
-              kubectl get deployments -n flash-ticket
+              # 현재 HPA 상태 확인
+              echo "=== 스케일다운 전 HPA 상태 ==="
+              kubectl get hpa -n flash-ticket
               
-              # 스케일다운 실행
-              echo "=== 스케일다운 실행 ==="
-              kubectl scale deployment flash-api --replicas=2 -n flash-ticket
-              kubectl scale deployment flash-gateway --replicas=2 -n flash-ticket
-              kubectl scale deployment flash-pay --replicas=2 -n flash-ticket
+              # HPA minReplicas 원복으로 자동 스케일다운
+              echo "=== HPA 일반 모드 복원 ==="
+              kubectl patch hpa flash-api-hpa -n flash-ticket -p '{"spec":{"minReplicas":2}}'
+              kubectl patch hpa flash-gateway-hpa -n flash-ticket -p '{"spec":{"minReplicas":2}}'
+              kubectl patch hpa flash-pay-hpa -n flash-ticket -p '{"spec":{"minReplicas":1}}'
               
               # 결과 확인
               echo "=== 스케일다운 후 상태 ==="
+              kubectl get hpa -n flash-ticket
               kubectl get deployments -n flash-ticket
               
               echo "✅ 파드 스케일다운 완료!"

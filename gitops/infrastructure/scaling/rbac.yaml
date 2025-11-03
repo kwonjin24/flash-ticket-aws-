@@ -9,9 +9,13 @@ kind: ClusterRole
 metadata:
   name: scaling-operator
 rules:
-# Deployment 스케일링 권한
+# Deployment 조회 권한
 - apiGroups: ["apps"]
-  resources: ["deployments", "deployments/scale"]
+  resources: ["deployments"]
+  verbs: ["get", "list"]
+# HPA 관리 권한
+- apiGroups: ["autoscaling"]
+  resources: ["horizontalpodautoscalers"]
   verbs: ["get", "list", "update", "patch"]
 # NodePool 관리 권한
 - apiGroups: ["karpenter.sh"]
