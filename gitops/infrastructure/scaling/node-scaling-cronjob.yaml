@@ -6,6 +6,7 @@ metadata:
   namespace: flash-ticket
 spec:
   schedule: "20 13 * * *"  # UTC 13:20 (KST 22:20, 파드 스케일업 2분 전)
+  suspend: true  # 테스트 비활성화
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -73,6 +74,7 @@ metadata:
   namespace: flash-ticket
 spec:
   schedule: "27 13 * * *"  # UTC 13:27 (KST 22:27, 파드 스케일다운 3분 후)
+  suspend: true  # 테스트 비활성화
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
