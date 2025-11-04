@@ -6,7 +6,7 @@
 ## 테스트 구성
 - **동시 사용자**: 50명
 - **Ramp-up 시간**: 30초
-- **Event ID**: `60ebfb32-5f71-440f-b402-117674421f77`
+- **Event ID**: `5003037c-21e4-4eb4-9d1b-5384bafb516d`
 - **테스트 데이터**: CSV 파일 (test0000 ~ test0049)
 
 ## 전체 결과
@@ -44,20 +44,18 @@
 3. Queue Status (GET × 10) → 200 OK
 4. Enter Queue (POST) → 201 Created
 5. Get Event Detail (GET) → 200 OK
-6. Create Order (POST) → 201 Created
-7. Create Payment (POST) → 201 Created
-8. Payment Callback (POST) → 201 Created
+6. Create Order (POST) → 200 OK
+7. Create Payment (POST) → 200 OK
+8. Payment Callback (POST) → 200 OK
 9. Verify Order (GET) → 200 OK
 ```
 
 ## 실패 분석
 
 ### 주문 생성 실패 (30명)
-- **HTTP 상태**: 400 Bad Request
-- **원인 추정**:
-  - 이벤트 재고 부족 (20장만 남은 상황)
-  - 또는 per-user limit 적용 (일부 계정이 이미 구매)
-- **패턴**: 처음 20명 성공 후, 나머지 30명 모두 실패
+- **HTTP 상태**: 400 Bad Request (`Requested quantity exceeds per-user limit`)
+- **원인**: 대상 이벤트의 `maxPerUser=1` 제한으로 인해 동일 사용자가 여러 번 주문하지 못함
+- **패턴**: 처음 20명 성공 후, 나머지 30명 모두 per-user limit에 걸려 실패
 
 ### 연쇄 실패
 주문 생성이 실패한 30명의 사용자는:
@@ -127,7 +125,7 @@ JavaScript: missing ; before statement
 5. **처리량 양호**: 18 req/s (900개 요청 / 50초)
 
 ### ⚠️ 발견된 제한
-1. **주문 시스템**: 30명 실패 (재고 또는 limit 제한)
+1. **주문 시스템**: 30명 실패 (per-user limit 1 제한)
 2. **에러 응답 개선 필요**: 500 에러 발생 (주문 없을 때)
 
 ## 다음 단계 권장사항

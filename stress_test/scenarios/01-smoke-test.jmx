@@ -12,9 +12,25 @@
             <stringProp name="Argument.name">API_URL</stringProp>
             <stringProp name="Argument.value">https://api.highgarden.cloud</stringProp>
           </elementProp>
+          <elementProp name="EVENT_ID" elementType="Argument">
+            <stringProp name="Argument.name">EVENT_ID</stringProp>
+            <stringProp name="Argument.value">eabd190f-00bb-4f26-a539-997eacdad568</stringProp>
+          </elementProp>
+          <elementProp name="QUEUE_WS_REFRESH_MS" elementType="Argument">
+            <stringProp name="Argument.name">QUEUE_WS_REFRESH_MS</stringProp>
+            <stringProp name="Argument.value">4000</stringProp>
+          </elementProp>
+          <elementProp name="GLOBAL_EVENT_ID" elementType="Argument">
+            <stringProp name="Argument.name">GLOBAL_EVENT_ID</stringProp>
+            <stringProp name="Argument.value">__global__</stringProp>
+          </elementProp>
           <elementProp name="POLLING_MAX" elementType="Argument">
             <stringProp name="Argument.name">POLLING_MAX</stringProp>
             <stringProp name="Argument.value">10</stringProp>
+          </elementProp>
+          <elementProp name="USERS_CSV" elementType="Argument">
+            <stringProp name="Argument.name">USERS_CSV</stringProp>
+            <stringProp name="Argument.value">../test-users.csv</stringProp>
           </elementProp>
         </collectionProp>
       </elementProp>
@@ -57,8 +73,10 @@
 
         <!-- CSV Data Set Config -->
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Test Users CSV">
-          <stringProp name="filename">test-users.csv</stringProp>
+          <stringProp name="filename">${USERS_CSV}</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
+          <stringProp name="variableNames">userId,password</stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
           <stringProp name="delimiter">,</stringProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
@@ -110,35 +128,6 @@
           <hashTree/>
 
           <!-- Response Assertion -->
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 201 Created">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="49586">200</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">8</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-        </hashTree>
-
-        <!-- 2. Get Events (to extract eventId) -->
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="2. Get Events">
-          <stringProp name="HTTPSampler.domain">api.highgarden.cloud</stringProp>
-          <stringProp name="HTTPSampler.path">/events</stringProp>
-          <stringProp name="HTTPSampler.method">GET</stringProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <!-- Extract eventId -->
-          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extract eventId">
-            <stringProp name="JSONPostProcessor.referenceNames">eventId</stringProp>
-            <stringProp name="JSONPostProcessor.jsonPathExprs">$[0].id</stringProp>
-            <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
-            <stringProp name="JSONPostProcessor.defaultValues">ERROR</stringProp>
-          </JSONPostProcessor>
-          <hashTree/>
-
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 200 OK">
             <collectionProp name="Asserion.test_strings">
               <stringProp name="49586">200</stringProp>
@@ -150,8 +139,8 @@
           <hashTree/>
         </hashTree>
 
-        <!-- 3. Enqueue -->
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="3. Enqueue">
+        <!-- 2. Enqueue -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="2. Enqueue">
           <stringProp name="HTTPSampler.domain">gateway.highgarden.cloud</stringProp>
           <stringProp name="HTTPSampler.path">/queue/enqueue</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -162,7 +151,7 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-  &quot;eventId&quot;: &quot;${eventId}&quot;&#xd;
+  &quot;eventId&quot;: &quot;${EVENT_ID}&quot;&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -192,7 +181,7 @@
 
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 201 Created">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="49586">200</stringProp>
+              <stringProp name="49586">201</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -201,8 +190,8 @@
           <hashTree/>
         </hashTree>
 
-        <!-- 4. While Controller for Polling -->
-        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="4. Poll Queue Status">
+        <!-- 3. While Controller for Polling -->
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="3. Poll Queue Status">
           <stringProp name="WhileController.condition">${__javaScript(&quot;${queueState}&quot; != &quot;READY&quot; &amp;&amp; ${pollingCount} &lt; ${POLLING_MAX})}</stringProp>
         </WhileController>
         <hashTree>
@@ -255,58 +244,82 @@
           </hashTree>
 
           <!-- Wait 5 seconds -->
-          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Wait 5s">
-            <stringProp name="ConstantTimer.delay">5000</stringProp>
+          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Wait WS Interval">
+            <stringProp name="ConstantTimer.delay">${QUEUE_WS_REFRESH_MS}</stringProp>
           </ConstantTimer>
           <hashTree/>
         </hashTree>
 
-        <!-- 5. Enter Queue -->
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="5. Enter Queue">
-          <stringProp name="HTTPSampler.domain">gateway.highgarden.cloud</stringProp>
-          <stringProp name="HTTPSampler.path">/queue/enter</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&#xd;
+        <!-- 4. Enter Queue (only when READY) -->
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Ready to Enter?">
+          <stringProp name="IfController.condition">${__javaScript(&quot;${queueState}&quot; == &quot;READY&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+        </IfController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="4. Enter Queue">
+            <stringProp name="HTTPSampler.domain">gateway.highgarden.cloud</stringProp>
+            <stringProp name="HTTPSampler.path">/queue/enter</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
   &quot;ticketId&quot;: &quot;${ticketId}&quot;,&#xd;
   &quot;gateToken&quot;: &quot;${gateToken}&quot;&#xd;
 }</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Auth Header">
-            <collectionProp name="HeaderManager.headers">
-              <elementProp name="Authorization" elementType="Header">
-                <stringProp name="Header.name">Authorization</stringProp>
-                <stringProp name="Header.value">Bearer ${accessToken}</stringProp>
-              </elementProp>
-            </collectionProp>
-          </HeaderManager>
-          <hashTree/>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Auth Header">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="Authorization" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Bearer ${accessToken}</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
 
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 200 OK">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="49586">200</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">8</intProp>
-          </ResponseAssertion>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 201 Created">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">201</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+
+        <!-- Fail fast if queue never became READY -->
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Queue Not Ready Failure">
+          <stringProp name="IfController.condition">${__javaScript(&quot;${queueState}&quot; != &quot;READY&quot;)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+        </IfController>
+        <hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Mark Failure - Queue Not Ready">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="script">SampleResult.sampleStart();
+SampleResult.sampleEnd();
+SampleResult.setSuccessful(false);
+SampleResult.setResponseCode(&quot;599&quot;);
+SampleResult.setResponseMessage(&quot;Queue did not reach READY within polling limit&quot;);
+            </stringProp>
+          </JSR223Sampler>
           <hashTree/>
         </hashTree>
 
-        <!-- 6. Get Event Detail -->
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="6. Get Event Detail">
+        <!-- 5. Get Event Detail -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="5. Get Event Detail">
           <stringProp name="HTTPSampler.domain">api.highgarden.cloud</stringProp>
-          <stringProp name="HTTPSampler.path">/events/${eventId}</stringProp>
+          <stringProp name="HTTPSampler.path">/events/${EVENT_ID}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
@@ -323,7 +336,7 @@
           <hashTree/>
 
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 200 OK">
-            <collectionProp name="Asserion.test_strings">
+            <collectionProp name="Assertion.test_strings">
               <stringProp name="49586">200</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
@@ -333,8 +346,8 @@
           <hashTree/>
         </hashTree>
 
-        <!-- 7. Create Order -->
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="7. Create Order">
+        <!-- 6. Create Order -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="6. Create Order">
           <stringProp name="HTTPSampler.domain">api.highgarden.cloud</stringProp>
           <stringProp name="HTTPSampler.path">/orders</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -345,7 +358,7 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-  &quot;event_id&quot;: &quot;${eventId}&quot;,&#xd;
+  &quot;event_id&quot;: &quot;${EVENT_ID}&quot;,&#xd;
   &quot;qty&quot;: 1&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -376,9 +389,9 @@
           </JSONPostProcessor>
           <hashTree/>
 
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 200 OK">
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 201 Created">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="49586">200</stringProp>
+              <stringProp name="49586">201</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -387,8 +400,8 @@
           <hashTree/>
         </hashTree>
 
-        <!-- 8. Create Payment -->
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="8. Create Payment">
+        <!-- 7. Create Payment -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="7. Create Payment">
           <stringProp name="HTTPSampler.domain">api.highgarden.cloud</stringProp>
           <stringProp name="HTTPSampler.path">/payments</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -437,8 +450,8 @@
           <hashTree/>
         </hashTree>
 
-        <!-- 9. Complete Payment (Callback) -->
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="9. Complete Payment">
+        <!-- 8. Complete Payment (Callback) -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="8. Complete Payment">
           <stringProp name="HTTPSampler.domain">api.highgarden.cloud</stringProp>
           <stringProp name="HTTPSampler.path">/payments/callback</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -480,8 +493,8 @@
           <hashTree/>
         </hashTree>
 
-        <!-- 10. Verify Order Status -->
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="10. Verify Order">
+        <!-- 9. Verify Order Status -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="9. Verify Order">
           <stringProp name="HTTPSampler.domain">api.highgarden.cloud</stringProp>
           <stringProp name="HTTPSampler.path">/orders/${orderId}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>

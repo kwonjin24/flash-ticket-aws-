@@ -56,6 +56,8 @@ Phase 3 (Peak Load):
 10. 주문 상태 확인 (1회)
 ```
 
+> Load 테스트는 이벤트 `5003037c-21e4-4eb4-9d1b-5384bafb516d`를 대상으로 진행합니다. JMeter 전역 변수 `EVENT_ID`를 이 값으로 설정해 두고, 큐 등록과 주문·결제 단계에서 동일한 이벤트를 사용합니다.
+
 ## 상세 플로우
 
 ### 1. Setup Thread Group (Once Only)
@@ -74,38 +76,28 @@ Body:
 Extract:
 - accessToken (JSON Extractor: $.accessToken)
 
-Expected: 200 OK
+Expected: 201 Created
 ```
 
 ### 2. 대기열 진입
 
 ```
-2.1 이벤트 목록 조회 (eventId 추출용)
-GET https://api.highgarden.cloud/events
-
-Extract:
-- eventId (JSON Extractor: $[0].id)
-
-Expected: 200 OK
-
-Think Time: 2-5초
-
-2.2 대기열 등록
+2.1 대기열 등록
 POST https://gateway.highgarden.cloud/queue/enqueue
 Headers:
   Authorization: Bearer ${accessToken}
   Content-Type: application/json
 Body:
 {
-  "eventId": "${eventId}"
+  "eventId": "${EVENT_ID}"
 }
 
 Extract:
 - ticketId (JSON Extractor: $.ticketId)
 
-Expected: 200 OK
+Expected: 201 Created
 
-2.3 대기열 상태 폴링 (While Controller)
+2.2 대기열 상태 폴링 (While Controller)
 Condition: ${__javaScript("${queueState}" != "READY" && ${pollingCount} < 20)}
 
 GET https://gateway.highgarden.cloud/queue/status?ticketId=${ticketId}
@@ -130,7 +122,7 @@ Body:
   "gateToken": "${gateToken}"
 }
 
-Expected: 200 OK
+Expected: 201 Created
 Think Time: 2-5초
 ```
 
@@ -146,7 +138,7 @@ Expected: 200 OK
 Think Time: 3-7초
 
 3.2 이벤트 상세 조회
-GET https://api.highgarden.cloud/events/${eventId}
+GET https://api.highgarden.cloud/events/${EVENT_ID}
 Headers:
   Authorization: Bearer ${accessToken}
 
@@ -169,7 +161,7 @@ Headers:
   Content-Type: application/json
 Body:
 {
-  "event_id": "${eventId}",
+  "event_id": "${EVENT_ID}",
   "qty": 1
 }
 
@@ -340,14 +332,9 @@ Match No: 1
 Default Value: NOT_READY
 ```
 
-### 이벤트 목록
+### 이벤트 ID
 
-```
-Variable: eventId
-JSON Path: $[0].id
-Match No: 1
-Default Value: ERROR
-```
+고정 이벤트 ID `EVENT_ID=5003037c-21e4-4eb4-9d1b-5384bafb516d`를 전역 변수로 사용합니다. 별도의 JSON 추출은 필요하지 않습니다.
 
 ### 주문 생성
 
