@@ -4,9 +4,33 @@
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="03 Load Test - 1000 Users">
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments">
         <collectionProp name="Arguments.arguments">
+          <elementProp name="GATEWAY_HOST" elementType="Argument">
+            <stringProp name="Argument.name">GATEWAY_HOST</stringProp>
+            <stringProp name="Argument.value">gateway.highgarden.cloud</stringProp>
+          </elementProp>
+          <elementProp name="API_HOST" elementType="Argument">
+            <stringProp name="Argument.name">API_HOST</stringProp>
+            <stringProp name="Argument.value">api.highgarden.cloud</stringProp>
+          </elementProp>
           <elementProp name="EVENT_ID" elementType="Argument">
             <stringProp name="Argument.name">EVENT_ID</stringProp>
-            <stringProp name="Argument.value">5fc5e855-f1e6-4c0a-a758-5f76eb6aee4e</stringProp>
+            <stringProp name="Argument.value">5003037c-21e4-4eb4-9d1b-5384bafb516d</stringProp>
+          </elementProp>
+          <elementProp name="GLOBAL_EVENT_ID" elementType="Argument">
+            <stringProp name="Argument.name">GLOBAL_EVENT_ID</stringProp>
+            <stringProp name="Argument.value">5003037c-21e4-4eb4-9d1b-5384bafb516d</stringProp>
+          </elementProp>
+          <elementProp name="QUEUE_WS_REFRESH_MS" elementType="Argument">
+            <stringProp name="Argument.name">QUEUE_WS_REFRESH_MS</stringProp>
+            <stringProp name="Argument.value">4000</stringProp>
+          </elementProp>
+          <elementProp name="POLLING_MAX" elementType="Argument">
+            <stringProp name="Argument.name">POLLING_MAX</stringProp>
+            <stringProp name="Argument.value">10</stringProp>
+          </elementProp>
+          <elementProp name="USERS_CSV" elementType="Argument">
+            <stringProp name="Argument.name">USERS_CSV</stringProp>
+            <stringProp name="Argument.value">stress_test/test-users-1000.csv</stringProp>
           </elementProp>
         </collectionProp>
       </elementProp>
@@ -25,7 +49,7 @@
       <hashTree>
         <!-- CSV Data Source -->
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="User Credentials">
-          <stringProp name="filename">test-users-1000.csv</stringProp>
+          <stringProp name="filename">${USERS_CSV}</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
           <stringProp name="variableNames">userId,password</stringProp>
           <boolProp name="ignoreFirstLine">true</boolProp>
@@ -58,7 +82,7 @@
 
         <!-- 1. Login -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1. Login">
-          <stringProp name="HTTPSampler.domain">gateway.highgarden.cloud</stringProp>
+          <stringProp name="HTTPSampler.domain">${GATEWAY_HOST}</stringProp>
           <stringProp name="HTTPSampler.path">/auth/login</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -76,9 +100,9 @@
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 201">
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 200 OK">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="49587">201</stringProp>
+              <stringProp name="49586">200</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -97,7 +121,7 @@
 
         <!-- 2. Enqueue -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="2. Enqueue">
-          <stringProp name="HTTPSampler.domain">gateway.highgarden.cloud</stringProp>
+          <stringProp name="HTTPSampler.domain">${GATEWAY_HOST}</stringProp>
           <stringProp name="HTTPSampler.path">/queue/enqueue</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -106,7 +130,7 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{
-  "eventId": "${EVENT_ID}"
+  "eventId": "${GLOBAL_EVENT_ID}"
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -124,9 +148,9 @@
           </HeaderManager>
           <hashTree/>
 
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 201">
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 200 OK">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="49587">201</stringProp>
+              <stringProp name="49586">200</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -150,7 +174,7 @@
         <hashTree>
 
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Queue Status Check">
-            <stringProp name="HTTPSampler.domain">gateway.highgarden.cloud</stringProp>
+            <stringProp name="HTTPSampler.domain">${GATEWAY_HOST}</stringProp>
             <stringProp name="HTTPSampler.path">/queue/status</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -194,15 +218,15 @@
             <hashTree/>
           </hashTree>
 
-          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Wait 2s">
-            <stringProp name="ConstantTimer.delay">2000</stringProp>
+          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Wait WS Interval">
+            <stringProp name="ConstantTimer.delay">${QUEUE_WS_REFRESH_MS}</stringProp>
           </ConstantTimer>
           <hashTree/>
         </hashTree>
 
         <!-- 4. Enter Queue -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="4. Enter Queue">
-          <stringProp name="HTTPSampler.domain">gateway.highgarden.cloud</stringProp>
+          <stringProp name="HTTPSampler.domain">${GATEWAY_HOST}</stringProp>
           <stringProp name="HTTPSampler.path">/queue/enter</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -230,9 +254,9 @@
           </HeaderManager>
           <hashTree/>
 
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 201">
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 200 OK">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="49587">201</stringProp>
+              <stringProp name="49586">200</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -243,7 +267,7 @@
 
         <!-- 5. Get Event Detail -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="5. Get Event Detail">
-          <stringProp name="HTTPSampler.domain">api.highgarden.cloud</stringProp>
+          <stringProp name="HTTPSampler.domain">${API_HOST}</stringProp>
           <stringProp name="HTTPSampler.path">/events/${EVENT_ID}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -272,7 +296,7 @@
 
         <!-- 6. Create Order -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="6. Create Order">
-          <stringProp name="HTTPSampler.domain">api.highgarden.cloud</stringProp>
+          <stringProp name="HTTPSampler.domain">${API_HOST}</stringProp>
           <stringProp name="HTTPSampler.path">/orders</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -304,9 +328,9 @@
           </HeaderManager>
           <hashTree/>
 
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 201">
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 200 OK">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="49587">201</stringProp>
+              <stringProp name="49586">200</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -325,7 +349,7 @@
 
         <!-- 7. Create Payment -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="7. Create Payment">
-          <stringProp name="HTTPSampler.domain">api.highgarden.cloud</stringProp>
+          <stringProp name="HTTPSampler.domain">${API_HOST}</stringProp>
           <stringProp name="HTTPSampler.path">/payments</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -353,9 +377,9 @@
           </HeaderManager>
           <hashTree/>
 
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 201">
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 200 OK">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="49587">201</stringProp>
+              <stringProp name="49586">200</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -374,7 +398,7 @@
 
         <!-- 8. Payment Callback -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="8. Payment Callback">
-          <stringProp name="HTTPSampler.domain">api.highgarden.cloud</stringProp>
+          <stringProp name="HTTPSampler.domain">${API_HOST}</stringProp>
           <stringProp name="HTTPSampler.path">/payments/callback</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -403,9 +427,9 @@
           </HeaderManager>
           <hashTree/>
 
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 201">
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert 200 OK">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="49587">201</stringProp>
+              <stringProp name="49586">200</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -416,7 +440,7 @@
 
         <!-- 9. Verify Order Status -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="9. Verify Order">
-          <stringProp name="HTTPSampler.domain">api.highgarden.cloud</stringProp>
+          <stringProp name="HTTPSampler.domain">${API_HOST}</stringProp>
           <stringProp name="HTTPSampler.path">/orders/${orderId}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>

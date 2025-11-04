@@ -6,14 +6,18 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="EVENT_ID" elementType="Argument">
             <stringProp name="Argument.name">EVENT_ID</stringProp>
-            <stringProp name="Argument.value">60ebfb32-5f71-440f-b402-117674421f77</stringProp>
+            <stringProp name="Argument.value">34275e20-d07a-4e77-bffd-4e315fe24103</stringProp>
+          </elementProp>
+          <elementProp name="GLOBAL_EVENT_ID" elementType="Argument">
+            <stringProp name="Argument.name">GLOBAL_EVENT_ID</stringProp>
+            <stringProp name="Argument.value">global_event</stringProp>
           </elementProp>
         </collectionProp>
       </elementProp>
     </TestPlan>
     <hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Load Test Users">
-        <intProp name="ThreadGroup.num_threads">50</intProp>
+        <intProp name="ThreadGroup.num_threads">100</intProp>
         <intProp name="ThreadGroup.ramp_time">30</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -25,7 +29,7 @@
       <hashTree>
         <!-- CSV Data Source -->
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="User Credentials">
-          <stringProp name="filename">test-users.csv</stringProp>
+          <stringProp name="filename">test-users-100.csv</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
           <stringProp name="variableNames">userId,password</stringProp>
           <boolProp name="ignoreFirstLine">true</boolProp>
@@ -106,7 +110,7 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{
-  "eventId": "${EVENT_ID}"
+  "eventId": "${GLOBAL_EVENT_ID}"
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>

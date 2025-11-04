@@ -41,31 +41,9 @@ Response:
 Extract: accessToken → JWT_TOKEN
 ```
 
-### 2. 이벤트 조회 (eventId 추출용)
+> 주문/결제 단계에서는 고정 이벤트 ID `eabd190f-00bb-4f26-a539-997eacdad568`을 `EVENT_ID` 변수에 주입해 사용합니다.
 
-```
-GET https://api.highgarden.cloud/events
-
-Expected: 200 OK
-Response:
-[
-  {
-    "id": "...",
-    "name": "...",
-    "startsAt": "...",
-    "endsAt": "...",
-    "totalQty": 1000,
-    "soldQty": 0,
-    "maxPerUser": 4,
-    "price": 50000,
-    "status": "ACTIVE"
-  }
-]
-
-Extract: eventId → $[0].id
-```
-
-### 3. 대기열 등록
+### 2. 대기열 등록
 
 ```
 POST https://gateway.highgarden.cloud/queue/enqueue
@@ -74,7 +52,7 @@ Headers:
   Content-Type: application/json
 Body:
 {
-  "eventId": "${eventId}"
+  "eventId": "${EVENT_ID}"
 }
 
 Expected: 200 OK
@@ -86,28 +64,13 @@ Response:
 Extract: ticketId → TICKET_ID
 ```
 
-### 4. 대기열 상태 확인
+### 3. 대기열 상태 폴링 (While Loop)
 
 ```
 GET https://gateway.highgarden.cloud/queue/status?ticketId=${TICKET_ID}
 
 Expected: 200 OK
-Response:
-{
-  "ticketId": "...",
-  "state": "QUEUED" or "READY",
-  "position": 1,
-  "gateToken": "..." (READY일 때만)
-}
 
-Extract:
-- state → QUEUE_STATE
-- gateToken → GATE_TOKEN
-```
-
-### 5. 대기열 상태 폴링 (While Loop)
-
-```
 Condition: ${QUEUE_STATE} != "READY" && ${pollingCount} < 10
 
 Loop:
@@ -117,13 +80,15 @@ Loop:
   - state → QUEUE_STATE
   - gateToken → GATE_TOKEN
 
-  Wait: 5초
+  Wait: 4초 (ConfigMap `QUEUE_WS_REFRESH_MS`와 동일)
   pollingCount++
 
-최대 10회 폴링 (50초)
+최대 10회 폴링 (40초)
+
+폴링 완료 후에도 `QUEUE_STATE`가 READY가 아니면 테스트가 실패하도록 구성되어 있습니다.
 ```
 
-### 6. 입장 (state가 READY일 때)
+### 4. 입장 (state가 READY일 때)
 
 ```
 POST https://gateway.highgarden.cloud/queue/enter
@@ -143,20 +108,10 @@ Response:
 }
 ```
 
-### 7. 이벤트 목록 조회
+### 5. 이벤트 상세 조회
 
 ```
-GET https://api.highgarden.cloud/events
-Headers:
-  Authorization: Bearer ${JWT_TOKEN}
-
-Expected: 200 OK
-```
-
-### 8. 이벤트 상세 조회
-
-```
-GET https://api.highgarden.cloud/events/${eventId}
+GET https://api.highgarden.cloud/events/${EVENT_ID}
 Headers:
   Authorization: Bearer ${JWT_TOKEN}
 
@@ -172,7 +127,7 @@ Response:
 }
 ```
 
-### 9. 주문 생성
+### 6. 주문 생성
 
 ```
 POST https://api.highgarden.cloud/orders
@@ -182,7 +137,7 @@ Headers:
   Content-Type: application/json
 Body:
 {
-  "event_id": "${eventId}",
+  "event_id": "${EVENT_ID}",
   "qty": 1
 }
 
@@ -202,7 +157,7 @@ Extract:
 - amount → AMOUNT
 ```
 
-### 10. 결제 생성
+### 7. 결제 생성
 
 ```
 POST https://api.highgarden.cloud/payments
@@ -228,7 +183,7 @@ Response:
 Extract: paymentId → PAYMENT_ID
 ```
 
-### 11. 결제 완료 (콜백)
+### 8. 결제 완료 (콜백)
 
 ```
 POST https://api.highgarden.cloud/payments/callback
@@ -253,7 +208,7 @@ Response:
 }
 ```
 
-### 12. 주문 확인
+### 9. 주문 확인
 
 ```
 GET https://api.highgarden.cloud/orders/${ORDER_ID}
@@ -270,18 +225,6 @@ Response:
   "eventId": "...",
   "eventName": "..."
 }
-```
-
-### 13. 헬스체크
-
-```
-GET https://gateway.highgarden.cloud/queue/healthz
-Expected: 200 OK
-Response: { "status": "ok" }
-
-GET https://api.highgarden.cloud/health
-Expected: 200 OK
-Response: { "status": "ok" }
 ```
 
 ## 검증 항목
@@ -318,6 +261,9 @@ Scheduler: Unchecked
 ```
 GATEWAY_URL: https://gateway.highgarden.cloud
 API_URL: https://api.highgarden.cloud
+EVENT_ID: eabd190f-00bb-4f26-a539-997eacdad568
+GLOBAL_EVENT_ID: __global__
+QUEUE_WS_REFRESH_MS: 4000
 POLLING_MAX: 10
 ```
 
