@@ -5,8 +5,7 @@ metadata:
   name: nodepool-activate
   namespace: flash-ticket
 spec:
-  schedule: "20 13 * * *"  # UTC 13:20 (KST 22:20, 파드 스케일업 2분 전)
-  suspend: true  # 테스트 비활성화
+  schedule: "58 5 * * *"  # UTC 05:58 (KST 14:58, 파드 스케일업 2분 전)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -73,8 +72,7 @@ metadata:
   name: nodepool-deactivate
   namespace: flash-ticket
 spec:
-  schedule: "27 13 * * *"  # UTC 13:27 (KST 22:27, 파드 스케일다운 3분 후)
-  suspend: true  # 테스트 비활성화
+  schedule: "13 6 * * *"  # UTC 06:13 (KST 15:13, 파드 스케일다운 3뵤 후)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
