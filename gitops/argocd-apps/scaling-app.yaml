@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/CloudDx/flash-ticket-final.git
-    targetRevision: HEAD
+    targetRevision: main
     path: gitops/infrastructure/scaling
   destination:
     server: https://kubernetes.default.svc
