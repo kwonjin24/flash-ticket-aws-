@@ -46,7 +46,7 @@ spec:
         effect: NoSchedule
       containers:
         - name: pay
-          image: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/pay:amd64
+          image: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/pay:04a8a4aaee01888fa4f6aed397e1bb9c2529f402
           imagePullPolicy: Always
           ports:
             - containerPort: 3100
