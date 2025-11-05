@@ -1,11 +1,11 @@
-# NodePool 활성화 CronJob (오후 4:45)
+# NodePool 활성화 CronJob (오후 6:02)
 apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: nodepool-activate
   namespace: flash-ticket
 spec:
-  schedule: "15 8 * * *"  # UTC 08:15 (KST 17:15, 파드 스케일업 2분 전)
+  schedule: "2 9 * * *"  # UTC 09:02 (KST 18:02, 파드 스케일업 2분 전)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:

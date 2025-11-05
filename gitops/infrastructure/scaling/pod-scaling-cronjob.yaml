@@ -1,11 +1,11 @@
-# 파드 스케일업 CronJob (오후 4:50)
+# 파드 스케일업 CronJob (오후 6:04)
 apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: pod-scale-up
   namespace: flash-ticket
 spec:
-  schedule: "17 8 * * *"  # UTC 08:17 (KST 17:17, NodePool 생성 2분 후)
+  schedule: "4 9 * * *"  # UTC 09:04 (KST 18:04, NodePool 생성 2분 후)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
