@@ -35,14 +35,42 @@ spec:
                   values:
                   - flash-api
               topologyKey: kubernetes.io/hostname
-      # NodeGroup service-workers에만 배치
-      nodeSelector:
-        node-type: service-dedicated
-      # Taint 허용
+      # 고가용성을 위한 Pod 분산 설정
+      affinity:
+        # NodeGroup 우선, Karpenter 보조 사용
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: node-type
+                operator: In
+                values: ["service-dedicated"]
+          - weight: 50
+            preference:
+              matchExpressions:
+              - key: karpenter.sh/nodepool
+                operator: In
+                values: ["peak-time"]
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - flash-api
+              topologyKey: topology.kubernetes.io/zone
+      # 서비스 관련 모든 Taint 허용
       tolerations:
       - key: service-only
         operator: Equal
         value: "true"
+        effect: NoSchedule
+      - key: karpenter.sh/disruption
+        operator: Exists
         effect: NoSchedule
       containers:
         - name: api

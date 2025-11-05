@@ -17,17 +17,23 @@ spec:
       labels:
         app: flash-gateway
     spec:
-      # NodeGroup service-workers에만 배치
-      nodeSelector:
-        node-type: service-dedicated
-      # Taint 허용
-      tolerations:
-      - key: service-only
-        operator: Equal
-        value: "true"
-        effect: NoSchedule
       # 고가용성을 위한 Pod 분산 설정
       affinity:
+        # NodeGroup 우선, Karpenter 보조 사용
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: node-type
+                operator: In
+                values: ["service-dedicated"]
+          - weight: 50
+            preference:
+              matchExpressions:
+              - key: karpenter.sh/nodepool
+                operator: In
+                values: ["peak-time"]
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 100
@@ -39,6 +45,15 @@ spec:
                   values:
                   - flash-gateway
               topologyKey: topology.kubernetes.io/zone
+      # 서비스 관련 모든 Taint 허용
+      tolerations:
+      - key: service-only
+        operator: Equal
+        value: "true"
+        effect: NoSchedule
+      - key: karpenter.sh/disruption
+        operator: Exists
+        effect: NoSchedule
       containers:
         - name: gateway
           image: 339712948064.dkr.ecr.ap-northeast-2.amazonaws.com/flash-tickets/gateway:04a8a4aaee01888fa4f6aed397e1bb9c2529f402
