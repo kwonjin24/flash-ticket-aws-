@@ -52,11 +52,19 @@ spec:
                 name: api-secret
             - configMapRef:
                 name: api-config
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 12
+            timeoutSeconds: 3
           readinessProbe:
             httpGet:
               path: /health
               port: 4000
-            initialDelaySeconds: 30
+            initialDelaySeconds: 0
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
@@ -64,7 +72,7 @@ spec:
             httpGet:
               path: /health
               port: 4000
-            initialDelaySeconds: 45
+            initialDelaySeconds: 0
             periodSeconds: 20
             timeoutSeconds: 5
             failureThreshold: 3
