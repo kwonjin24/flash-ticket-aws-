@@ -28,8 +28,8 @@ spec:
               # HPA minReplicas 증가로 강제 스케일업
               echo "=== HPA 피크 모드 활성화 ==="
               kubectl patch hpa flash-api-hpa -n flash-ticket -p '{"spec":{"minReplicas":6}}'
-              kubectl patch hpa flash-gateway-hpa -n flash-ticket -p '{"spec":{"minReplicas":6}}'
-              kubectl patch hpa flash-pay-hpa -n flash-ticket -p '{"spec":{"minReplicas":6}}'
+              kubectl patch hpa flash-gateway-hpa -n flash-ticket -p '{"spec":{"minReplicas":10}}'
+              kubectl patch hpa flash-pay-hpa -n flash-ticket -p '{"spec":{"minReplicas":3}}'
               
               # 결과 확인
               echo "=== 스케일업 후 상태 ==="
@@ -69,8 +69,8 @@ spec:
               # HPA minReplicas 원복으로 자동 스케일다운
               echo "=== HPA 일반 모드 복원 ==="
               kubectl patch hpa flash-api-hpa -n flash-ticket -p '{"spec":{"minReplicas":2}}'
-              kubectl patch hpa flash-gateway-hpa -n flash-ticket -p '{"spec":{"minReplicas":2}}'
-              kubectl patch hpa flash-pay-hpa -n flash-ticket -p '{"spec":{"minReplicas":1}}'
+              kubectl patch hpa flash-gateway-hpa -n flash-ticket -p '{"spec":{"minReplicas":4}}'
+              kubectl patch hpa flash-pay-hpa -n flash-ticket -p '{"spec":{"minReplicas":2}}'
               
               # 결과 확인
               echo "=== 스케일다운 후 상태 ==="
