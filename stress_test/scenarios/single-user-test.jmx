@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="03 Load Test - 2000 Users">
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Single User Full Flow Test">
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments">
         <collectionProp name="Arguments.arguments">
           <elementProp name="EVENT_ID" elementType="Argument">
             <stringProp name="Argument.name">EVENT_ID</stringProp>
-            <stringProp name="Argument.value">2ba2ed12-a933-4a65-96ca-6fa18e573da2</stringProp>
+            <stringProp name="Argument.value">d0432c80-481c-4f10-8063-9a1cfaf6c910</stringProp>
           </elementProp>
           <elementProp name="GLOBAL_EVENT_ID" elementType="Argument">
             <stringProp name="Argument.name">GLOBAL_EVENT_ID</stringProp>
-            <stringProp name="Argument.value">2ba2ed12-a933-4a65-96ca-6fa18e573da2</stringProp>
+            <stringProp name="Argument.value">d0432c80-481c-4f10-8063-9a1cfaf6c910</stringProp>
+          </elementProp>
+          <elementProp name="userId" elementType="Argument">
+            <stringProp name="Argument.name">userId</stringProp>
+            <stringProp name="Argument.value">test0100</stringProp>
+          </elementProp>
+          <elementProp name="password" elementType="Argument">
+            <stringProp name="Argument.name">password</stringProp>
+            <stringProp name="Argument.value">testtest</stringProp>
           </elementProp>
         </collectionProp>
       </elementProp>
     </TestPlan>
     <hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Load Test Users">
-        <intProp name="ThreadGroup.num_threads">2000</intProp>
-        <intProp name="ThreadGroup.ramp_time">8</intProp>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Single User">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController">
@@ -27,19 +35,6 @@
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <!-- CSV Data Source -->
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="User Credentials">
-          <stringProp name="filename">test-users-2000.csv</stringProp>
-          <stringProp name="fileEncoding">UTF-8</stringProp>
-          <stringProp name="variableNames">userId,password</stringProp>
-          <boolProp name="ignoreFirstLine">true</boolProp>
-          <stringProp name="delimiter">,</stringProp>
-          <boolProp name="quotedData">false</boolProp>
-          <boolProp name="recycle">true</boolProp>
-          <boolProp name="stopThread">false</boolProp>
-          <stringProp name="shareMode">shareMode.all</stringProp>
-        </CSVDataSet>
-        <hashTree/>
 
         <!-- HTTP Defaults -->
         <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Defaults">
@@ -147,20 +142,10 @@
           <hashTree/>
         </hashTree>
 
-        <!-- 3. Initialize Queue State -->
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="Initialize Poll Variables">
-          <stringProp name="BeanShellSampler.query">vars.put("queueState", "QUEUED");
-vars.put("pollCount", "0");</stringProp>
-          <stringProp name="BeanShellSampler.filename"></stringProp>
-          <stringProp name="BeanShellSampler.parameters"></stringProp>
-          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
-        </BeanShellSampler>
-        <hashTree/>
-
-        <!-- 3. Poll Queue Status (Loop until READY or max 60 times) -->
-        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="3. Wait for Queue Ready">
-          <stringProp name="WhileController.condition">${__javaScript(vars.get("queueState") != "READY" &amp;&amp; parseInt(vars.get("pollCount")) &lt; 60)}</stringProp>
-        </WhileController>
+        <!-- 3. Poll Queue Status (Loop 10 times) -->
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="3. Wait for Queue Ready">
+          <stringProp name="LoopController.loops">10</stringProp>
+        </LoopController>
         <hashTree>
 
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Queue Status Check">
@@ -207,13 +192,6 @@ vars.put("pollCount", "0");</stringProp>
             </JSONPostProcessor>
             <hashTree/>
           </hashTree>
-
-          <!-- Increment poll counter -->
-          <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="Increment Poll Count">
-            <stringProp name="script">vars.put("pollCount", String.valueOf(Integer.parseInt(vars.get("pollCount")) + 1));</stringProp>
-            <boolProp name="resetInterpreter">false</boolProp>
-          </BeanShellPostProcessor>
-          <hashTree/>
 
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Wait 3s">
             <stringProp name="ConstantTimer.delay">3000</stringProp>
