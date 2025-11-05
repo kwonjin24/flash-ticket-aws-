@@ -3,6 +3,10 @@ kind: Deployment
 metadata:
   name: flash-api
   namespace: flash-ticket
+  annotations:
+    argocd.argoproj.io/ignore-differences: |
+      jsonPointers:
+      - /spec/replicas
 spec:
   replicas: 2
   selector:
