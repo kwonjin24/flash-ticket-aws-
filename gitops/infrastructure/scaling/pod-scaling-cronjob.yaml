@@ -5,7 +5,7 @@ metadata:
   name: pod-scale-up
   namespace: flash-ticket
 spec:
-  schedule: "22 6 * * *"  # UTC 06:22 (KST 15:22, NodePool 생성 2분 후)
+  schedule: "35 7 * * *"  # UTC 07:35 (KST 16:35, NodePool 생성 2분 후)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -46,7 +46,7 @@ metadata:
   name: pod-scale-down
   namespace: flash-ticket
 spec:
-  schedule: "52 6 * * *"  # UTC 06:52 (KST 15:52, 30분 후 스케일다운)
+  schedule: "5 8 * * *"  # UTC 08:05 (KST 17:05, 30분 후 스케일다운)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
