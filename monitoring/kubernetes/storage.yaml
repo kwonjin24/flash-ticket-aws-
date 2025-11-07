@@ -1,3 +1,11 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: gp2-retain
+provisioner: ebs.csi.aws.com
+reclaimPolicy: Retain
+
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -9,7 +17,7 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: gp2
+  storageClassName: gp2-retain
 
 ---
 apiVersion: v1
@@ -23,7 +31,7 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  storageClassName: gp2
+  storageClassName: gp2-retain
 
 ---
 apiVersion: v1
@@ -37,4 +45,4 @@ spec:
   resources:
     requests:
       storage: 2Gi
-  storageClassName: gp2
+  storageClassName: gp2-retain

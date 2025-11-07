@@ -5,6 +5,7 @@ import re
 import time
 from datetime import datetime
 from io import BytesIO
+from urllib.parse import urlparse
 
 s3 = boto3.client('s3')
 logs = boto3.client('logs')
@@ -16,7 +17,8 @@ def parse_alb_log(line):
     """
     ALB Access Log 라인을 구조화된 JSON으로 파싱
     상태 코드와 응답 시간을 별도 필드로 추출하여 CloudWatch Logs에서 필터링 가능하게 함
-    
+    서비스 구분을 위해 request path를 파싱하여 service 필드 추가
+
     ALB 로그 필드 인덱스 (0-based):
     0: type (http/https/h2/wss)
     1: time (ISO 8601 timestamp)
@@ -28,6 +30,8 @@ def parse_alb_log(line):
     7: response_processing_time (초)
     8: elb_status_code (상태 코드)
     9: target_status_code (대상 상태 코드)
+    10-11: bytes_sent, user_agent (생략)
+    12: request ("GET /path HTTP/1.1" 형식)
     """
     try:
         # 기본 필드 추출
@@ -53,18 +57,21 @@ def parse_alb_log(line):
         request_processing_time = None
         target_processing_time = None
         response_processing_time = None
-        
+        service = "unknown"
+        request_path = None
+        http_method = None
+
         try:
             # 공백으로 구분된 필드들을 파싱
             fields = line.split()
-            
+
             # 상태 코드 추출 (인덱스 8: elb_status_code)
             if len(fields) > 8:
                 try:
                     status_code = int(fields[8])
                 except (ValueError, IndexError):
                     pass
-            
+
             # 대상 상태 코드 추출 (인덱스 9: target_status_code)
             if len(fields) > 9:
                 try:
@@ -85,15 +92,73 @@ def parse_alb_log(line):
                     if request_time == -1 or target_time == -1 or response_time_seconds == -1:
                         response_time = None
                     else:
-                        # 총 응답 시간을 밀리초로 변환
-                        response_time = (request_time + target_time + response_time_seconds) * 1000
+                        # 총 응답 시간을 밀리초로 변환 (정수로 반올림하여 부동소수점 오차 제거)
+                        response_time = round((request_time + target_time + response_time_seconds) * 1000)
 
                         # 각 단계별 시간도 저장 (상세 분석용)
-                        request_processing_time = request_time * 1000
-                        target_processing_time = target_time * 1000
-                        response_processing_time = response_time_seconds * 1000
+                        request_processing_time = round(request_time * 1000)
+                        target_processing_time = round(target_time * 1000)
+                        response_processing_time = round(response_time_seconds * 1000)
                 except (ValueError, IndexError):
                     pass
+
+            # 요청 경로에서 서비스 구분
+            # ALB 로그의 request 필드는 따옴표로 감싸져 있음
+            # 예시: "GET https://gateway.highgarden.cloud:443/queue/status HTTP/1.1"
+            # 또는: "GET /orders HTTP/1.1"
+            # 정규표현식으로 직접 추출 (user-agent에 공백이 있어서 split 위치가 가변적)
+            try:
+                # 따옴표로 감싸진 request 필드 전체 추출
+                import re as regex
+                request_match = regex.search(r'"((?:GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)\s+[^\s]+\s+HTTP[^"]*)"', line)
+                if request_match:
+                    request_line = request_match.group(1)  # 예: "GET https://gateway.highgarden.cloud:443/queue/status HTTP/1.1"
+
+                    # 메서드와 경로를 공백으로 분리 (처음 2개만 관심)
+                    parts = request_line.split(None, 2)  # [메서드, 경로, HTTP버전...]
+                    if len(parts) >= 2:
+                        http_method = parts[0]  # GET, POST, etc.
+                        raw_path = parts[1]     # /orders 또는 https://gateway.highgarden.cloud:443/queue/status
+
+                        # URL 형식이면 경로만 추출
+                        if raw_path.startswith('http://') or raw_path.startswith('https://'):
+                            # https://gateway.highgarden.cloud:443/queue/status?query=param → /queue/status
+                            parsed_url = urlparse(raw_path)
+                            request_path = parsed_url.path if parsed_url.path else '/'
+                        else:
+                            # /queue/status?query=param → /queue/status
+                            request_path = raw_path.split('?')[0] if '?' in raw_path else raw_path
+
+                        # 경로 기반 서비스 구분 로직
+                        # API 도메인에서 오는 요청 (api.highgarden.cloud)
+                        # 실제 요청 경로: /payments, /orders, /events 등 (프리픽스 없음)
+                        if 'payment' in request_path or 'pay' in request_path:
+                            service = "flash-api-payment"
+                        elif 'order' in request_path:
+                            service = "flash-api-order"
+                        elif request_path.startswith('/api/'):
+                            # /api/* 형식의 API 엔드포인트
+                            if 'payment' in request_path or 'pay' in request_path:
+                                service = "flash-api-payment"
+                            elif 'order' in request_path:
+                                service = "flash-api-order"
+                            else:
+                                service = "flash-api"
+                        elif request_path.startswith('/events'):
+                            # /events는 API 서비스
+                            service = "flash-api"
+                        elif request_path.startswith('/queue'):
+                            service = "flash-gateway-queue"
+                        elif request_path.startswith('/orders'):
+                            service = "flash-gateway-orders"
+                        elif request_path.startswith('/products'):
+                            service = "flash-gateway-products"
+                        elif request_path.startswith('/'):
+                            service = "flash-gateway"
+                        else:
+                            service = "unknown"
+            except (ValueError, IndexError):
+                pass
         except:
             pass
 
@@ -107,6 +172,9 @@ def parse_alb_log(line):
             'request_processing_time_ms': request_processing_time,
             'target_processing_time_ms': target_processing_time,
             'response_processing_time_ms': response_processing_time,
+            'service': service,  # 서비스 구분 필드 (flash-gateway, flash-api, etc.)
+            'request_path': request_path,  # 요청 경로
+            'http_method': http_method,  # HTTP 메서드 (GET, POST, etc.)
             'raw_message': line,
             'timestamp_ms': timestamp_ms
         }
@@ -151,6 +219,11 @@ def lambda_handler(event, context):
 
             parsed = parse_alb_log(line)
             if parsed:
+                # 크롤러/봇 요청 필터링: response_time_ms가 null이면 ALB에서 차단된 요청
+                # (실제 target에 도달하지 않은 요청)
+                if parsed['response_time_ms'] is None:
+                    continue
+
                 log_events.append({
                     'timestamp': parsed['timestamp_ms'],
                     'message': json.dumps(parsed, ensure_ascii=False)

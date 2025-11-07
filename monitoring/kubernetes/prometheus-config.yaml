@@ -39,3 +39,9 @@ data:
           - targets: ['flash-pay.flash-ticket.svc.cluster.local:3100']
         metrics_path: '/live'
 
+      # NOTE: AWS Amazon MQ RabbitMQ doesn't expose Prometheus metrics directly
+      # Use CloudWatch metrics via Grafana's CloudWatch datasource instead
+      # CloudWatch provides metrics like:
+      # - AWS/MQ namespace (broker state, CPU, memory, disk space, etc.)
+      # - CloudWatch Logs for detailed broker logs
+
