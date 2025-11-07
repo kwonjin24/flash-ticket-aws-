@@ -5,7 +5,7 @@ metadata:
   name: pod-scale-up
   namespace: flash-ticket
 spec:
-  schedule: "54 2 * * *"  # UTC 02:54 (KST 11:54, 노드 스케일 2분 후)
+  schedule: "43 5 * * *"  # UTC 05:43 (KST 14:43, 노드 스케일 2분 후)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -33,7 +33,7 @@ spec:
               # HPA minReplicas 증가로 강제 스케일업
               echo "=== HPA 피크 모드 활성화 ==="
               kubectl patch hpa flash-api-hpa -n flash-ticket -p '{"spec":{"minReplicas":6}}'
-              kubectl patch hpa flash-gateway-hpa -n flash-ticket -p '{"spec":{"minReplicas":10}}'
+              kubectl patch hpa flash-gateway-hpa -n flash-ticket -p '{"spec":{"minReplicas":20,"maxReplicas":100}}'
               kubectl patch hpa flash-pay-hpa -n flash-ticket -p '{"spec":{"minReplicas":3}}'
               
               # 결과 확인
