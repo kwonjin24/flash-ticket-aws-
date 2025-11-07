@@ -5,7 +5,7 @@ metadata:
   name: pod-scale-up
   namespace: flash-ticket
 spec:
-  schedule: "35 2 * * *"  # UTC 02:35 (KST 11:35, 노드 스케일 2분 후)
+  schedule: "54 2 * * *"  # UTC 02:54 (KST 11:54, 노드 스케일 2분 후)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
