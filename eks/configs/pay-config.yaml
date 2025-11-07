@@ -4,12 +4,11 @@ metadata:
   name: pay-config
   namespace: flash-ticket
 data:
-  NODE_ENV: "production"
-  LOAD_ENV_FILES: "false"
-  PAY_HEALTH_PORT: "3100"
-  PAYMENT_REQUEST_QUEUE: "payments_request"
-  PAYMENT_RESULT_QUEUE: "payments_result"
-  PAYMENT_SUCCESS_RATE: "0.85"
-  PAYMENT_PROCESSING_MIN_MS: "1000"
-  PAYMENT_PROCESSING_MAX_MS: "4000"
-
+  NODE_ENV: ""
+  LOAD_ENV_FILES: ""
+  PAY_HEALTH_PORT: ""
+  PAYMENT_REQUEST_QUEUE: ""
+  PAYMENT_RESULT_QUEUE: ""
+  PAYMENT_SUCCESS_RATE: ""
+  PAYMENT_PROCESSING_MIN_MS: ""
+  PAYMENT_PROCESSING_MAX_MS: ""

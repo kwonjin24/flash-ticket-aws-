@@ -4,28 +4,28 @@ metadata:
   name: app-config
 data:
   # Database
-  DATABASE_URL: "postgres://flash_tickets_app:flash_tickets_app@211.46.52.152:15432/flash_tickets"
+  DATABASE_URL: ""
 
   # Redis
-  REDIS_HOST: "redis"
-  REDIS_PORT: "6379"
+  REDIS_HOST: ""
+  REDIS_PORT: ""
   REDIS_PASSWORD: ""
 
   # RabbitMQ
-  RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
-  PAYMENT_REQUEST_QUEUE: "payments_request"
-  PAYMENT_RESULT_QUEUE: "payments_result"
+  RABBITMQ_URL: ""
+  PAYMENT_REQUEST_QUEUE: ""
+  PAYMENT_RESULT_QUEUE: ""
 
   # JWT
-  JWT_ACCESS_EXP: "15m"
-  JWT_REFRESH_EXP: "7d"
+  JWT_ACCESS_EXP: ""
+  JWT_REFRESH_EXP: ""
 
   # Queue Settings
-  QUEUE_READY_CAPACITY: "50"
-  QUEUE_GATE_TOKEN_TTL_MS: "120000"
-  QUEUE_PROMOTION_INTERVAL_MS: "500"
-  QUEUE_WS_REFRESH_MS: "3000"
+  QUEUE_READY_CAPACITY: ""
+  QUEUE_GATE_TOKEN_TTL_MS: ""
+  QUEUE_PROMOTION_INTERVAL_MS: ""
+  QUEUE_WS_REFRESH_MS: ""
 
   # Application
-  CLIENT_URL: "http://localhost:5173"
-  NODE_ENV: "production"
+  CLIENT_URL: ""
+  NODE_ENV: ""
