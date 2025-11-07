@@ -5,7 +5,7 @@ metadata:
   name: nodepool-activate
   namespace: flash-ticket
 spec:
-  schedule: "52 10 * * *"  # UTC 10:52 (KST 19:52, 파드 스케일업 2분 전)
+  schedule: "20 2 * * *"  # UTC 02:20 (KST 11:20, 부하테스트용)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
