@@ -1,0 +1,165 @@
+{
+    "Rules": [
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:ap-northeast-2:339712948064:listener-rule/app/k8s-flashtic-flashing-862c142946/9c6e79c753684b17/1e6b41cf7d6078ae/bd9227332cd98b6f",
+            "Priority": "1",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/*"
+                        ]
+                    }
+                },
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "api.highgarden.cloud"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "api.highgarden.cloud"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-2:339712948064:targetgroup/k8s-flashtic-flashapi-f92ee76f89/79af2f330fb787bc",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-2:339712948064:targetgroup/k8s-flashtic-flashapi-f92ee76f89/79af2f330fb787bc",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false,
+            "Transforms": []
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:ap-northeast-2:339712948064:listener-rule/app/k8s-flashtic-flashing-862c142946/9c6e79c753684b17/1e6b41cf7d6078ae/6510f88a3d36f83e",
+            "Priority": "2",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "gateway.highgarden.cloud"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "gateway.highgarden.cloud"
+                        ]
+                    }
+                },
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/*"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-2:339712948064:targetgroup/k8s-flashtic-flashgat-e1f956e439/564a02861864a2e9",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-2:339712948064:targetgroup/k8s-flashtic-flashgat-e1f956e439/564a02861864a2e9",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false,
+            "Transforms": []
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:ap-northeast-2:339712948064:listener-rule/app/k8s-flashtic-flashing-862c142946/9c6e79c753684b17/1e6b41cf7d6078ae/31b0b7a42ae55884",
+            "Priority": "3",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/*"
+                        ]
+                    }
+                },
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "www.highgarden.cloud"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "www.highgarden.cloud"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-2:339712948064:targetgroup/k8s-flashtic-flashweb-42d876acde/3214367847ed039e",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-2:339712948064:targetgroup/k8s-flashtic-flashweb-42d876acde/3214367847ed039e",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false,
+            "Transforms": []
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:ap-northeast-2:339712948064:listener-rule/app/k8s-flashtic-flashing-862c142946/9c6e79c753684b17/1e6b41cf7d6078ae/3767439cb00a24e5",
+            "Priority": "default",
+            "Conditions": [],
+            "Actions": [
+                {
+                    "Type": "fixed-response",
+                    "Order": 1,
+                    "FixedResponseConfig": {
+                        "StatusCode": "404",
+                        "ContentType": "text/plain"
+                    }
+                }
+            ],
+            "IsDefault": true,
+            "Transforms": []
+        }
+    ]
+}

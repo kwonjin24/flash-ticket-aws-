@@ -1,0 +1,26 @@
+# Allow Gateway Pod to receive traffic from ALB (Ingress Controller)
+# External -> ALB -> Gateway Pod (3000)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-gateway-from-alb
+  namespace: flash-ticket
+  labels:
+    app: network-security
+    service: gateway
+    version: "1.0"
+spec:
+  podSelector:
+    matchLabels:
+      app: flash-gateway
+  policyTypes:
+  - Ingress
+  ingress:
+  # Allow from ALB/Ingress Controller in kube-system namespace
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: kube-system
+    ports:
+    - protocol: TCP
+      port: 3000

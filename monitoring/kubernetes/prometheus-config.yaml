@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+      external_labels:
+        env: test
+
+    scrape_configs:
+      # Metrics endpoints (Prometheus format)
+      - job_name: 'flash-api-metrics'
+        static_configs:
+          - targets: ['flash-api.flash-ticket.svc.cluster.local:4000']
+        metrics_path: '/metrics'
+
+      - job_name: 'flash-gateway-metrics'
+        static_configs:
+          - targets: ['flash-gateway.flash-ticket.svc.cluster.local:3000']
+        metrics_path: '/metrics'
+
+      # Health check endpoints (liveness probes)
+      - job_name: 'flash-api-health'
+        static_configs:
+          - targets: ['flash-api.flash-ticket.svc.cluster.local:4000']
+        metrics_path: '/live'
+
+      - job_name: 'flash-gateway-health'
+        static_configs:
+          - targets: ['flash-gateway.flash-ticket.svc.cluster.local:3000']
+        metrics_path: '/live'
+
+      - job_name: 'flash-pay-health'
+        static_configs:
+          - targets: ['flash-pay.flash-ticket.svc.cluster.local:3100']
+        metrics_path: '/live'
+

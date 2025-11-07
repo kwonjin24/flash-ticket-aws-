@@ -1,0 +1,22 @@
+{
+  "LambdaFunctionConfigurations": [
+    {
+      "LambdaFunctionArn": "arn:aws:lambda:ap-northeast-2:339712948064:function:flash-ticket-alb-log-processor",
+      "Events": ["s3:ObjectCreated:*"],
+      "Filter": {
+        "Key": {
+          "FilterRules": [
+            {
+              "Name": "prefix",
+              "Value": "alb/"
+            },
+            {
+              "Name": "suffix",
+              "Value": ".gz"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

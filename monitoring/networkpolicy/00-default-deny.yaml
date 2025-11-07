@@ -1,0 +1,14 @@
+# Default Deny Ingress Policy
+# 모든 외부 트래픽 차단 (명시적으로 허용한 것만 통과)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: flash-ticket
+  labels:
+    app: network-security
+    version: "1.0"
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress

@@ -1,0 +1,141 @@
+# Allow egress (outbound) traffic to external services
+# API Pod needs to access external services like RabbitMQ, Redis, Database
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-egress-external
+  namespace: flash-ticket
+  labels:
+    app: network-security
+    direction: egress
+    version: "1.0"
+spec:
+  podSelector:
+    matchLabels:
+      app: flash-api
+  policyTypes:
+  - Egress
+  egress:
+  # Allow DNS resolution
+  - to:
+    - namespaceSelector: {}
+    ports:
+    - protocol: UDP
+      port: 53
+  # Allow access to external services (RabbitMQ, Redis, Database, etc.)
+  # This allows egress to any destination (outside cluster)
+  - to:
+    - podSelector: {}  # Any pod in any namespace (for internal services)
+    ports:
+    - protocol: TCP
+      port: 5672  # RabbitMQ
+    - protocol: TCP
+      port: 6379  # Redis
+    - protocol: TCP
+      port: 5432  # PostgreSQL
+    - protocol: TCP
+      port: 3306  # MySQL
+  # Allow to any IP (for AWS services like RabbitMQ, RDS outside cluster)
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except:
+        - 169.254.169.254/32  # Block AWS metadata service
+    ports:
+    - protocol: TCP
+      port: 5672  # RabbitMQ AMQP
+    - protocol: TCP
+      port: 5671  # RabbitMQ AMQPS (secured)
+    - protocol: TCP
+      port: 6379  # Redis
+    - protocol: TCP
+      port: 5432  # PostgreSQL
+    - protocol: TCP
+      port: 3306  # MySQL
+
+---
+# Allow egress from Gateway Pod
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-gateway-egress
+  namespace: flash-ticket
+  labels:
+    app: network-security
+    direction: egress
+    version: "1.0"
+spec:
+  podSelector:
+    matchLabels:
+      app: flash-gateway
+  policyTypes:
+  - Egress
+  egress:
+  # Allow DNS resolution
+  - to:
+    - namespaceSelector: {}
+    ports:
+    - protocol: UDP
+      port: 53
+  # Allow to API
+  - to:
+    - podSelector:
+        matchLabels:
+          app: flash-api
+    ports:
+    - protocol: TCP
+      port: 4000
+
+---
+# Allow egress from Pay Pod
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-pay-egress
+  namespace: flash-ticket
+  labels:
+    app: network-security
+    direction: egress
+    version: "1.0"
+spec:
+  podSelector:
+    matchLabels:
+      app: flash-pay
+  policyTypes:
+  - Egress
+  egress:
+  # Allow DNS resolution
+  - to:
+    - namespaceSelector: {}
+    ports:
+    - protocol: UDP
+      port: 53
+  # Allow external service access
+  - to:
+    - podSelector: {}
+    ports:
+    - protocol: TCP
+      port: 5672  # RabbitMQ
+    - protocol: TCP
+      port: 6379  # Redis
+    - protocol: TCP
+      port: 5432  # PostgreSQL
+    - protocol: TCP
+      port: 3306  # MySQL
+  # Allow to any IP (for AWS services outside cluster)
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except:
+        - 169.254.169.254/32
+    ports:
+    - protocol: TCP
+      port: 5672  # RabbitMQ AMQP
+    - protocol: TCP
+      port: 5671  # RabbitMQ AMQPS (secured)
+    - protocol: TCP
+      port: 6379  # Redis
+    - protocol: TCP
+      port: 5432  # PostgreSQL
+    - protocol: TCP
+      port: 3306  # MySQL
