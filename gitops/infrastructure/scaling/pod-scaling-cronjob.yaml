@@ -5,13 +5,18 @@ metadata:
   name: pod-scale-up
   namespace: flash-ticket
 spec:
-  schedule: "22 2 * * *"  # UTC 02:22 (KST 11:22, 노드 스케일 2분 후)
+  schedule: "35 2 * * *"  # UTC 02:35 (KST 11:35, 노드 스케일 2분 후)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
         spec:
           serviceAccountName: scaling-operator
+          tolerations:
+          - key: service-only
+            operator: Equal
+            value: "true"
+            effect: NoSchedule
           containers:
           - name: kubectl
             image: bitnami/kubectl:latest
@@ -53,6 +58,11 @@ spec:
       template:
         spec:
           serviceAccountName: scaling-operator
+          tolerations:
+          - key: service-only
+            operator: Equal
+            value: "true"
+            effect: NoSchedule
           containers:
           - name: kubectl
             image: bitnami/kubectl:latest

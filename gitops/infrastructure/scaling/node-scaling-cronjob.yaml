@@ -5,13 +5,18 @@ metadata:
   name: nodepool-activate
   namespace: flash-ticket
 spec:
-  schedule: "20 2 * * *"  # UTC 02:20 (KST 11:20, 부하테스트용)
+  schedule: "33 2 * * *"  # UTC 02:33 (KST 11:33, 부하테스트용)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
         spec:
           serviceAccountName: scaling-operator
+          tolerations:
+          - key: service-only
+            operator: Equal
+            value: "true"
+            effect: NoSchedule
           containers:
           - name: kubectl
             image: bitnami/kubectl:latest
@@ -79,6 +84,11 @@ spec:
       template:
         spec:
           serviceAccountName: scaling-operator
+          tolerations:
+          - key: service-only
+            operator: Equal
+            value: "true"
+            effect: NoSchedule
           containers:
           - name: kubectl
             image: bitnami/kubectl:latest
